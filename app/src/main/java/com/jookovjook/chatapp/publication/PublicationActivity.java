@@ -114,9 +114,8 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         //initViewPager();
     }
 
-
-
-
+    //hui
+    //one more hui
 
     private class GetPublication extends AsyncTask<String, Void, String>{
 
