@@ -114,10 +114,6 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         //initViewPager();
     }
 
-
-
-
-
     private class GetPublication extends AsyncTask<String, Void, String>{
 
         int publication_id;
