@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/login_activity"
+        android:orderInCategory="101"
+        android:title="@string/login_activity"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/user_profile_activity"
+        android:orderInCategory="102"
+        android:title="@string/user_profile_activity"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/publication_activity"
+        android:orderInCategory="103"
+        android:title="@string/publication_activity"
+        app:showAsAction="never"/>
+
+</menu>
