@@ -96,7 +96,6 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         return new MyViewHolder(itemView);
     }
 
-
     @Override
     public void onBindViewHolder(final FeedCardAdapter.MyViewHolder holder, int position) {
         final FeedCardProvider feedCardProvider = mList.get(position);

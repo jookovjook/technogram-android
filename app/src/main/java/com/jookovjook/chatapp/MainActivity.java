@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             switch(i) {
                 case 0: return FeedFragment.newInstance(1," ");
                 case 1: return FeedFragment.newInstance(0,"0");
-                case 2: return NewPublicationFragment.newInstance();
+                case 2: return FeedFragment.newInstance(0,"1");
                 case 3: return AboutFragment.newInstance("Tset");
             }
             return null;
