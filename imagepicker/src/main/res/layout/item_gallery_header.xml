@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gallery_camera_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/gallery_header_height"
+    android:background="?colorPrimary"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <es.guiguegon.gallerymodule.utils.TextureCameraPreview
+        android:id="@+id/gallery_camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/gallery_header_height"
+        android:layout_gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gallery_camera_preview"/>
+
+    <ImageView
+        android:id="@+id/gallery_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_add_photo"/>
+
+</FrameLayout>

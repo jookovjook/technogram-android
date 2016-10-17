@@ -1,5 +1,5 @@
 package com.jookovjook.chatapp.utils;
 
 public class ServerSettings {
-    public final static String serverURL = "192.168.1.68";
+    public final static String serverURL = "10.83.10.45";
 }

@@ -20,4 +20,11 @@
             id="@+id/home_back">@drawable/vector_drawable_ic_arrow_back_white___px</item>
     </style>
 
+    <style name="MIP_theme" parent="AppTheme">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
 </resources>
