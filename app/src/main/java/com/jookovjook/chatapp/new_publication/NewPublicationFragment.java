@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp;
+package com.jookovjook.chatapp.new_publication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.jookovjook.chatapp.new_publication.NewPublicationActivity;
+import com.jookovjook.chatapp.R;
 
 public class NewPublicationFragment extends Fragment {
 

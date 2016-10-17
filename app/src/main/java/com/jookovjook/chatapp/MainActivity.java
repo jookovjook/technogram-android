@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
+import com.jookovjook.chatapp.new_publication.NewPublicationFragment;
 import com.jookovjook.chatapp.publication.PublicationActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 
