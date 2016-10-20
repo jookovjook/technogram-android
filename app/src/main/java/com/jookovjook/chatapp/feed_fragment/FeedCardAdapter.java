@@ -48,6 +48,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
     public int startHeight = 100;
     public int finalHeight = 400;
     private int lastPosition = -1;
+    private Boolean deleting = false;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -239,7 +240,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
     }
 
     private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition)
+        if ((position > lastPosition) | deleting)
         {
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.going_up);
             viewToAnimate.startAnimation(animation);

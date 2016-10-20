@@ -43,7 +43,8 @@
         <activity
             android:name="es.guiguegon.gallerymodule.GalleryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".new_publication.NewPublicationActivity"></activity>
+        <activity android:name="com.jookovjook.chatapp.new_publication.NewPublicationActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

@@ -49,8 +49,8 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
     private Animation mFadeOutAnimation;
     private ParallaxViewPager mParallaxViewPager;
     ImageView hidden_image;
-    @SuppressWarnings("SpellCheckingInspection")
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +66,7 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
             GetPublication getPublication = new GetPublication(pub_id);
             getPublication.execute();
         }
-
         bindActivity();
-
         this.cAdapter = new CommentAdapter(pub_id, this, this);
         ListView lvComments = (ListView) findViewById(R.id.lvComments);
         lvComments.setAdapter(cAdapter);

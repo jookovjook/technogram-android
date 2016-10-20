@@ -7,8 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
+import com.jookovjook.chatapp.network.MakePost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,34 +21,56 @@ import es.guiguegon.gallerymodule.GalleryActivity;
 import es.guiguegon.gallerymodule.GalleryHelper;
 import es.guiguegon.gallerymodule.model.GalleryMedia;
 
-public class NewPublicationActivity extends AppCompatActivity {
+public class NewPublicationActivity extends AppCompatActivity implements ImagesLoaderInterface {
 
-    private ArrayList<ImageProvider> mList = new ArrayList<>();
-
+    private ArrayList<ImageProvider> mList = new ArrayList<ImageProvider>();
     public static final int REQUEST_CODE_GALLERY = 1;
-
+    private static final int MAX_IMAGES = 20;
     ImageAdapter imageAdapter;
+    TextView status;
+    RecyclerView recyclerView;
+    EditText title, description;
+    Button button, done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_publication);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.image_recycler);
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        imageAdapter = new ImageAdapter(mList, getApplicationContext());
+        findViews();
+        final LinearLayoutManager rvLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(rvLayoutManager);
+        imageAdapter = new ImageAdapter(mList, this, this);
         recyclerView.setAdapter(imageAdapter);
-        Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                if(mList.size() < MAX_IMAGES)
                 startActivityForResult(new GalleryHelper().setMultiselection(true)
-                        .setMaxSelectedItems(10)
+                        .setMaxSelectedItems(MAX_IMAGES - mList.size())
                         .setShowVideos(false)
                         .getCallingIntent(NewPublicationActivity.this), REQUEST_CODE_GALLERY);
             }
         });
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int check = checkImages();
+                if(check != 0) return;
+                String title_ = title.getText().toString();
+                String description_ = description.getText().toString();
+                MakePost makePost = new MakePost(title_, description_, mList);
+                makePost.execute();
+            }
+        });
+    }
+
+    private void findViews(){
+        status = (TextView) findViewById(R.id.status);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        button = (Button) findViewById(R.id.button);
+        title = (EditText) findViewById(R.id.title);
+        description = (EditText) findViewById(R.id.description);
+        done = (Button) findViewById(R.id.done);
     }
 
     @Override
@@ -58,5 +84,24 @@ public class NewPublicationActivity extends AppCompatActivity {
             }
             imageAdapter.notifyDataSetChanged();
         }
+    }
+
+    private int checkImages(){
+        if(mList.size() == 0) return 1;
+        int unuploaded = 0;
+        for(int i = 0; i < mList.size(); i++){
+            if(!mList.get(i).getUploaded()) unuploaded++;
+        }
+        if(unuploaded > 0) return 2;
+        return 0;
+    }
+
+    @Override
+    public void onAddImagesClicked() {
+        if(mList.size() < MAX_IMAGES)
+            startActivityForResult(new GalleryHelper().setMultiselection(true)
+                    .setMaxSelectedItems(MAX_IMAGES - mList.size())
+                    .setShowVideos(false)
+                    .getCallingIntent(NewPublicationActivity.this), REQUEST_CODE_GALLERY);
     }
 }
