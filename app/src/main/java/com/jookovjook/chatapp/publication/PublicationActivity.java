@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.interfaces.CommentAdapterCallback;
 import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
 import com.jookovjook.chatapp.network.GetPublication;
 import com.jookovjook.chatapp.network.GetPublicationImages;

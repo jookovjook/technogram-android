@@ -16,6 +16,8 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,11 @@ import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
 import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
 import com.jookovjook.chatapp.network.GetUserInfo;
+import com.jookovjook.chatapp.utils.Config;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity implements
         AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface{
@@ -40,6 +47,7 @@ public class UserProfileActivity extends AppCompatActivity implements
     private TextView mUsername, mNameSurname;
     int user_id;
     private String username;
+    private CircleImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +107,26 @@ public class UserProfileActivity extends AppCompatActivity implements
         mUsername = (TextView) findViewById(R.id.username);
         mNameSurname = (TextView) findViewById(R.id.name_surname);
         mUsername.setText("\u0040" +  username);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
     }
 
     @Override
-    public void onGotUserInfo(String name, String surname) {
+    public void onGotUserInfo(String name, String surname, String img_link) {
         mNameSurname.setText(name + " " + surname);
+        Picasso.with(this)
+                .load(Config.IMAGE_RESOURCES_URL + img_link)
+                .resize(256, 256).onlyScaleDown().centerCrop().into(avatar, new Callback() {
+            @Override
+            public void onSuccess() {
+                setAnimation(avatar);
+            }
+
+            @Override
+            public void onError() {
+                setAnimation(avatar);
+            }
+        });
+
     }
 
     //tabs layout
@@ -240,6 +263,28 @@ public class UserProfileActivity extends AppCompatActivity implements
         }
         layoutParams.height = actionBarHeight + getStatusBarHeight();
         mToolbar.setLayoutParams(layoutParams);
+    }
+
+    private void setAnimation(final View viewToAnimate) {
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            animation.setFillAfter(true);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    viewToAnimate.setAlpha(1);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            viewToAnimate.startAnimation(animation);
     }
 
 }

@@ -22,8 +22,8 @@ import com.jookovjook.chatapp.interfaces.GetPublicationsInterfase;
 import com.jookovjook.chatapp.network.GetPublications;
 import com.jookovjook.chatapp.publication.PublicationActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
-import com.jookovjook.chatapp.utils.DateTimeConverter;
 import com.jookovjook.chatapp.utils.Config;
+import com.jookovjook.chatapp.utils.DateTimeConverter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -59,6 +59,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         public ImageView main_image;
         public TextView text;
         public TextView datetime;
+        public CircleImageView user_avatar;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -69,11 +70,11 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
             comments = (TextView) itemView.findViewById(R.id.comments);
             card_more_button = (ImageButton) itemView.findViewById(R.id.card_more_button);
             down_layout = (LinearLayout) itemView.findViewById(R.id.down_layout);
-            circleImageView = (CircleImageView) itemView.findViewById(R.id.circleImageView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             main_image = (ImageView) itemView.findViewById(R.id.main_image);
             text = (TextView) itemView.findViewById(R.id.text);
             datetime = (TextView) itemView.findViewById(R.id.datetime);
+            user_avatar = (CircleImageView) itemView.findViewById(R.id.user_avatar);
         }
     }
 
@@ -104,6 +105,9 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         holder.text.setText(feedCardProvider.getText());
         DateTimeConverter converter = new DateTimeConverter(feedCardProvider.getDate());
         holder.datetime.setText(converter.convert());
+        Picasso.with(mContext)
+                .load(Config.IMAGE_RESOURCES_URL + feedCardProvider.getSmall_avatar())
+                .resize(64, 64).onlyScaleDown().centerCrop().into(holder.user_avatar);
         Picasso.with(mContext)
                 .load(Config.IMAGE_RESOURCES_URL + feedCardProvider.getImg_link())
                 .resize(720,720).onlyScaleDown().centerCrop().into(holder.main_image);
@@ -143,7 +147,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
             };
         };
         holder.username.setOnClickListener(onClickListener);
-        holder.circleImageView.setOnClickListener(onClickListener);
+        holder.user_avatar.setOnClickListener(onClickListener);
         holder.main_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //tabs layout
     class TabsAdapter extends FragmentPagerAdapter {
 
         public TabsAdapter(FragmentManager fragmentManager) {
@@ -90,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch(position) {
-                case 0: return "Interesting";
+                case 0: return "Recommended";
                 case 1: return "Subscriptions";
-                case 2: return "Recomendet";
+                case 2: return "My Profile";
                 case 3: return "Settings";
             }
             return "";

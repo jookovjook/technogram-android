@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.interfaces.CommentAdapterCallback;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 

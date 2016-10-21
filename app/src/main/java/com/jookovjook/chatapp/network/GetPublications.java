@@ -87,8 +87,9 @@ public class GetPublications extends AsyncTask<String, Void, String> {
                 String text = jsonObject.getString("text");
                 String datetime = jsonObject.getString("datetime");
                 Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(datetime);
+                String small_avatar = jsonObject.getString("small_avatar");
                 FeedCardProvider feedCardProvider = new FeedCardProvider
-                        (publication_id, user_id, username, title, views, stars, comments, img_link, text, date);
+                        (publication_id, user_id, username, title, views, stars, comments, img_link, text, date, small_avatar);
                 getPsI.onGotPublication(feedCardProvider);
             }
         }catch (Exception e){

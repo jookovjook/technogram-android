@@ -137,10 +137,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:alpha="0"
+        android:id="@+id/avatar"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/profile_image"
+        android:src="@drawable/white"
         app:border_color="@android:color/white"
         app:border_width="2dp"
         app:finalHeight="32dp"

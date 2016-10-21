@@ -29,7 +29,7 @@
                 android:background="#f0f0f0">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
+                    android:id="@+id/user_avatar"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"

@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.publication;
+package com.jookovjook.chatapp.interfaces;
 
 public interface CommentAdapterCallback {
     void onDataInsertedCallback();

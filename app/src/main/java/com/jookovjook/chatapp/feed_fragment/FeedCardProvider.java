@@ -14,9 +14,10 @@ public class FeedCardProvider {
     private String img_link;
     private String text;
     private Date date;
+    private String small_avatar;
 
     public FeedCardProvider(int publication_id, int user_id, String username, String title,
-                            int views, int stars, int comments, String img_link, String text, Date date) {
+                            int views, int stars, int comments, String img_link, String text, Date date, String small_avatar) {
         this.publication_id = publication_id;
         this.user_id = user_id;
         this.username = username;
@@ -27,6 +28,7 @@ public class FeedCardProvider {
         this.img_link = img_link;
         this.text = text;
         this.date = date;
+        this.small_avatar = small_avatar;
     }
 
     public int getPublication_id() {
@@ -67,6 +69,10 @@ public class FeedCardProvider {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getSmall_avatar() {
+        return small_avatar;
     }
 
     public void setPublication_id(int publication_id) {
