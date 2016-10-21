@@ -3,6 +3,7 @@ package com.jookovjook.chatapp.user_profile;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,11 +33,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class UserProfileActivity extends AppCompatActivity implements
         AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface{
 
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.75f;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 1f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.2f;
     private static final int ALPHA_ANIMATIONS_DURATION              = 200;
     private boolean mIsTheTitleVisible          = false;
@@ -48,6 +51,7 @@ public class UserProfileActivity extends AppCompatActivity implements
     int user_id;
     private String username;
     private CircleImageView avatar;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,8 @@ public class UserProfileActivity extends AppCompatActivity implements
         mToolbar        = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
         setStatusBarHeight();
+        CollapsingToolbarLayout main_collapsing = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        main_collapsing.setMinimumHeight(getStatusBarHeight() + getActionBarHeight());
         mTitle          = (TextView) findViewById(R.id.main_textview_title);
         mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
@@ -108,24 +114,33 @@ public class UserProfileActivity extends AppCompatActivity implements
         mNameSurname = (TextView) findViewById(R.id.name_surname);
         mUsername.setText("\u0040" +  username);
         avatar = (CircleImageView) findViewById(R.id.avatar);
+        background = findViewById(R.id.background);
+
     }
 
     @Override
     public void onGotUserInfo(String name, String surname, String img_link) {
+        Log.i("got user info", img_link);
         mNameSurname.setText(name + " " + surname);
         Picasso.with(this)
                 .load(Config.IMAGE_RESOURCES_URL + img_link)
                 .resize(256, 256).onlyScaleDown().centerCrop().into(avatar, new Callback() {
             @Override
             public void onSuccess() {
-                setAnimation(avatar);
+                setAvatarFadeInAnimation(avatar);
             }
 
             @Override
             public void onError() {
-                setAnimation(avatar);
+                setAvatarFadeInAnimation(avatar);
             }
         });
+        Picasso.with(this)
+                .load(Config.IMAGE_RESOURCES_URL + img_link)
+                .resize(180, 180)
+                .centerCrop()
+                .transform(new BlurTransformation(this, 5))
+                .into((ImageView) background);
 
     }
 
@@ -253,19 +268,23 @@ public class UserProfileActivity extends AppCompatActivity implements
         return result;
     }
 
-    public void setStatusBarHeight(){
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mToolbar.getLayoutParams();
+    public int getActionBarHeight(){
         int actionBarHeight = 0;
         TypedValue tv = new TypedValue();
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
         {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
-        layoutParams.height = actionBarHeight + getStatusBarHeight();
+        return actionBarHeight;
+    }
+
+    public void setStatusBarHeight(){
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mToolbar.getLayoutParams();
+        layoutParams.height = getActionBarHeight() + getStatusBarHeight();
         mToolbar.setLayoutParams(layoutParams);
     }
 
-    private void setAnimation(final View viewToAnimate) {
+    private void setAvatarFadeInAnimation(final View viewToAnimate) {
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
             animation.setFillAfter(true);
             animation.setAnimationListener(new Animation.AnimationListener() {
