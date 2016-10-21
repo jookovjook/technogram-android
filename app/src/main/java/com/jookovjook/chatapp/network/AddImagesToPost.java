@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_publication.ImageProvider;
-import com.jookovjook.chatapp.utils.ServerSettings;
+import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
 import org.json.JSONArray;
@@ -23,19 +23,16 @@ public class AddImagesToPost extends AsyncTask<String, Void, String> {
 
     public AddImagesToPost(int publication_id, ArrayList<ImageProvider> mList){
         this.jsonArray = new JSONArray();
-        Log.i("addImages", String.valueOf(mList.size()));
         try{
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("token", ServerSettings.TOKEN);
+            jsonObject.put("token", Config.TOKEN);
             jsonObject.put("publication_id", publication_id);
             jsonArray.put(jsonObject);
-            Log.i("addImages","header created");
             for (int i = 1; i < mList.size(); i++){
                 jsonObject = new JSONObject();
                 jsonObject.put("_id", mList.get(i).get_id());
                 jsonObject.put("filename", mList.get(i).getFilename());
                 jsonArray.put(jsonObject);
-                Log.i("addImages","image added:" + String.valueOf(i));
             }
         }catch (Exception e){
             Log.i("addImages","Error creating addImages object");
@@ -46,17 +43,15 @@ public class AddImagesToPost extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         String s = "";
         try{
-            URL url = new URL(ServerSettings.ADD_IMAGES_TO_PUBLICATION_URL);
+            URL url = new URL(Config.ADD_IMAGES_TO_PUBLICATION_URL);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setDoOutput(true);
             mUrlConnection.setDoInput(true);
             mUrlConnection.setRequestProperty("Content-Type","application/json");
             mUrlConnection.connect();
             OutputStreamWriter out = new OutputStreamWriter(mUrlConnection.getOutputStream());
-            Log.i("addImages","starting writing jsonArray");
             out.write(jsonArray.toString());
             out.close();
-            Log.i("addIMages", "getting input stream");
             InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
             s = StreamReader.read(inputStream);
         }catch (Exception e){
@@ -67,10 +62,9 @@ public class AddImagesToPost extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        //Log.i("comment", "onPostExecute running");
         super.onPostExecute(s);
         try {
             Log.i("comment", s);
-        }catch (Exception e){}
+        }catch (Exception ignored) {}
     }
 }

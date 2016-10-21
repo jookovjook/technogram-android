@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import com.jookovjook.chatapp.new_publication.ImageAdapter;
 import com.jookovjook.chatapp.new_publication.ImageProvider;
 import com.jookovjook.chatapp.utils.AndroidMultiPartEntity;
-import com.jookovjook.chatapp.utils.ServerSettings;
+import com.jookovjook.chatapp.utils.Config;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -104,7 +104,7 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
     private String uploadFile() {
         String responseString = null;
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(ServerSettings.FILE_UPLOAD_URL);
+        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
                     new AndroidMultiPartEntity.ProgressListener() {
@@ -117,7 +117,7 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
             // Adding file data to http body
             entity.addPart("image", new FileBody(sourceFile));
             // Extra parameters if you want to pass to server
-            entity.addPart("token", new StringBody(ServerSettings.TOKEN));
+            entity.addPart("token", new StringBody(Config.TOKEN));
             totalSize = entity.getContentLength();
             httppost.setEntity(entity);
             // Making server call

@@ -1,6 +1,5 @@
 package com.jookovjook.chatapp.publication;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -18,23 +17,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
+import com.jookovjook.chatapp.network.GetPublication;
+import com.jookovjook.chatapp.network.GetPublicationImages;
+import com.jookovjook.chatapp.network.PostComment;
 import com.jookovjook.chatapp.paralaxviewpager.ParallaxViewPager;
-import com.jookovjook.chatapp.utils.ServerSettings;
-import com.jookovjook.chatapp.utils.StreamReader;
+import com.jookovjook.chatapp.utils.Config;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
-public class PublicationActivity extends AppCompatActivity implements CommentAdapterCallback{
+public class PublicationActivity extends AppCompatActivity implements CommentAdapterCallback, GetPublicationInterface{
 
     TextView title_textView;
     TextView text_textView, username_textView;
@@ -61,9 +55,9 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
             img_link = bundle.getString("img_link");
             pub_id = bundle.getInt("publication_id");
             ActivityCompat.postponeEnterTransition(this);
-            GetPublicationImages getPublicationImages = new GetPublicationImages();
+            GetPublicationImages getPublicationImages = new GetPublicationImages(pub_id, this);
             getPublicationImages.execute();
-            GetPublication getPublication = new GetPublication(pub_id);
+            GetPublication getPublication = new GetPublication(pub_id, this);
             getPublication.execute();
         }
         bindActivity();
@@ -92,7 +86,7 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         views_textView = (TextView) findViewById(R.id.views);
         stars_textView = (TextView) findViewById(R.id.stars);
         comments_textView = (TextView) findViewById(R.id.comments);
-        username_textView = (TextView) findViewById(R.id.feed_card_username);
+        username_textView = (TextView) findViewById(R.id.username);
         image = (ImageView) findViewById(R.id.image);
         hidden_image = (ImageView) findViewById(R.id.hidden_image);
         editText = (EditText) findViewById(R.id.editText);
@@ -112,142 +106,24 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         //initViewPager();
     }
 
-    private class GetPublication extends AsyncTask<String, Void, String>{
-
-        int publication_id;
-
-        GetPublication(int publication_id){
-            this.publication_id = publication_id;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String s = "";
-            try{
-                URL url = new URL("http://" + ServerSettings.serverURL + "/chatApp/get_publication.php?publication_id=" + String.valueOf(publication_id));
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoInput(true);
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = StreamReader.read(inputStream);
-            }catch (Exception e){}
-            return s;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResult) {
-            super.onPostExecute(jsonResult);
-            try{
-                JSONArray jsonArray = new JSONArray(jsonResult);
-                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int publication_id = jsonObject.getInt("publication_id");
-                int user_id = jsonObject.getInt("user_id");
-                title_textView.setText(jsonObject.getString("title"));
-                text_textView.setText(jsonObject.getString("text"));
-                views_textView.setText(String.valueOf(jsonObject.getInt("views")));
-                stars_textView.setText(String.valueOf(jsonObject.getInt("stars")));
-                comments_textView.setText(String.valueOf(jsonObject.getInt("comments")));
-                username_textView.setText("\u0040" + jsonObject.getString("username"));
-            } catch (Exception e){}
-        }
+    @Override
+    public void onGotPublication(String title, String text, int views, int stars, int comments, String username) {
+        title_textView.setText(title);
+        text_textView.setText(text);
+        views_textView.setText(String.valueOf(views));
+        stars_textView.setText(String.valueOf(stars));
+        comments_textView.setText(String.valueOf(comments));
+        username_textView.setText("\u0040" + username);
     }
 
-    private class PostComment extends AsyncTask<String, Void, String>{
-
-        int publication_id;
-        int user_id;
-        String comment;
-        JSONObject jsonObject;
-
-        PostComment(int publication_id, int user_id, String comment){
-            this.publication_id = publication_id;
-            this.user_id = user_id;
-            this.comment = comment;
-            this.jsonObject = new JSONObject();
-            try {
-                jsonObject.put("publication_id", this.publication_id);
-                jsonObject.put("user_id", this.user_id);
-                jsonObject.put("comment", this.comment);
-                Log.i("comment","object created");
-                Log.i("comment",jsonObject.toString());
-            }catch (Exception e){
-                Log.i("comment","error creating json");
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String s = "";
-            try{
-                //http://localhost/chatApp/post_comment.php?publication_id=4&user_id=0&comment=allo
-                /*
-                URL url = new URL("http://" + ServerSettings.serverURL +
-                        "/chatApp/post_comment.php?publication_id=" + String.valueOf(publication_id)
-                        + "&user_id=" + String.valueOf(user_id) + "&comment=" + comment);
-                        */
-                URL url = new URL("http://" + ServerSettings.serverURL +
-                        "/chatApp/post_comment.php");
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoOutput(true);
-                mUrlConnection.setDoInput(true);
-                mUrlConnection.setRequestProperty("Content-Type","application/json");
-                Log.i("comment","properties adjusted");
-                mUrlConnection.connect();
-                Log.i("comment","url connected");
-
-                OutputStreamWriter out = new   OutputStreamWriter(mUrlConnection.getOutputStream());
-                out.write(jsonObject.toString());
-                Log.i("comment","out written");
-                out.close();
-                Log.i("comment","out closed");
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                Log.i("comment","input stream got");
-                s = StreamReader.read(inputStream);
-                Log.i("comment","input stream decoded");
-            }catch (Exception e){}
-            return s;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                Log.i("comment",jsonObject.getString("comment"));
-            }catch (Exception e){}
-
-        }
+    @Override
+    public void onGotPubImage(String url) {
+        images.add(url);
     }
 
-    private class GetPublicationImages extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... params) {
-            String s = "";
-            try{
-                URL url = new URL("http://" + ServerSettings.serverURL + "/chatApp/get_publication_images.php?publication_id=" + String.valueOf(pub_id));
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoInput(true);
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = StreamReader.read(inputStream);
-            }catch (Exception e){}
-            return s;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResult) {
-            super.onPostExecute(jsonResult);
-            JSONArray jsonArray;
-            try {
-                jsonArray = new JSONArray(jsonResult);
-                for(int i= 0; i<jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String img_link_ = jsonObject.getString("img_link");
-                    images.add("http://" + ServerSettings.serverURL + "/chatApp/image_resources/" + img_link_);
-                }
-            }catch (Exception e){}
-            initViewPager();
-        }
-
+    @Override
+    public void onFinishGettingImages() {
+        initViewPager();
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -292,7 +168,7 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
                 ImageView imageView = (ImageView) view.findViewById(R.id.item_img);
                 if(position == 0) {
                     Picasso.with(PublicationActivity.this)
-                            .load("http://" + ServerSettings.serverURL + "/chatApp/image_resources/" + img_link)
+                            .load(Config.IMAGE_RESOURCES_URL + img_link)
                             .noFade().resize(720, 720).onlyScaleDown().noFade().centerCrop()
                             .into(imageView, new Callback() {
                                 @Override

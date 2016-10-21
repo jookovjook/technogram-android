@@ -14,14 +14,14 @@ public class FeedFragment extends Fragment {
 
     private FeedCardAdapter feedCardAdapter;
     private int type;
-    private String param;
+    private int param;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.feed_fragment, container, false);
 
         type = getArguments().getInt("type");
-        param = getArguments().getString("param");
+        param = getArguments().getInt("param");
         bindFragment(rootView);
         return rootView;
     }
@@ -35,11 +35,11 @@ public class FeedFragment extends Fragment {
         recyclerView.setAdapter(feedCardAdapter);
     }
 
-    public static Fragment newInstance(int type, String param) {
+    public static Fragment newInstance(int type, int param) {
         FeedFragment feedFragment = new FeedFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
-        bundle.putString("param", param);
+        bundle.putInt("param", param);
         feedFragment.setArguments(bundle);
         return feedFragment;
     }

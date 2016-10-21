@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int i) {
             switch(i) {
-                case 0: return FeedFragment.newInstance(1," ");
-                case 1: return FeedFragment.newInstance(0,"0");
+                case 0: return FeedFragment.newInstance(1,-1);
+                case 1: return FeedFragment.newInstance(0, 0);
                 case 2: return NewPublicationFragment.newInstance();
                 case 3: return AboutFragment.newInstance("Tset");
             }

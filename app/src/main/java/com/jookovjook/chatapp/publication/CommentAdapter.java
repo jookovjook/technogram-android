@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
-import com.jookovjook.chatapp.utils.ServerSettings;
+import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
 import org.json.JSONArray;
@@ -81,7 +81,7 @@ public class CommentAdapter extends BaseAdapter {
         protected String doInBackground(String... params) {
             String s = "";
             try{
-                URL url = new URL("http://" + ServerSettings.serverURL + "/chatApp/get_comments.php?publication_id=" + String.valueOf(publication_id));
+                URL url = new URL(Config.SERVER_URL + "get_comments.php?publication_id=" + String.valueOf(publication_id));
                 HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
                 mUrlConnection.setDoInput(true);
                 InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
@@ -102,17 +102,11 @@ public class CommentAdapter extends BaseAdapter {
                 for(int i= 0; i<jsonArray.length(); i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String username = jsonObject.getString("username");
-                    //Log.i("Comment adapter","got username");
                     int comment_id = jsonObject.getInt("comment_id");
-                    //Log.i("Comment adapter","got comment_id");
                     int user_id = jsonObject.getInt("user_id");
-                    //Log.i("Comment adapter","got user_id");
                     String comment = jsonObject.getString("comment");
-                    //Log.i("Comment adapter","got comment");
                     int publication_id = jsonObject.getInt("publication_id");
-                    //Log.i("Comment adapter","got publication_id");
                     mList.add(new CommentProvider(publication_id, comment_id, user_id, username, comment));
-                    //Log.i("Comment adapter","added to mList");
                     notifyDataSetChanged();
                     commentAdapterCallback.onDataInsertedCallback();
                 }

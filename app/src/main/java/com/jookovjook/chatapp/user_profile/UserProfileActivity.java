@@ -1,7 +1,6 @@
 package com.jookovjook.chatapp.user_profile;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,19 +22,11 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
-import com.jookovjook.chatapp.utils.ServerSettings;
+import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
+import com.jookovjook.chatapp.network.GetUserInfo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-public class UserProfileActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
+public class UserProfileActivity extends AppCompatActivity implements
+        AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface{
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.75f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.2f;
@@ -48,9 +39,7 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
     private Toolbar mToolbar;
     private TextView mUsername, mNameSurname;
     int user_id;
-    private String username, name_surname;
-
-
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +49,6 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
         Bundle bundle = getIntent().getExtras();
         user_id = -1;
         username = "";
-        // or other values
         if (bundle != null) {
             user_id = bundle.getInt("user_id");
             Log.i("got user id", String.valueOf(user_id));
@@ -86,7 +74,7 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
         viewPager.setAdapter(new TabsAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
-        GetUserInfo getUserInfo = new GetUserInfo(user_id);
+        GetUserInfo getUserInfo = new GetUserInfo(user_id, this);
         getUserInfo.execute();
     }
 
@@ -113,6 +101,11 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
         mUsername.setText("\u0040" +  username);
     }
 
+    @Override
+    public void onGotUserInfo(String name, String surname) {
+        mNameSurname.setText(name + " " + surname);
+    }
+
     //tabs layout
     class TabsAdapter extends FragmentPagerAdapter {
 
@@ -128,7 +121,7 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
         @Override
         public Fragment getItem(int i) {
             switch(i) {
-                case 0: return FeedFragment.newInstance(0, String.valueOf(user_id));
+                case 0: return FeedFragment.newInstance(0, user_id);
                 case 1: return AboutFragment.newInstance("Tset");
             }
             return null;
@@ -141,67 +134,6 @@ public class UserProfileActivity extends AppCompatActivity implements AppBarLayo
                 case 1: return "About";
             }
             return "";
-        }
-    }
-
-    private String readStream(InputStream is) {
-        try {
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            int i = is.read();
-            while(i != -1) {
-                bo.write(i);
-                i = is.read();
-            }
-            return bo.toString();
-        } catch (IOException e) {
-            return "";
-        }
-    }
-
-    private class GetUserInfo extends AsyncTask<String, Void, String>{
-
-        int user_id_;
-
-        GetUserInfo(int user_id_){
-            this.user_id_ = user_id_;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String s = "{&quoterror_code&quot:&quot001&quot}";
-            try {
-                Log.i("setting url = ", String.valueOf(user_id_));
-                URL url = new URL("http://" + ServerSettings.serverURL + "/chatApp/get_user_info.php?user_id=" + String.valueOf(user_id_));
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoInput(true);
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = readStream(inputStream);
-            }catch (Exception e){
-                Log.i("get_user_info","error");
-            }
-            return s;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResult) {
-            super.onPostExecute(jsonResult);
-            // выводим целиком полученную json-строку
-            JSONObject jsonObject = null;
-            int error_code = 001;
-            try {
-                jsonObject = new JSONObject(jsonResult);
-                error_code = jsonObject.getInt("error_code");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try{
-                if(error_code == 0){
-                    mNameSurname.setText(jsonObject.getString("name") + " " + jsonObject.getString("surname"));
-                }
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
         }
     }
 

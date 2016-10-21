@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_publication.ImageProvider;
-import com.jookovjook.chatapp.utils.ServerSettings;
+import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
 import org.json.JSONArray;
@@ -30,7 +30,7 @@ public class MakePost extends AsyncTask<String, Void, String> {
             jsonObject.put("title", title);
             jsonObject.put("description", description);
             jsonObject.put("user_id", 0);
-            jsonObject.put("token", ServerSettings.TOKEN);
+            jsonObject.put("token", Config.TOKEN);
             jsonArray.put(jsonObject);
             for(int i = 0; i < 1; i++){
                 jsonObject = new JSONObject();
@@ -47,7 +47,7 @@ public class MakePost extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         String s = "";
         try{
-            URL url = new URL(ServerSettings.MAKE_POST_URL);
+            URL url = new URL(Config.MAKE_POST_URL);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setDoOutput(true);
             mUrlConnection.setDoInput(true);
