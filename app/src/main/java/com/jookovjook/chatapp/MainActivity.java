@@ -13,8 +13,9 @@ import android.view.MenuItem;
 
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
+import com.jookovjook.chatapp.new_pub.NewPubActivity;
 import com.jookovjook.chatapp.new_publication.NewPublicationFragment;
-import com.jookovjook.chatapp.publication.PublicationActivity;
+import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,8 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
                 return true;
             case R.id.publication_activity:
-                Intent intent3 = new Intent(MainActivity.this, PublicationActivity.class);
+                Intent intent3 = new Intent(MainActivity.this, PubActivity.class);
                 startActivity(intent3);
+                return true;
+            case R.id.new_pub:
+                Intent intent4 = new Intent(MainActivity.this, NewPubActivity.class);
+                startActivity(intent4);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

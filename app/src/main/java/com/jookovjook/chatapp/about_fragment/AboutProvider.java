@@ -7,7 +7,7 @@ public class AboutProvider {
     private String name;
     private String surname;
 
-    AboutProvider(int user_id, String username, String name, String surname){
+    public AboutProvider(int user_id, String username, String name, String surname){
         this.user_id = user_id;
         this.username = username;
         this.name = name;

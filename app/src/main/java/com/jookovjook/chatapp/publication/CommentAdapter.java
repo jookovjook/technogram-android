@@ -43,6 +43,8 @@ public class CommentAdapter extends BaseAdapter {
         getComments.execute();
     }
 
+
+
     @Override
     public int getCount() {
         return mList.size();
