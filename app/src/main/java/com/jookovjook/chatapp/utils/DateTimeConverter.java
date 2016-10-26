@@ -5,13 +5,7 @@ import java.util.Date;
 
 public class DateTimeConverter {
 
-    private Date date;
-
-    public DateTimeConverter(Date date){
-        this.date = date;
-    }
-
-    public String convert(){
+    public static String convert(Date date){
         String result = "";
         String months[] = new String[]{"January","February","March","April","May","June","July",
                 "August","September","October","November","December"};

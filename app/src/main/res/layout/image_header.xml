@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/add_a_photo_selector"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:stateListAnimator="@animator/button_anim"/>
 
 </RelativeLayout>

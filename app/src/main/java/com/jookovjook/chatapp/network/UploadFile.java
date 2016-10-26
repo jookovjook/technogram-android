@@ -135,14 +135,14 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
             code = 209;
             message = "Client: ClientProtocolException.";
             Log.i("uploading file: ", message);
-            progressBar.setProgress(0);
+            if(progressBar!=null)progressBar.setProgress(0);
             imageProvider.setUploading_status(100f);
             responseString = e.toString();
         } catch (IOException e) {
             code = 210;
             message = "Client: IOlException.";
             Log.i("uploading file: ", message);
-            progressBar.setProgress(0);
+            if(progressBar!=null)progressBar.setProgress(0);
             imageProvider.setUploading_status(100f);
             responseString = e.toString();
         }

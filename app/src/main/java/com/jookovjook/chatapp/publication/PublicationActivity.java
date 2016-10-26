@@ -28,6 +28,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PublicationActivity extends AppCompatActivity implements CommentAdapterCallback, GetPublicationInterface{
 
@@ -95,7 +96,7 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         button_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString());
+                PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), null);
                 postComment.execute();
 
             }
@@ -108,13 +109,18 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
     }
 
     @Override
-    public void onGotPublication(String title, String text, int views, int stars, int comments, String username) {
+    public void onGotPublication(String title, String text, int views, int stars, int comments, String username, String avatar, Date date) {
         title_textView.setText(title);
         text_textView.setText(text);
         views_textView.setText(String.valueOf(views));
         stars_textView.setText(String.valueOf(stars));
         comments_textView.setText(String.valueOf(comments));
         username_textView.setText("\u0040" + username);
+    }
+
+    @Override
+    public void onGotSoftAdv(int license, int stage) {
+
     }
 
     @Override

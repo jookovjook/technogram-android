@@ -1,7 +1,7 @@
 package com.jookovjook.chatapp.utils;
 
 public class Config {
-    public static final String SERVER_URL = "http://192.168.1.8/chatApp/";
+    public static final String SERVER_URL = "http://192.168.42.57/chatApp/";
     public static final String FILE_UPLOAD_URL = SERVER_URL + "fileUpload.php";
     public static final String MAKE_POST_URL = SERVER_URL + "make_post.php";
     public static final String ADD_IMAGES_TO_PUBLICATION_URL = SERVER_URL + "add_images_to_publication.php";
@@ -13,5 +13,7 @@ public class Config {
     public static final String GET_PUBLICATION_IMAGES_URL = SERVER_URL +  "get_publication_images.php";
     public static final String GET_USER_SMALL_AVATAR_URL = SERVER_URL + "get_user_avatar_small.php";
     public static final String IMAGE_RESOURCES_URL = SERVER_URL + "image_resources/";
+    public static final String ADD_ADV_TO_SOFT_URL = SERVER_URL + "add_adv_to_soft.php";
+    public static final String ADD_LINKS_TO_SOFT_URL = SERVER_URL + "add_links_to_soft.php";
     public static final String TOKEN = "pegOwmEssh7aG6yJImYTbF3pmzHBaQHuTnNStEf8Cjuzyzxic2mKoI9nm4bN7mOE";
 }

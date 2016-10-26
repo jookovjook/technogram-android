@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GetPublication extends AsyncTask<String, Void, String> {
 
@@ -53,6 +55,7 @@ public class GetPublication extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String jsonResult) {
         super.onPostExecute(jsonResult);
+        Log.i("fet_publicaion",jsonResult);
         try{
             JSONArray jsonArray = new JSONArray(jsonResult);
             JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -62,7 +65,17 @@ public class GetPublication extends AsyncTask<String, Void, String> {
             int stars = jsonObject.getInt("stars");
             int comments = jsonObject.getInt("comments");
             String username = jsonObject.getString("username");
-            getPI.onGotPublication(title, text, views, stars, comments, username);
+            String avatar = jsonObject.getString("small_avatar");
+            String datetime = jsonObject.getString("datetime");
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(datetime);
+            jsonObject = jsonArray.getJSONObject(1);
+            boolean adv_exists = jsonObject.getBoolean("exists");
+            if(adv_exists){
+                int license = jsonObject.getInt("license");
+                int stage = jsonObject.getInt("stage");
+                getPI.onGotSoftAdv(license, stage);
+            }
+            getPI.onGotPublication(title, text, views, stars, comments, username, avatar, date);
         } catch (Exception e){
             Log.i("get publication","error parsing income json");
         }

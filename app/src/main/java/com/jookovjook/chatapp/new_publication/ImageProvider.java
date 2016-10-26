@@ -14,7 +14,7 @@ public class ImageProvider {
     private ImageAdapter.VHItem vhItem;
     private UploadFile uploadFile;
 
-    ImageProvider(String uri){
+    public ImageProvider(String uri){
         Log.i("uri", uri);
         this._id = -1;
         this.filename = null;

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationsInterfase;
 import com.jookovjook.chatapp.network.GetPublications;
-import com.jookovjook.chatapp.publication.PublicationActivity;
+import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.DateTimeConverter;
@@ -93,7 +93,6 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         return new MyViewHolder(itemView);
     }
 
-
     @Override
     public void onBindViewHolder(final FeedCardAdapter.MyViewHolder holder, int position) {
         final FeedCardProvider feedCardProvider = mList.get(position);
@@ -103,8 +102,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         holder.stars.setText(String.valueOf(feedCardProvider.getStars()));
         holder.comments.setText(String.valueOf(feedCardProvider.getComments()));
         holder.text.setText(feedCardProvider.getText());
-        DateTimeConverter converter = new DateTimeConverter(feedCardProvider.getDate());
-        holder.datetime.setText(converter.convert());
+        holder.datetime.setText(DateTimeConverter.convert(feedCardProvider.getDate()));
         Picasso.with(mContext)
                 .load(Config.IMAGE_RESOURCES_URL + feedCardProvider.getSmall_avatar())
                 .resize(64, 64).onlyScaleDown().centerCrop().into(holder.user_avatar);
@@ -151,7 +149,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         holder.main_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(mContext, PublicationActivity.class);
+                final Intent intent = new Intent(mContext, PubActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("publication_id",feedCardProvider.getPublication_id());
                 bundle.putString("img_link",feedCardProvider.getImg_link());

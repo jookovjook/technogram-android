@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
 import com.jookovjook.chatapp.network.MakePost;
+import com.jookovjook.chatapp.new_pub.LinkProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import es.guiguegon.gallerymodule.GalleryActivity;
 import es.guiguegon.gallerymodule.GalleryHelper;
 import es.guiguegon.gallerymodule.model.GalleryMedia;
 
-public class NewPublicationActivity extends AppCompatActivity implements ImagesLoaderInterface {
+public class NewPublicationActivity extends AppCompatActivity implements ImagesLoaderInterface, MakePost.MakePostCalllback{
 
     private ArrayList<ImageProvider> mList = new ArrayList<ImageProvider>();
     public static final int REQUEST_CODE_GALLERY = 1;
@@ -31,6 +33,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
     RecyclerView recyclerView;
     EditText title, description;
     Button button, done;
+    MakePost.MakePostCalllback calllback = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
                 if(check != 0) return;
                 String title_ = title.getText().toString();
                 String description_ = description.getText().toString();
-                MakePost makePost = new MakePost(title_, description_, mList);
+                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, 0, 0, new ArrayList<LinkProvider>());
                 makePost.execute();
             }
         });
@@ -77,6 +80,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
+            Log.i("result code: ", String.valueOf(RESULT_OK));
             List<GalleryMedia> galleryMedias =
                     data.getParcelableArrayListExtra(GalleryActivity.RESULT_GALLERY_MEDIA_LIST);
             for (int i = 0; i < galleryMedias.size(); i++) {
@@ -103,5 +107,25 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
                     .setMaxSelectedItems(MAX_IMAGES - mList.size())
                     .setShowVideos(false)
                     .getCallingIntent(NewPublicationActivity.this), REQUEST_CODE_GALLERY);
+    }
+
+    @Override
+    public void onMakePostError() {
+
+    }
+
+    @Override
+    public void onAddImagesError() {
+
+    }
+
+    @Override
+    public void onAddAdvError() {
+
+    }
+
+    @Override
+    public void onAddLinksError() {
+
     }
 }

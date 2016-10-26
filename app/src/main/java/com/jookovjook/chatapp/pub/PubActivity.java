@@ -1,76 +1,133 @@
 package com.jookovjook.chatapp.pub;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jookovjook.chatapp.R;
-import com.jookovjook.chatapp.about_fragment.AboutAdapter;
-import com.jookovjook.chatapp.about_fragment.AboutProvider;
+import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
+import com.jookovjook.chatapp.network.GetPublication;
+import com.jookovjook.chatapp.network.GetPublicationImages;
+import com.jookovjook.chatapp.network.PostComment;
 import com.jookovjook.chatapp.paralaxviewpager.ParallaxViewPager;
+import com.jookovjook.chatapp.utils.Config;
+import com.jookovjook.chatapp.utils.DateTimeConverter;
+import com.jookovjook.chatapp.utils.SoftAdd;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-public class PubActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    private AboutAdapter aboutAdapter;
-    private List<AboutProvider> aboutProviderList = new ArrayList<>();
+public class PubActivity extends AppCompatActivity implements GetPublicationInterface, PostComment.PostCommentI{
+
+    private CommentAdapter commentAdapter;
+    private ArrayList<CommentProvider> mList = new ArrayList<>();
     private ParallaxViewPager mParallaxViewPager;
-    private String[] mImages = new String[]{
-            "https://drscdn.500px.org/photo/127892951/h%3D600_k%3D1_a%3D1/3487a549dbbe46e2d803a37281543322",
-            "https://drscdn.500px.org/photo/127893495/h%3D600_k%3D1_a%3D1/8462ac67727eecd23c104612ab998633",
-            "https://drscdn.500px.org/photo/127892351/h%3D600_k%3D1_a%3D1/883a524bfaf3aa66ef39652928b61f51",
-            "https://drscdn.500px.org/photo/127891921/h%3D600_k%3D1_a%3D1/c5aec47c6c924d733f58cec483dc41a6",
-            "https://drscdn.500px.org/photo/127913833/h%3D600_k%3D1_a%3D1/7aee64d43cdbe4a1d291effb834137e8",
-            "https://drscdn.500px.org/photo/127900863/h%3D600_k%3D1_a%3D1/e63c59888014392bac32cfb9c383bb9e",
-            "https://drscdn.500px.org/photo/127870627/h%3D600_k%3D1_a%3D1/df562860314d42dd9a4f8bf4ee0ac0e5",
-            "https://drscdn.500px.org/photo/127883901/h%3D600_k%3D1_a%3D1/1ce1dcfbf374fd9d60df960bff046f92",
-            "https://drscdn.500px.org/photo/127875875/h%3D600_k%3D1_a%3D1/9e667207de3ee01b72fec699a61a156f",
-            "https://drscdn.500px.org/photo/127910615/h%3D600_k%3D1_a%3D1/9832834ff48dee33cca9a63c3680c391",
-            "https://drscdn.500px.org/photo/127917691/h%3D600_k%3D1_a%3D1/569744eb7f6b0be651ef95b05409f283",
-            "https://drscdn.500px.org/photo/127895191/h%3D600_k%3D1_a%3D1/6a8dd4932e237244a690b7683d18c184",
-            "https://drscdn.500px.org/photo/127895003/h%3D600_k%3D1_a%3D1/aa9ba5e17219b6523e3576914281d014",
-            "https://drscdn.500px.org/photo/127891201/h%3D600_k%3D1_a%3D1/11e7b89d61b3633d58e80bb4b91cfb96",
-            "https://drscdn.500px.org/photo/127876087/h%3D600_k%3D1_a%3D1/beb9f8d4341e4c99aec0918081c29dfe",
-            "https://drscdn.500px.org/photo/127866171/h%3D600_k%3D1_a%3D1/5100cdeb7006968a012ecf106c0fe28b",
-            "https://drscdn.500px.org/photo/127868593/h%3D600_k%3D1_a%3D1/02ed979046028b417bb6e2214a8403e4",
-            "https://drscdn.500px.org/photo/127868963/h%3D600_k%3D1_a%3D1/be27239695e8002979124bfdeb9730ad",
-            "https://drscdn.500px.org/photo/127879079/h%3D600_k%3D1_a%3D1/d00277578f457e84eb36faa7740f4374",
-    };
+    private ArrayList<String> images = new ArrayList<>();
+    private int pub_id, stars_int;
+    private String img_link;
+    private RecyclerView recyclerView;
+    private CircleImageView avatar;
+    private TextView title, username, description, datetime, stars;
+    private EditText editText;
+    private Button send;
+    private ImageButton star_button;
+    private PostComment.PostCommentI postCommentI = this;
 
+    private void findViews(){
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mParallaxViewPager = (ParallaxViewPager) findViewById(R.id.viewpager);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
+        title = (TextView) findViewById(R.id.title);
+        username = (TextView) findViewById(R.id.username);
+        description = (TextView) findViewById(R.id.description);
+        datetime = (TextView) findViewById(R.id.datetime);
+        editText = (EditText) findViewById(R.id.editText);
+        send = (Button) findViewById(R.id.send_button);
+        stars = (TextView) findViewById(R.id.stars);
+        //star_button = (ImageButton) findViewById(R.id.star_button);
+    }
+
+    private void proceedBunle(){
+        stars_int = 0;
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            img_link = bundle.getString("img_link");
+            pub_id = bundle.getInt("publication_id");
+            Log.i("pub activity ", String.valueOf(pub_id));
+            ActivityCompat.postponeEnterTransition(this);
+            GetPublicationImages getPublicationImages = new GetPublicationImages(pub_id, this);
+            getPublicationImages.execute();
+            GetPublication getPublication = new GetPublication(pub_id, this);
+            getPublication.execute();
+        }
+    }
+
+    private void setupRV(){
+        commentAdapter = new CommentAdapter(pub_id, this, mList);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+        assert recyclerView != null;
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(commentAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private void setupOther(){
+        pub_id = -1;
+        /*
+        star_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stars_int ++;
+                stars.setText(String.valueOf(stars_int));
+            }
+        });
+        */
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!editText.getText().toString().equals("")) {
+                    PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), postCommentI);
+                    postComment.execute();
+                }
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        aboutAdapter = new AboutAdapter(aboutProviderList, this);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-        assert recyclerView != null;
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(aboutAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
-        AboutProvider aboutProvider = new AboutProvider(1, "jookovjook", "Jook", "Jookov");
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutProviderList.add(aboutProvider);
-        aboutAdapter.notifyDataSetChanged();
+        findViews();
+        proceedBunle();
+        setupRV();
+        setupOther();
+    }
 
-        mParallaxViewPager = (ParallaxViewPager) findViewById(R.id.viewpager);
-        initViewPager();
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void initViewPager() {
@@ -82,8 +139,7 @@ public class PubActivity extends AppCompatActivity {
             }
 
             @Override
-            public void destroyItem(ViewGroup container, int position,
-                                    Object obj) {
+            public void destroyItem(ViewGroup container, int position, Object obj) {
                 container.removeView((View) obj);
             }
 
@@ -91,7 +147,27 @@ public class PubActivity extends AppCompatActivity {
             public Object instantiateItem(ViewGroup container, int position) {
                 View view = View.inflate(container.getContext(), R.layout.pager_item, null);
                 ImageView imageView = (ImageView) view.findViewById(R.id.item_img);
-                Glide.with(PubActivity.this).load(mImages[position % mImages.length]).into(imageView);
+                if(position == 0) {
+                    Picasso.with(PubActivity.this)
+                            .load(Config.IMAGE_RESOURCES_URL + img_link)
+                            .noFade().resize(720, 720).onlyScaleDown().noFade().centerCrop()
+                            .into(imageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    ActivityCompat.startPostponedEnterTransition(PubActivity.this);
+                                }
+
+                                @Override
+                                public void onError() {
+                                    ActivityCompat.startPostponedEnterTransition(PubActivity.this);
+                                }
+                            });
+                }else {
+                    Picasso.with(PubActivity.this)
+                            .load(images.get(position - 1))
+                            .noFade().resize(720, 720).onlyScaleDown().noFade().centerCrop()
+                            .into(imageView);
+                }
                 container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 return view;
@@ -99,9 +175,56 @@ public class PubActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 40;
+                return images.size() + 1;
             }
         };
         mParallaxViewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onGotPublication(String title, String text, int views, int stars, int comments, String username, String avatar, Date date) {
+        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar);
+        this.username.setText("\u0040" + username);
+        this.title.setText(title);
+        this.description.setText(text);
+        this.datetime.setText(DateTimeConverter.convert(date));
+        if(stars < 1) stars = 1;
+        stars_int = stars - 1;
+        this.stars.setText(String.valueOf(stars_int));
+    }
+
+    @Override
+    public void onGotSoftAdv(int license, int stage) {
+        String license_str = SoftAdd.getLicenseById(license);
+        if(!license_str.equals("")) {
+            TextView license_text = (TextView) findViewById(R.id.license);
+            license_text.setText(" " + license_str + " ");
+            license_text.setVisibility(View.VISIBLE);
+        }
+
+        String stage_str = SoftAdd.getStageById(stage);
+        if(!stage_str.equals("")){
+            TextView stage_text = (TextView) findViewById(R.id.stage);
+            stage_text.setText(" " + stage_str + " ");
+            stage_text.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onGotPubImage(String url) {
+        images.add(url);
+    }
+
+    @Override
+    public void onFinishGettingImages() {
+        initViewPager();
+    }
+
+    @Override
+    public void onSuccess(CommentProvider commentProvider) {
+        mList.add(commentProvider);
+        commentAdapter.notifyDataSetChanged();
+        editText.clearFocus();
+        editText.setText("");
     }
 }
