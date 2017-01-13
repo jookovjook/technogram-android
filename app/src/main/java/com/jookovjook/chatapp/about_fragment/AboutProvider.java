@@ -6,12 +6,17 @@ public class AboutProvider {
     private String username;
     private String name;
     private String surname;
+    private String about;
+    private String avatar;
 
-    public AboutProvider(int user_id, String username, String name, String surname){
+    public AboutProvider(int user_id, String username, String name, String surname, String about, String avatar){
         this.user_id = user_id;
         this.username = username;
         this.name = name;
         this.surname = surname;
+        this.about = about;
+        this.avatar = avatar;
+
     }
 
     public int getUser_id() {
@@ -30,6 +35,14 @@ public class AboutProvider {
         return surname;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
@@ -46,5 +59,12 @@ public class AboutProvider {
         this.surname = surname;
     }
 
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }
 

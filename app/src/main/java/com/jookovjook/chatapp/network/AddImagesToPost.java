@@ -1,9 +1,11 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_publication.ImageProvider;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -21,11 +23,11 @@ public class AddImagesToPost extends AsyncTask<String, Void, String> {
 
     private JSONArray jsonArray;
 
-    public AddImagesToPost(int publication_id, ArrayList<ImageProvider> mList){
+    public AddImagesToPost(int publication_id, ArrayList<ImageProvider> mList, Context context){
         this.jsonArray = new JSONArray();
         try{
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("token", Config.TOKEN);
+            jsonObject.put("token", AuthHelper.getToken(context));
             jsonObject.put("publication_id", publication_id);
             jsonArray.put(jsonObject);
             for (int i = 1; i < mList.size(); i++){

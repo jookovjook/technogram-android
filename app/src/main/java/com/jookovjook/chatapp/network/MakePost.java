@@ -1,10 +1,12 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_pub.LinkProvider;
 import com.jookovjook.chatapp.new_publication.ImageProvider;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -25,6 +27,7 @@ public class MakePost extends AsyncTask<String, Void, String> {
     private ArrayList<LinkProvider> nList;
     private int license;
     private int stage;
+    private Context context;
 
     public interface MakePostCalllback{
         void onMakePostError();
@@ -36,19 +39,20 @@ public class MakePost extends AsyncTask<String, Void, String> {
     private MakePostCalllback makePostCalllback;
 
     public MakePost(String title, String description, ArrayList<ImageProvider> mList, int branch
-                        , MakePostCalllback makePostCalllback, int license, int stage, ArrayList<LinkProvider> nList){
+                        ,MakePostCalllback makePostCalllback, int license, int stage, ArrayList<LinkProvider> nList, Context context){
         this.jsonArray = new JSONArray();
         this.makePostCalllback = makePostCalllback;
         this.mList = mList;
         this.nList = nList;
         this.license = license;
         this.stage = stage;
+        this.context = context;
         JSONObject jsonObject = new JSONObject();
         try{
             jsonObject.put("title", title);
             jsonObject.put("description", description);
             jsonObject.put("user_id", 0);
-            jsonObject.put("token", Config.TOKEN);
+            jsonObject.put("token", AuthHelper.getToken(context));
             jsonObject.put("branch", branch);
             jsonArray.put(jsonObject);
             for(int i = 0; i < 1; i++){
@@ -104,13 +108,13 @@ public class MakePost extends AsyncTask<String, Void, String> {
             makePostCalllback.onMakePostError();
         }else{
             if(mList.size()>1){
-                AddImagesToPost addImagesToPost = new AddImagesToPost(publication_id, mList);
+                AddImagesToPost addImagesToPost = new AddImagesToPost(publication_id, mList, context);
                 addImagesToPost.execute();
             }
-            AddAdvToSoft addAdvToSoft = new AddAdvToSoft(publication_id, license, stage);
+            AddAdvToSoft addAdvToSoft = new AddAdvToSoft(publication_id, license, stage, context);
             addAdvToSoft.execute();
             if (nList.size() > 0) {
-                AddLinksToSoft addLinksToSoft = new AddLinksToSoft(publication_id, nList);
+                AddLinksToSoft addLinksToSoft = new AddLinksToSoft(publication_id, nList, context);
                 addLinksToSoft.execute();
             }
         }

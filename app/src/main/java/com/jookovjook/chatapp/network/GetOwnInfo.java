@@ -16,18 +16,19 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GetUserInfo extends AsyncTask<String, Void, String> {
+public class GetOwnInfo extends AsyncTask<String, Void, String> {
 
     private int user_id = -1;
+    private String token;
     private JSONObject jsonObject;
     private GetUserInfoInterface getUII;
 
-    public GetUserInfo(int user_id, GetUserInfoInterface getUII){
+    public GetOwnInfo(String token, GetUserInfoInterface getUII){
         this.getUII = getUII;
-        this.user_id = user_id;
+        this.token = token;
         this.jsonObject = new JSONObject();
         try{
-            jsonObject.put("user_id", user_id);
+            jsonObject.put("token", token);
         }catch (Exception e){
             Log.i("user profile","error creating json");
         }
@@ -38,7 +39,7 @@ public class GetUserInfo extends AsyncTask<String, Void, String> {
         String s = "";
         try {
             Log.i("setting url = ", String.valueOf(user_id));
-            URL url = new URL(Config.GET_USER_INFO_URL);
+            URL url = new URL(Config.GET_OWN_INFO_URL);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setDoOutput(true);
             mUrlConnection.setDoInput(true);

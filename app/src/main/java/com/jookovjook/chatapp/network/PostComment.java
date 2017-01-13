@@ -1,9 +1,11 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.pub.CommentProvider;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -26,13 +28,14 @@ public class PostComment extends AsyncTask<String, Void, String> {
 
     private PostCommentI postCommentI;
 
-    public PostComment(int publication_id, int user_id, String comment, PostCommentI postCommentI){
+    public PostComment(int publication_id, int user_id, String comment, PostCommentI postCommentI, Context context){
         this.jsonObject = new JSONObject();
         this.postCommentI = postCommentI;
         try {
             jsonObject.put("publication_id", publication_id);
             jsonObject.put("user_id", user_id);
             jsonObject.put("comment", comment);
+            jsonObject.put("token", AuthHelper.getToken(context));
         }catch (Exception e){
             Log.i("comment","error creating json");
         }
@@ -72,7 +75,9 @@ public class PostComment extends AsyncTask<String, Void, String> {
                 String comment = jsonObject.getString("comment");
                 int publication_id = jsonObject.getInt("publication_id");
                 String avatar = jsonObject.getString("img_link");
-                postCommentI.onSuccess(new CommentProvider(publication_id, comment_id, user_id, username, comment, avatar));
+                if(comment_id > 0) {
+                    postCommentI.onSuccess(new CommentProvider(publication_id, comment_id, user_id, username, comment, avatar));
+                }
             }
         }catch (Exception e){
             Log.i("Comment adapter","errorrrr");

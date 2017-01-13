@@ -10,10 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jookovjook.chatapp.utils.AuthHelper;
+import com.jookovjook.chatapp.utils.Config;
+import com.jookovjook.chatapp.utils.StreamReader;
+
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -22,8 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     Button loginButton;
     TextView textView;
-    final static String serverURL = "10.83.10.39";
-    String username, password;
+    String username, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +36,26 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        username = AuthHelper.getUsername(this);
+        token = AuthHelper.getToken(this);
+        String s = "Username and token are not stored";
+        if(username != ""){
+            usernameEditText.setText(username);
+            s = "Username: " + username;
+        }
+        if(token != ""){
+            s += " Token: " + token;
+        }
         textView = (TextView) findViewById(R.id.textView);
+        textView.setText(s);
         loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = usernameEditText.getText().toString();
-                password = passwordEditText.getText().toString();
-                LoginClass login = new LoginClass(username,password);
+                AuthHelper.setUsername(LoginActivity.this, usernameEditText.getText().toString());
+                PerformLogin login = new PerformLogin(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());
+
                 login.execute();
             }
         });
@@ -56,53 +72,75 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private class LoginClass extends AsyncTask<String, Void, String> {
+    private class PerformLogin extends AsyncTask<String, Void, String>{
 
-        private String usernname;
-        private String password;
+        private JSONObject jsonObject;
+        String username, password;
 
-        LoginClass(String username, String password){
-            this.usernname = username;
+        PerformLogin(String username, String password){
+            this.username = username;
             this.password = password;
+            this.jsonObject = new JSONObject();
+            try{
+                jsonObject.put("username", username);
+                jsonObject.put("password", password);
+            }catch (Exception e) {
+                Log.i("perform login", "error creating json");
+            }
+
         }
 
         @Override
-        protected String doInBackground(String[] params) {
-
-            String s = "Connection error.";
-
+        protected String doInBackground(String... params) {
+            String s = "";
             try{
-                URL url = new URL("http://" + serverURL + "/chatApp/login_check.php?username=" + usernname + "&password=" + password);
+                URL url;
+                url = new URL(Config.AUTH_URL);
                 HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
+                mUrlConnection.setDoOutput(true);
                 mUrlConnection.setDoInput(true);
+                mUrlConnection.setRequestProperty("Content-Type","application/json");
+                mUrlConnection.connect();
+                OutputStreamWriter out = new OutputStreamWriter(mUrlConnection.getOutputStream());
+                out.write(jsonObject.toString());
+                out.close();
                 InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = readStream(inputStream);
-                Log.i("test","Done!");
+                s = StreamReader.read(inputStream);
             }catch (Exception e){
-                Log.i("error",e.toString());
+                Log.i("perform login","network error");
             }
             return s;
         }
 
         @Override
-        protected void onPostExecute(String message) {
-            super.onPostExecute(message);
-            textView.setText(message);
+        protected void onPostExecute(String jsonResult) {
+            super.onPostExecute(jsonResult);
+            JSONObject jsonObject;
+            try{
+                jsonObject = new JSONObject(jsonResult);
+                int error = jsonObject.getInt("error");
+                switch (error){
+                    case 0:
+                        String token = jsonObject.getString("token");
+                        textView.setText("Success. Token: " + token);
+                        AuthHelper.setUsername(LoginActivity.this, username);
+                        AuthHelper.setToken(LoginActivity.this, token);
+                        break;
+                    case 1:
+                        textView.setText("Wrong username");
+                        AuthHelper.setUsername(LoginActivity.this, "");
+                        AuthHelper.setToken(LoginActivity.this, "");
+                        break;
+                    case 2:
+                        textView.setText("Wrong password");
+                        AuthHelper.setUsername(LoginActivity.this,username);
+                        AuthHelper.setToken(LoginActivity.this, "");
+                        break;
+                    default:
+                        textView.setText("Unknown error");
+                        break;
+                }
+            }catch(Exception e){}
         }
     }
-
-    private String readStream(InputStream is) {
-        try {
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            int i = is.read();
-            while(i != -1) {
-                bo.write(i);
-                i = is.read();
-            }
-            return bo.toString();
-        } catch (IOException e) {
-            return "";
-        }
-    }
-
 }

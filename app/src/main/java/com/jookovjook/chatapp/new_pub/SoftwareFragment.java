@@ -92,7 +92,7 @@ public class SoftwareFragment extends Fragment implements ImagesLoaderInterface,
                 if(check != 0) return;
                 String title_ = title.getText().toString();
                 String description_ = description.getText().toString();
-                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, license, stage, nList);
+                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, license, stage, nList, getActivity());
                 makePost.execute();
             }
         });

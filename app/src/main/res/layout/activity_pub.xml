@@ -170,6 +170,11 @@
                             android:textColor="#f0f0f0"
                             android:visibility="gone"/>
 
+                        <ImageButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/logo_github" />
+
                     </LinearLayout>
 
                     <TextView

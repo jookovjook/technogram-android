@@ -1,8 +1,10 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -20,12 +22,12 @@ public class AddAdvToSoft extends AsyncTask<String, Void, String> {
 
     private JSONArray jsonArray;
 
-    public AddAdvToSoft(int publication_id, int license, int stage){
+    public AddAdvToSoft(int publication_id, int license, int stage, Context context){
         jsonArray = new JSONArray();
         try{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("publication_id", publication_id);
-            jsonObject.put("token", Config.TOKEN);
+            jsonObject.put("token", AuthHelper.getToken(context));
             jsonObject.put("license", license);
             jsonObject.put("stage", stage);
             jsonArray.put(jsonObject);

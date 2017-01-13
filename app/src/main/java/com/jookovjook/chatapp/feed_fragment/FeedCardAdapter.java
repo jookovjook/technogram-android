@@ -111,27 +111,27 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
                 .resize(720,720).onlyScaleDown().centerCrop().into(holder.main_image);
         setAnimation(holder.cardView, position);
 
-        //holder.card_more_button.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //       if(down_layout_expanded == true) {
-        //            ResizeAnimation resizeAnimation1 = new ResizeAnimation(holder.down_layout, startHeight, finalHeight);
-        //            resizeAnimation1.setDuration(200);
-        //            holder.down_layout.startAnimation(resizeAnimation1);
-        //            holder.username.setText("collapsed");
-        //            down_layout_expanded = false;
-        //        }else{
-        //            ResizeAnimation resizeAnimation2 = new ResizeAnimation(holder.down_layout, finalHeight, startHeight);
-        //            resizeAnimation2.setDuration(200);
-        //            holder.down_layout.startAnimation(resizeAnimation2);
-        //            holder.username.setText("expanded");
-        //            down_layout_expanded = true;
-        //        };
-        //        //ResizeAnimation resizeAnimation = new ResizeAnimation(holder.down_layout, -100, 200);
-        //resizeAnimation.setDuration(1000);
-        //holder.down_layout.startAnimation(resizeAnimation);
-        //    }
-        //});
+//        holder.card_more_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               if(down_layout_expanded == true) {
+//                    ResizeAnimation resizeAnimation1 = new ResizeAnimation(holder.down_layout, startHeight, finalHeight);
+//                    resizeAnimation1.setDuration(200);
+//                    holder.down_layout.startAnimation(resizeAnimation1);
+//                    holder.username.setText("collapsed");
+//                    down_layout_expanded = false;
+//                }else{
+//                    ResizeAnimation resizeAnimation2 = new ResizeAnimation(holder.down_layout, finalHeight, startHeight);
+//                    resizeAnimation2.setDuration(200);
+//                    holder.down_layout.startAnimation(resizeAnimation2);
+//                    holder.username.setText("expanded");
+//                    down_layout_expanded = true;
+//                };
+//                //ResizeAnimation resizeAnimation = new ResizeAnimation(holder.down_layout, -100, 200);
+//        resizeAnimation.setDuration(1000);
+//        holder.down_layout.startAnimation(resizeAnimation);
+//            }
+//        });
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -180,4 +180,5 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
             lastPosition = position;
         }
     }
+
 }

@@ -119,7 +119,7 @@ public class UserProfileActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onGotUserInfo(String name, String surname, String img_link) {
+    public void onGotUserInfo(String username, String name, String surname, String img_link) {
         Log.i("got user info", img_link);
         mNameSurname.setText(name + " " + surname);
         Picasso.with(this)
@@ -160,7 +160,7 @@ public class UserProfileActivity extends AppCompatActivity implements
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return FeedFragment.newInstance(0, user_id);
-                case 1: return AboutFragment.newInstance("Tset");
+                case 1: return AboutFragment.newInstance("Tset", user_id);
             }
             return null;
         }

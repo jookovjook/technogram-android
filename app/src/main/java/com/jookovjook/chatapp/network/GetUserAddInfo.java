@@ -3,7 +3,7 @@ package com.jookovjook.chatapp.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
+import com.jookovjook.chatapp.interfaces.GetAddUserInfo;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -16,14 +16,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GetUserInfo extends AsyncTask<String, Void, String> {
+public class GetUserAddInfo extends AsyncTask<String, Void, String> {
 
     private int user_id = -1;
     private JSONObject jsonObject;
-    private GetUserInfoInterface getUII;
+    private GetAddUserInfo getAUI;
 
-    public GetUserInfo(int user_id, GetUserInfoInterface getUII){
-        this.getUII = getUII;
+    public GetUserAddInfo(int user_id, GetAddUserInfo getAUI){
+        this.getAUI = getAUI;
         this.user_id = user_id;
         this.jsonObject = new JSONObject();
         try{
@@ -38,7 +38,7 @@ public class GetUserInfo extends AsyncTask<String, Void, String> {
         String s = "";
         try {
             Log.i("setting url = ", String.valueOf(user_id));
-            URL url = new URL(Config.GET_USER_INFO_URL);
+            URL url = new URL(Config.GET_USER_ADD_INFO_URL);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setDoOutput(true);
             mUrlConnection.setDoInput(true);
@@ -63,10 +63,11 @@ public class GetUserInfo extends AsyncTask<String, Void, String> {
             JSONObject jsonObject = new JSONObject(jsonResult);
             error_code = jsonObject.getInt("error_code");
             if(error_code == 0){
-                getUII.onGotUserInfo(jsonObject.getString("username")
+                getAUI.onGotAddUserInfo("\u0040"+jsonObject.getString("username")
                         ,jsonObject.getString("name")
                         ,jsonObject.getString("surname")
-                        ,jsonObject.getString("img_link"));
+                        ,jsonObject.getString("img_link")
+                        ,jsonObject.getString("about"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

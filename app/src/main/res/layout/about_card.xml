@@ -10,10 +10,12 @@
     android:layout_marginBottom="8dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
@@ -23,8 +25,8 @@
             app:border_width="1dp"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -32,15 +34,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="\u0040jookovjok"/>
+
             <TextView
                 android:id="@+id/name_surname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jook Jookov" />
 
+            <TextView
+                android:id="@+id/about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DeLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+
         </LinearLayout>
-
-
 
     </LinearLayout>
 

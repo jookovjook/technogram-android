@@ -19,16 +19,18 @@ public class AboutFragment extends Fragment {
     private AboutAdapter aboutAdapter;
     private List<AboutProvider> aboutProviderList = new ArrayList<>();
     private int started = 0;
+    private int user_id = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.about_fragment, container, false);
+        user_id = getArguments().getInt("user_id");
         bindFragment(rootView);
         if(started == 0) {
-            AboutProvider aboutProvider = new AboutProvider(1, "jookovjook", "Jook", "Jookov");
-            aboutProviderList.add(aboutProvider);
-            aboutAdapter.notifyDataSetChanged();
+            //AboutProvider aboutProvider = new AboutProvider(1, "jookovjook", "Jook", "Jookov", "About");
+            //aboutProviderList.add(aboutProvider);
+            //aboutAdapter.notifyDataSetChanged();
             started ++;
         }
         return rootView;
@@ -36,17 +38,18 @@ public class AboutFragment extends Fragment {
 
     private void bindFragment(View view){
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        aboutAdapter = new AboutAdapter(aboutProviderList, getActivity());
+        aboutAdapter = new AboutAdapter(user_id, getActivity());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         assert recyclerView != null;
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(aboutAdapter);
     }
 
-    public static Fragment newInstance(String username) {
+    public static Fragment newInstance(String username, int user_id) {
         AboutFragment aboutFragment = new AboutFragment();
         Bundle bundle = new Bundle();
         bundle.putString("username", username);
+        bundle.putInt("user_id", user_id);
         aboutFragment.setArguments(bundle);
         return aboutFragment;
     }

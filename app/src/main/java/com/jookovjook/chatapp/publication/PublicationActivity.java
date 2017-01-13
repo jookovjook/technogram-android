@@ -96,7 +96,7 @@ public class PublicationActivity extends AppCompatActivity implements CommentAda
         button_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), null);
+                PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), null, PublicationActivity.this);
                 postComment.execute();
 
             }

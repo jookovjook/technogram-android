@@ -1,9 +1,11 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_pub.LinkProvider;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -21,12 +23,12 @@ public class AddLinksToSoft extends AsyncTask<String, Void, String> {
 
     private JSONArray jsonArray;
 
-    public AddLinksToSoft(int publication_id, ArrayList<LinkProvider> nList){
+    public AddLinksToSoft(int publication_id, ArrayList<LinkProvider> nList, Context context){
         this.jsonArray = new JSONArray();
         try{
             JSONObject jsonObject= new JSONObject();
             jsonObject.put("publication_id", publication_id);
-            jsonObject.put("token", Config.TOKEN);
+            jsonObject.put("token", AuthHelper.getToken(context));
             jsonArray.put(jsonObject);
             for(int i = 0; i< nList.size(); i++){
                 jsonObject = new JSONObject();

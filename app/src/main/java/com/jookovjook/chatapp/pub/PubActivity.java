@@ -19,10 +19,13 @@ import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
+import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
+import com.jookovjook.chatapp.network.GetOwnInfo;
 import com.jookovjook.chatapp.network.GetPublication;
 import com.jookovjook.chatapp.network.GetPublicationImages;
 import com.jookovjook.chatapp.network.PostComment;
 import com.jookovjook.chatapp.paralaxviewpager.ParallaxViewPager;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.DateTimeConverter;
 import com.jookovjook.chatapp.utils.SoftAdd;
@@ -34,7 +37,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PubActivity extends AppCompatActivity implements GetPublicationInterface, PostComment.PostCommentI{
+public class PubActivity extends AppCompatActivity implements GetPublicationInterface, PostComment.PostCommentI, GetUserInfoInterface{
 
     private CommentAdapter commentAdapter;
     private ArrayList<CommentProvider> mList = new ArrayList<>();
@@ -43,7 +46,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private int pub_id, stars_int;
     private String img_link;
     private RecyclerView recyclerView;
-    private CircleImageView avatar;
+    private CircleImageView avatar, avatar_;
     private TextView title, username, description, datetime, stars;
     private EditText editText;
     private Button send;
@@ -54,6 +57,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mParallaxViewPager = (ParallaxViewPager) findViewById(R.id.viewpager);
         avatar = (CircleImageView) findViewById(R.id.avatar);
+        avatar_ = (CircleImageView) findViewById(R.id.avatar_);
         title = (TextView) findViewById(R.id.title);
         username = (TextView) findViewById(R.id.username);
         description = (TextView) findViewById(R.id.description);
@@ -67,6 +71,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private void proceedBunle(){
         stars_int = 0;
         Bundle bundle = getIntent().getExtras();
+        pub_id = -1;
         if(bundle != null){
             img_link = bundle.getString("img_link");
             pub_id = bundle.getInt("publication_id");
@@ -89,21 +94,18 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     }
 
     private void setupOther(){
-        pub_id = -1;
-        /*
-        star_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stars_int ++;
-                stars.setText(String.valueOf(stars_int));
-            }
-        });
-        */
+        //        star_button.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View v) {
+        //                stars_int ++;
+        //                stars.setText(String.valueOf(stars_int));
+        //            }
+        //        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!editText.getText().toString().equals("")) {
-                    PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), postCommentI);
+                    PostComment postComment = new PostComment(pub_id, 0, editText.getText().toString(), postCommentI, PubActivity.this);
                     postComment.execute();
                 }
                 if (v != null) {
@@ -155,11 +157,13 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
                                 @Override
                                 public void onSuccess() {
                                     ActivityCompat.startPostponedEnterTransition(PubActivity.this);
+                                    loadOwnAvatar();
                                 }
 
                                 @Override
                                 public void onError() {
                                     ActivityCompat.startPostponedEnterTransition(PubActivity.this);
+                                    loadOwnAvatar();
                                 }
                             });
                 }else {
@@ -226,5 +230,16 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         commentAdapter.notifyDataSetChanged();
         editText.clearFocus();
         editText.setText("");
+        Log.i("PubActivity: ", "comment posted");
+    }
+
+    @Override
+    public void onGotUserInfo(String username, String name, String surname, String avatar_link) {
+        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar_link).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar_);
+    }
+
+    private void loadOwnAvatar(){
+        GetOwnInfo getOwnInfo = new GetOwnInfo(AuthHelper.getToken(this), this);
+        getOwnInfo.execute();
     }
 }

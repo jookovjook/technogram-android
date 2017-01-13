@@ -61,7 +61,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
                 if(check != 0) return;
                 String title_ = title.getText().toString();
                 String description_ = description.getText().toString();
-                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, 0, 0, new ArrayList<LinkProvider>());
+                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, 0, 0, new ArrayList<LinkProvider>(), NewPublicationActivity.this);
                 makePost.execute();
             }
         });
