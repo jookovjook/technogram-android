@@ -26,13 +26,18 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity"/>
+
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".user_profile.UserProfileActivity"

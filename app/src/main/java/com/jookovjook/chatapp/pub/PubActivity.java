@@ -1,6 +1,7 @@
 package com.jookovjook.chatapp.pub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jookovjook.chatapp.LoginActivity;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
 import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
@@ -234,12 +236,30 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     }
 
     @Override
+    public void onFailure() {
+        logOut();
+    }
+
+    @Override
     public void onGotUserInfo(String username, String name, String surname, String avatar_link) {
         Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar_link).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar_);
+    }
+
+    @Override
+    public void onWrongToken() {
+        logOut();
     }
 
     private void loadOwnAvatar(){
         GetOwnInfo getOwnInfo = new GetOwnInfo(AuthHelper.getToken(this), this);
         getOwnInfo.execute();
+    }
+
+    private void logOut(){
+        setResult(RESULT_OK, null);
+        finish();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

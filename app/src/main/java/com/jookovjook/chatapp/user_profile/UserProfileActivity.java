@@ -144,6 +144,11 @@ public class UserProfileActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onWrongToken() {
+
+    }
+
     //tabs layout
     class TabsAdapter extends FragmentPagerAdapter {
 

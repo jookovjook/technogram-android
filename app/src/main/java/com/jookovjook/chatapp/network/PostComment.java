@@ -9,7 +9,6 @@ import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -24,6 +23,7 @@ public class PostComment extends AsyncTask<String, Void, String> {
 
     public interface PostCommentI{
         void onSuccess(com.jookovjook.chatapp.pub.CommentProvider commentProvider);
+        void onFailure();
     }
 
     private PostCommentI postCommentI;
@@ -64,18 +64,20 @@ public class PostComment extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String jsonResult) {
         super.onPostExecute(jsonResult);
         Log.i("posted", jsonResult);
-        JSONArray jsonArray;
+        JSONObject jsonObject;
         try {
-            jsonArray = new JSONArray(jsonResult);
-            for(int i= 0; i<jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+            jsonObject = new JSONObject(jsonResult);
+            int error = jsonObject.getInt("error");
+            if(error == 1){
+                postCommentI.onFailure();
+            }else {
                 String username = jsonObject.getString("username");
                 int comment_id = jsonObject.getInt("comment_id");
                 int user_id = jsonObject.getInt("user_id");
                 String comment = jsonObject.getString("comment");
                 int publication_id = jsonObject.getInt("publication_id");
                 String avatar = jsonObject.getString("img_link");
-                if(comment_id > 0) {
+                if (comment_id > 0) {
                     postCommentI.onSuccess(new CommentProvider(publication_id, comment_id, user_id, username, comment, avatar));
                 }
             }

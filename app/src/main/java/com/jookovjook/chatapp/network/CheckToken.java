@@ -3,7 +3,7 @@ package com.jookovjook.chatapp.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
+import com.jookovjook.chatapp.interfaces.CheckTokenInterface;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -16,21 +16,22 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GetOwnInfo extends AsyncTask<String, Void, String> {
+public class CheckToken extends AsyncTask<String, Void, String> {
 
-    private int user_id = -1;
     private String token;
+    private int user_id;
     private JSONObject jsonObject;
-    private GetUserInfoInterface getUII;
+    private CheckTokenInterface cTI;
 
-    public GetOwnInfo(String token, GetUserInfoInterface getUII){
-        this.getUII = getUII;
+    public CheckToken(String token, CheckTokenInterface cTI){
         this.token = token;
-        this.jsonObject = new JSONObject();
+        this.cTI = cTI;
+        this.user_id = -1;
+        jsonObject = new JSONObject();
         try{
             jsonObject.put("token", token);
         }catch (Exception e){
-            Log.i("user profile","error creating json");
+            e.printStackTrace();
         }
     }
 
@@ -38,8 +39,7 @@ public class GetOwnInfo extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         String s = "";
         try {
-            Log.i("setting url = ", String.valueOf(user_id));
-            URL url = new URL(Config.GET_OWN_INFO_URL);
+            URL url = new URL(Config.CHECK_TOKEN_URL);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setDoOutput(true);
             mUrlConnection.setDoInput(true);
@@ -51,7 +51,7 @@ public class GetOwnInfo extends AsyncTask<String, Void, String> {
             InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
             s = StreamReader.read(inputStream);
         }catch (Exception e){
-            Log.i("get_user_info","error");
+           e.printStackTrace();
         }
         return s;
     }
@@ -59,20 +59,13 @@ public class GetOwnInfo extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String jsonResult) {
         super.onPostExecute(jsonResult);
-        int error_code;
+        Log.i("jsonResult", jsonResult);
         try {
             JSONObject jsonObject = new JSONObject(jsonResult);
-            error_code = jsonObject.getInt("error_code");
-            if(error_code == 0){
-                getUII.onGotUserInfo(jsonObject.getString("username")
-                        ,jsonObject.getString("name")
-                        ,jsonObject.getString("surname")
-                        ,jsonObject.getString("img_link"));
-            }else{
-                getUII.onWrongToken();
-            }
+            user_id = jsonObject.getInt("user_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        cTI.onTokenChecked(user_id);
     }
 }

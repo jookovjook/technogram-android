@@ -38,6 +38,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
     private int startHeight = 100;
     private int finalHeight = 400;
     private int lastPosition = -1;
+    private int REQUEST_EXIT = 1;
 
     @Override
     public void onGotPublication(FeedCardProvider feedCardProvider) {
@@ -156,7 +157,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
                 intent.putExtras(bundle);
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation((Activity) mContext, (View) holder.main_image, "main_image_transition");
-                mContext.startActivity(intent, options.toBundle());
+                ((Activity) mContext).startActivityForResult(intent, REQUEST_EXIT, options.toBundle());
             }
         });
     };

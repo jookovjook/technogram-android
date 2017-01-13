@@ -20,6 +20,8 @@ import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int REQUEST_EXIT = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_EXIT) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.jookovjook.chatapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -125,6 +126,9 @@ public class LoginActivity extends AppCompatActivity {
                         textView.setText("Success. Token: " + token);
                         AuthHelper.setUsername(LoginActivity.this, username);
                         AuthHelper.setToken(LoginActivity.this, token);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                     case 1:
                         textView.setText("Wrong username");
