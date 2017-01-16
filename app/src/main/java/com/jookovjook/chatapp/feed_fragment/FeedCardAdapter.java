@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationsInterfase;
+import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
 import com.jookovjook.chatapp.network.GetPublications;
 import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
@@ -39,11 +40,19 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
     private int finalHeight = 400;
     private int lastPosition = -1;
     private int REQUEST_EXIT = 1;
+    private int type;
+    private int param;
+    private GetPubsInterfase gPI;
 
     @Override
     public void onGotPublication(FeedCardProvider feedCardProvider) {
         mList.add(feedCardProvider);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGotAll(int last_id) {
+        gPI.onGotAll(last_id);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -79,11 +88,14 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         }
     }
 
-    public FeedCardAdapter(int type, int param, Context mContext){
+    public FeedCardAdapter(int type, int param, Context mContext, GetPubsInterfase gPI){
         this.mList = new ArrayList<>();
         this.mContext = mContext;
+        this.gPI = gPI;
         down_layout_expanded = false;
-        GetPublications getPublications = new GetPublications(type, param, this);
+        this.type = type;
+        this.param = param;
+        GetPublications getPublications = new GetPublications(type, param, this, -1);
         getPublications.execute();
     }
 
@@ -181,5 +193,11 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
             lastPosition = position;
         }
     }
+
+    public void loadNextTen(){
+        int last_pub_id = mList.get(mList.size() - 1).getPublication_id();
+        GetPublications getPublications = new GetPublications(type, param, this, last_pub_id);
+        getPublications.execute();
+    };
 
 }

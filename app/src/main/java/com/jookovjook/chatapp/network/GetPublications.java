@@ -25,17 +25,16 @@ public class GetPublications extends AsyncTask<String, Void, String> {
     private JSONObject jsonObject;
     private GetPublicationsInterfase getPsI;
 
-    public GetPublications(int type, int param, GetPublicationsInterfase getPsI){
+    public GetPublications(int type, int param, GetPublicationsInterfase getPsI, int last_id){
         this.getPsI = getPsI;
         this.type = type;
-        if(type == 0) {
-            this.jsonObject = new JSONObject();
+        this.jsonObject = new JSONObject();
             try {
-                jsonObject.put("user_id", param);
+                if(type == 0) jsonObject.put("user_id", param);
+                jsonObject.put("last_id", last_id);
             } catch (Exception e) {
                 Log.i("get publications", "error creating json");
             }
-        }
     }
 
     @Override
@@ -43,25 +42,22 @@ public class GetPublications extends AsyncTask<String, Void, String> {
         String s = "";
         try {
             URL url;
+            //url = new URL(Config.GET_ALL_PUBLICATIONS_URL);
             if(type == 0) {
                 url = new URL(Config.GET_USER_PUBLICATIONS_URL);
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoOutput(true);
-                mUrlConnection.setDoInput(true);
-                mUrlConnection.setRequestProperty("Content-Type","application/json");
-                mUrlConnection.connect();
-                OutputStreamWriter out = new OutputStreamWriter(mUrlConnection.getOutputStream());
-                out.write(jsonObject.toString());
-                out.close();
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = StreamReader.read(inputStream);
-            }else {
+            }else{
                 url = new URL(Config.GET_ALL_PUBLICATIONS_URL);
-                HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
-                mUrlConnection.setDoInput(true);
-                InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
-                s = StreamReader.read(inputStream);
             }
+            HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
+            mUrlConnection.setDoOutput(true);
+            mUrlConnection.setDoInput(true);
+            mUrlConnection.setRequestProperty("Content-Type","application/json");
+            mUrlConnection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(mUrlConnection.getOutputStream());
+            out.write(jsonObject.toString());
+            out.close();
+            InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
+            s = StreamReader.read(inputStream);
         }catch (Exception e){
             Log.i("FeedCardAdapter","error getting json answer");
         }
@@ -73,10 +69,12 @@ public class GetPublications extends AsyncTask<String, Void, String> {
         super.onPostExecute(jsonResult);
         JSONArray jsonArray;
         try {
+            int last_id = -1;
             jsonArray = new JSONArray(jsonResult);
-            for(int i= 0; i<jsonArray.length(); i++){
+            for(int i = 0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int publication_id = jsonObject.getInt("publication_id");
+                last_id = publication_id;
                 int user_id = jsonObject.getInt("user_id");
                 String title = jsonObject.getString("title");
                 int views = jsonObject.getInt("views");
@@ -92,8 +90,9 @@ public class GetPublications extends AsyncTask<String, Void, String> {
                         (publication_id, user_id, username, title, views, stars, comments, img_link, text, date, small_avatar);
                 getPsI.onGotPublication(feedCardProvider);
             }
+            getPsI.onGotAll(last_id);
         }catch (Exception e){
-            Log.i("FeedCardAdapter","error parsing json");
+            Log.i("FeedCardAdapter","error parsing json" + jsonResult);
         }
     }
 
