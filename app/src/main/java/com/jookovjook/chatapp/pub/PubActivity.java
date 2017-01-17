@@ -2,12 +2,17 @@ package com.jookovjook.chatapp.pub;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jookovjook.chatapp.LoginActivity;
 import com.jookovjook.chatapp.R;
@@ -54,6 +61,8 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private Button send;
     private ImageButton star_button;
     private PostComment.PostCommentI postCommentI = this;
+    private LinearLayout comment_layout;
+    private TextView textView1;
 
     private void findViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -67,6 +76,8 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         editText = (EditText) findViewById(R.id.editText);
         send = (Button) findViewById(R.id.send_button);
         stars = (TextView) findViewById(R.id.stars);
+        comment_layout = (LinearLayout) findViewById(R.id.comment_layout);
+        textView1 = (TextView) findViewById(R.id.textView1);
         //star_button = (ImageButton) findViewById(R.id.star_button);
     }
 
@@ -116,6 +127,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
                 }
             }
         });
+        customTextView(textView1);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -242,12 +254,24 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
 
     @Override
     public void onGotUserInfo(String username, String name, String surname, String avatar_link) {
-        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar_link).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar_);
+        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar_link).resize(128, 128)
+                .onlyScaleDown().centerCrop().into(this.avatar_, new Callback() {
+            @Override
+            public void onSuccess() {
+                comment_layout.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
     }
 
     @Override
     public void onWrongToken() {
-        logOut();
+        //logOut();
     }
 
     private void loadOwnAvatar(){
@@ -261,5 +285,37 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void customTextView(TextView view) {
+        // was 15
+        // remained 8
+        SpannableStringBuilder spanTxt = new SpannableStringBuilder(
+                "Please, ");
+        // was 16
+        // remained 6
+        spanTxt.append("Log in");
+        spanTxt.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Toast.makeText(getApplicationContext(), "Log in Clicked",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, spanTxt.length() - "Log in".length(), spanTxt.length(), 0);
+        // was 4
+        // remained 3
+        spanTxt.append(" or");
+        spanTxt.setSpan(new ForegroundColorSpan(Color.BLACK), 15, spanTxt.length(), 0);
+        spanTxt.append(" Register");
+        spanTxt.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Toast.makeText(getApplicationContext(), "Register Clicked",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, spanTxt.length() - " Register".length(), spanTxt.length(), 0);
+        spanTxt.append(" to leave a comment");
+        view.setMovementMethod(LinkMovementMethod.getInstance());
+        view.setText(spanTxt, TextView.BufferType.SPANNABLE);
     }
 }

@@ -7,6 +7,7 @@ public class AuthHelper {
     private final static String SHARED_PREF_NAME = "com.jookovjook.chatapp.auth.AUTH";
     private final static String TOKEN_KEY = "com.jookovjook.chatapp.auth.TOKEN_KEY";
     private final static String USERNAME = "com.jookovjook.chatapp.auth.USERNAME";
+    private final static String USER_ID = "com.jookovjook.chatapp.auth.USER_ID";
 
     public static String getToken(Context c) {
         SharedPreferences prefs = c.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -29,6 +30,18 @@ public class AuthHelper {
         SharedPreferences prefs = c.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(USERNAME, username);
+        editor.apply();
+    }
+
+    public static int getUserId(Context c){
+        SharedPreferences prefs = c.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getInt(USER_ID, -1);
+    }
+
+    public static void setUserId(Context c, int user_id) {
+        SharedPreferences prefs = c.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(USER_ID, user_id);
         editor.apply();
     }
 }

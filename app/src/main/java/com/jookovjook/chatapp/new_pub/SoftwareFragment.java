@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
@@ -194,22 +195,38 @@ public class SoftwareFragment extends Fragment implements ImagesLoaderInterface,
 
     @Override
     public void onMakePostError() {
-
+        Toast toast = Toast.makeText(getActivity(), "Ошибка при создании публикации!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
     public void onAddImagesError() {
-
+        Toast toast = Toast.makeText(getActivity(), "Ошибка при загрузке картинок!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
     public void onAddAdvError() {
-
+        Toast toast = Toast.makeText(getActivity(), "Ошибка при добавлении данных", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
     public void onAddLinksError() {
+        Toast toast = Toast.makeText(getActivity(), "Ошибка при добавлении ссылок", Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
+    @Override
+    public void onPostCreated() {
+        title.setText("");
+        description.setText("");
+        mList.clear();
+        imageAdapter.notifyDataSetChanged();
+        nList.clear();
+        linkAdapter.notifyDataSetChanged();
+        Toast toast = Toast.makeText(getActivity(), "Публикация создана!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

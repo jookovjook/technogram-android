@@ -128,4 +128,9 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
     public void onAddLinksError() {
 
     }
+
+    @Override
+    public void onPostCreated() {
+
+    }
 }

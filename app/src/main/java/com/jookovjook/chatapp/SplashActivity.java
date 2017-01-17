@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity implements CheckTokenInter
             startActivity(intent);
             finish();
         }else{
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }

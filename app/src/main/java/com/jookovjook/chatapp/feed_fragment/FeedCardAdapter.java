@@ -23,6 +23,7 @@ import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
 import com.jookovjook.chatapp.network.GetPublications;
 import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.DateTimeConverter;
 import com.squareup.picasso.Picasso;
@@ -95,6 +96,9 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         down_layout_expanded = false;
         this.type = type;
         this.param = param;
+    }
+
+    public void execute(){
         GetPublications getPublications = new GetPublications(type, param, this, -1);
         getPublications.execute();
     }
@@ -153,6 +157,7 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
                 Bundle bundle = new Bundle();
                 bundle.putInt("user_id", feedCardProvider.getUser_id());
                 bundle.putString("username", feedCardProvider.getUsername());
+                bundle.putBoolean("own", (AuthHelper.getUserId(mContext) == feedCardProvider.getUser_id()) );
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             };

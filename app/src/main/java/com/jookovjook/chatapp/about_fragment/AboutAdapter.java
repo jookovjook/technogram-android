@@ -22,6 +22,7 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.MyViewHolder
     private List<AboutProvider> mList;
     private Context mContext;
     private int user_id;
+    private Boolean own;
 
     @Override
     public void onGotAddUserInfo(String username, String name, String surname, String avatar, String about) {
@@ -31,12 +32,10 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
         public TextView username;
         public TextView name_surname;
         public TextView about;
         public ImageView avatar;
-
         public MyViewHolder(View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
@@ -46,7 +45,8 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.MyViewHolder
         }
     }
 
-    public AboutAdapter(int user_id, Context mContext ){
+    public AboutAdapter(int user_id, Context mContext, Boolean own){
+        this.own = own;
         this.mList = new ArrayList<>();
         this.mContext = mContext;
         this.user_id = user_id;
@@ -74,7 +74,6 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        //return 0;
         return mList.size();
     }
 }

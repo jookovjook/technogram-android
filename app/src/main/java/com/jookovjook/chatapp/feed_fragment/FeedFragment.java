@@ -8,23 +8,49 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
+import com.jookovjook.chatapp.network.Server;
 
-public class FeedFragment extends Fragment implements GetPubsInterfase{
+public class FeedFragment extends Fragment implements GetPubsInterfase, Server.ServerCallback {
 
     private FeedCardAdapter feedCardAdapter;
     private int type;
     private int param;
     Boolean loading = true;
     Boolean loaded_all = false;
+    private LinearLayout networkLayout;
+    private ProgressBar loading_spinner;
+    private Button retryButton;
+    private TextView suka;
+    Server.ServerCallback callback = this;
+    int tapCount = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.feed_fragment, container, false);
         type = getArguments().getInt("type");
         param = getArguments().getInt("param");
+        networkLayout = (LinearLayout) rootView.findViewById(R.id.networkLayout);
+        loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
+        retryButton = (Button) rootView.findViewById(R.id.retryButton);
+        suka = (TextView) rootView.findViewById(R.id.suka);
+        new Server(callback).execute();
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tapCount ++;
+                if(tapCount >= 4 & tapCount <= 7) suka.setVisibility(View.VISIBLE);
+                networkLayout.setVisibility(View.INVISIBLE);
+                loading_spinner.setVisibility(View.VISIBLE);
+                new Server(callback).execute();
+            }
+        });
         bindFragment(rootView);
         return rootView;
     }
@@ -73,6 +99,7 @@ public class FeedFragment extends Fragment implements GetPubsInterfase{
 //                    }
             }
         });
+
     }
 
     public static Fragment newInstance(int type, int param) {
@@ -89,5 +116,21 @@ public class FeedFragment extends Fragment implements GetPubsInterfase{
         loading = false;
         Log.i("RV", "done loading. last_id = " + String.valueOf(last_id));
         if(last_id < 0) loaded_all = true;
+    }
+
+    @Override
+    public void onAvailable() {
+        Log.i("feed","server is availible");
+        feedCardAdapter.execute();
+        loading_spinner.setVisibility(View.INVISIBLE);
+        suka.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onNotAvailable() {
+        Log.i("feed","server is not availible");
+        networkLayout.setVisibility(View.VISIBLE);
+        loading_spinner.setVisibility(View.INVISIBLE);
+        if(tapCount <= 4 || tapCount >= 7) suka.setVisibility(View.INVISIBLE);
     }
 }

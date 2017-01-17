@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jookovjook.chatapp.interfaces.RegisterInterface;
+import com.jookovjook.chatapp.network.Register;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
@@ -23,12 +27,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements RegisterInterface{
 
-    EditText usernameEditText, passwordEditText;
-    Button loginButton;
+    EditText usernameEditText, passwordEditText, usernameReg, passwordReg, emailReg;
+    Button loginButton, logreg, buttonReg;
     TextView textView;
     String username, token;
+    CardView regcard;
+    RegisterInterface regI = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,30 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        usernameReg = (EditText) findViewById(R.id.usernameReg);
+        passwordReg = (EditText) findViewById(R.id.passwordReg);
+        emailReg = (EditText) findViewById(R.id.emailReg);
+        logreg = (Button) findViewById(R.id.logreg);
+        regcard = (CardView) findViewById(R.id.regcard);
+        logreg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(regcard.getVisibility() == View.VISIBLE){
+                    regcard.setVisibility(View.INVISIBLE);
+                }else{
+                    regcard.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        buttonReg = (Button) findViewById(R.id.buttonReg);
+        buttonReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Register register = new Register(usernameReg.getText().toString(),
+                        passwordReg.getText().toString(), emailReg.getText().toString(), regI);
+                register.execute();
+            }
+        });
         username = AuthHelper.getUsername(this);
         token = AuthHelper.getToken(this);
         String s = "Username and token are not stored";
@@ -56,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                 AuthHelper.setUsername(LoginActivity.this, usernameEditText.getText().toString());
                 PerformLogin login = new PerformLogin(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
-
                 login.execute();
             }
         });
@@ -71,6 +100,18 @@ public class LoginActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onSuccess(int user_id, String token) {
+        Toast.makeText(getApplicationContext(), "Reg success. user id = " + String.valueOf(user_id),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailure(int error, String message) {
+        Toast.makeText(getApplicationContext(), "Reg error " + String.valueOf(error) + ": " + message,
+                Toast.LENGTH_SHORT).show();
     }
 
     private class PerformLogin extends AsyncTask<String, Void, String>{
@@ -117,15 +158,18 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String jsonResult) {
             super.onPostExecute(jsonResult);
             JSONObject jsonObject;
+            Log.i("a","a");
             try{
                 jsonObject = new JSONObject(jsonResult);
                 int error = jsonObject.getInt("error");
                 switch (error){
                     case 0:
                         String token = jsonObject.getString("token");
-                        textView.setText("Success. Token: " + token);
+                        int user_id = jsonObject.getInt("user_id");
+                        textView.setText("Success. Token: " + token + ". User_id = " + String.valueOf(user_id));
                         AuthHelper.setUsername(LoginActivity.this, username);
                         AuthHelper.setToken(LoginActivity.this, token);
+                        AuthHelper.setUserId(LoginActivity.this, user_id);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -134,17 +178,28 @@ public class LoginActivity extends AppCompatActivity {
                         textView.setText("Wrong username");
                         AuthHelper.setUsername(LoginActivity.this, "");
                         AuthHelper.setToken(LoginActivity.this, "");
+                        AuthHelper.setUserId(LoginActivity.this, -1);
                         break;
                     case 2:
                         textView.setText("Wrong password");
                         AuthHelper.setUsername(LoginActivity.this,username);
                         AuthHelper.setToken(LoginActivity.this, "");
+                        AuthHelper.setUserId(LoginActivity.this, -1);
                         break;
                     default:
                         textView.setText("Unknown error");
+                        AuthHelper.setUsername(LoginActivity.this, "");
+                        AuthHelper.setToken(LoginActivity.this, "");
+                        AuthHelper.setUserId(LoginActivity.this, -1);
                         break;
                 }
-            }catch(Exception e){}
+            }catch(Exception e){
+                e.printStackTrace();
+                textView.setText("Unknown error");
+                AuthHelper.setUsername(LoginActivity.this, "");
+                AuthHelper.setToken(LoginActivity.this, "");
+                AuthHelper.setUserId(LoginActivity.this, -1);
+            }
         }
     }
 }

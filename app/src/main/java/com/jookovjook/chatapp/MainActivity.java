@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
@@ -17,6 +18,7 @@ import com.jookovjook.chatapp.new_pub.NewPubActivity;
 import com.jookovjook.chatapp.new_publication.NewPublicationFragment;
 import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
+import com.jookovjook.chatapp.utils.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,13 +53,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.user_profile_activity:
-                Intent intent2 = new Intent(MainActivity.this, UserProfileActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("user_id", 0);
-                bundle.putString("uername", "jookovjook");
-                bundle.putString("name_surname","Jook Jookov");
-                intent2.putExtras(bundle);
-                startActivity(intent2);
+                int user_id = AuthHelper.getUserId(MainActivity.this);
+                if(user_id >= 0){
+                    Intent intent2 = new Intent(MainActivity.this, UserProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("own", true);
+                    bundle.putInt("user_id", user_id);
+                    bundle.putString("username", AuthHelper.getUsername(MainActivity.this));
+                    intent2.putExtras(bundle);
+                    startActivity(intent2);
+                }else{
+                    Toast.makeText(getApplicationContext(), "You are not Logged in",
+                            Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.publication_activity:
                 Intent intent3 = new Intent(MainActivity.this, PubActivity.class);

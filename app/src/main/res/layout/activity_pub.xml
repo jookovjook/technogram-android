@@ -218,29 +218,57 @@
             android:elevation="2dp"
             android:background="#ffffff">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatar_"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="top"
-                android:layout_margin="8dp"
-                android:src="@drawable/profile_image_small"
-                app:border_color="@color/colorPrimary"
-                app:border_width="2dp"/>
-
-            <EditText
-                android:id="@+id/editText"
-                android:maxLines="4"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Type comment..."
-                android:layout_weight="2"/>
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/send_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Done"/>
+                <TextView
+                    android:id="@+id/textView1"
+                    android:textColor="#000000"
+                    android:textColorLink="@color/colorAccent2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="16sp"
+                    android:text="Register or Log in to leave a comment"/>
+
+                <LinearLayout
+                    android:id="@+id/comment_layout"
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#ffffff">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/avatar_"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="top"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/profile_image_small"
+                        app:border_color="@color/colorPrimary"
+                        app:border_width="2dp"/>
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:maxLines="4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Type comment..."
+                        android:layout_weight="2"/>
+
+                    <Button
+                        android:id="@+id/send_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Done"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
 
         </LinearLayout>
 

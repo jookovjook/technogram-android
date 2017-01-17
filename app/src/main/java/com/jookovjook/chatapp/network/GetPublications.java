@@ -35,6 +35,7 @@ public class GetPublications extends AsyncTask<String, Void, String> {
             } catch (Exception e) {
                 Log.i("get publications", "error creating json");
             }
+        Log.i("a","a");
     }
 
     @Override

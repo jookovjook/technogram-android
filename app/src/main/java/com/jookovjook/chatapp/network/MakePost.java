@@ -34,12 +34,14 @@ public class MakePost extends AsyncTask<String, Void, String> {
         void onAddImagesError();
         void onAddAdvError();
         void onAddLinksError();
+        void onPostCreated();
     }
 
     private MakePostCalllback makePostCalllback;
 
     public MakePost(String title, String description, ArrayList<ImageProvider> mList, int branch
-                        ,MakePostCalllback makePostCalllback, int license, int stage, ArrayList<LinkProvider> nList, Context context){
+                        ,MakePostCalllback makePostCalllback, int license, int stage,
+                    ArrayList<LinkProvider> nList, Context context){
         this.jsonArray = new JSONArray();
         this.makePostCalllback = makePostCalllback;
         this.mList = mList;
@@ -117,6 +119,8 @@ public class MakePost extends AsyncTask<String, Void, String> {
                 AddLinksToSoft addLinksToSoft = new AddLinksToSoft(publication_id, nList, context);
                 addLinksToSoft.execute();
             }
+            makePostCalllback.onPostCreated();
         }
+
     }
 }

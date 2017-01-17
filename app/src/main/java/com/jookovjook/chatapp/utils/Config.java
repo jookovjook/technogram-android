@@ -18,6 +18,8 @@ public class Config {
     public static final String IMAGE_RESOURCES_URL = SERVER_URL + "image_resources/";
     public static final String ADD_ADV_TO_SOFT_URL = SERVER_URL + "add_adv_to_soft.php";
     public static final String ADD_LINKS_TO_SOFT_URL = SERVER_URL + "add_links_to_soft.php";
+    public static final String REGISTER_URL = SERVER_URL + "register.php";
+    public static final String CHECK_URL = SERVER_URL + "check.php";
     public static final String TOKEN = "pegOwmEssh7aG6yJImYTbF3pmzHBaQHuTnNStEf8Cjuzyzxic2mKoI9nm4bN7mOE";
     public static final String CHECK_TOKEN_URL = SERVER_URL + "check_token.php";
 }
