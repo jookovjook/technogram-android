@@ -20,6 +20,8 @@ public class Config {
     public static final String ADD_LINKS_TO_SOFT_URL = SERVER_URL + "add_links_to_soft.php";
     public static final String REGISTER_URL = SERVER_URL + "register.php";
     public static final String CHECK_URL = SERVER_URL + "check.php";
+    public static final String UPDATE_PROFILE_URL = SERVER_URL + "update_profile.php";
+    public static final String UPDATE_PROFILE_IMAGE_URL = SERVER_URL + "update_profile_image.php";
     public static final String TOKEN = "pegOwmEssh7aG6yJImYTbF3pmzHBaQHuTnNStEf8Cjuzyzxic2mKoI9nm4bN7mOE";
     public static final String CHECK_TOKEN_URL = SERVER_URL + "check_token.php";
 }

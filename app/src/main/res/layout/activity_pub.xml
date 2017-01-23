@@ -246,7 +246,7 @@
                         android:layout_height="36dp"
                         android:layout_gravity="top"
                         android:layout_margin="8dp"
-                        android:src="@drawable/profile_image_small"
+
                         app:border_color="@color/colorPrimary"
                         app:border_width="2dp"/>
 

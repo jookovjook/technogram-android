@@ -8,6 +8,17 @@
     tools:context="com.jookovjook.chatapp.MainActivity"
     android:background="#e0e0e0">
 
+    <Button
+        android:id="@+id/newPub"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:textColor="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="New Pub"
+        android:background="@color/colorAccent2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,20 +33,47 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_weight="1"/>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/materialup.tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:tabTextColor="#80ffffff"
-            android:background="@color/colorPrimary"
-            app:tabSelectedTextColor="#ffffff"
-            app:tabIndicatorColor="#ffffff"
-            app:tabIndicatorHeight="4dp"
-            android:elevation="5dp"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_weight="0"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/materialup.tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:tabTextColor="#80ffffff"
+                android:background="@color/colorPrimary"
+                app:tabSelectedTextColor="#ffffff"
+                app:tabIndicatorColor="#ffffff"
+                app:tabIndicatorHeight="4dp"
+                android:elevation="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_weight="0"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <!--
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        app:blurOverlayColor="#40f0f0f0"/>
+        -->
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="4dp">
+    </FrameLayout>
 
 </RelativeLayout>

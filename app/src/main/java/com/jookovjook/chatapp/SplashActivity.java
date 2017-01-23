@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jookovjook.chatapp.interfaces.CheckTokenInterface;
 import com.jookovjook.chatapp.network.CheckToken;
+import com.jookovjook.chatapp.new_login.NewLoginActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
 
 public class SplashActivity extends AppCompatActivity implements CheckTokenInterface{
@@ -21,12 +22,12 @@ public class SplashActivity extends AppCompatActivity implements CheckTokenInter
 
     @Override
     public void onTokenChecked(int user_id) {
-        if(user_id > -1){
+        if(user_id < -2){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }else{
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, NewLoginActivity.class);
             startActivity(intent);
             finish();
         }

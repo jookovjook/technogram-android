@@ -46,6 +46,7 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
         this.imageProvider = imageProvider;
         this.vhItem = vhItem;
         this.uri = imageProvider.getUri();
+        Log.i("image_uri", this.uri);
         this.progressBar = null;
         this.refreshImageButton = null;
         this.haze = null;

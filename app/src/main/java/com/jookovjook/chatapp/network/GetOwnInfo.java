@@ -22,9 +22,26 @@ public class GetOwnInfo extends AsyncTask<String, Void, String> {
     private String token;
     private JSONObject jsonObject;
     private GetUserInfoInterface getUII;
+    private GetOwnInfoCallback getOIC = null;
+
+    public interface GetOwnInfoCallback{
+        void onGotOwnInfo(String name, String surname, String about, String username, String email);
+        void onFailure();
+    }
 
     public GetOwnInfo(String token, GetUserInfoInterface getUII){
         this.getUII = getUII;
+        this.token = token;
+        this.jsonObject = new JSONObject();
+        try{
+            jsonObject.put("token", token);
+        }catch (Exception e){
+            Log.i("user profile","error creating json");
+        }
+    }
+
+    public GetOwnInfo(String token, GetOwnInfoCallback getOIC){
+        this.getOIC = getOIC;
         this.token = token;
         this.jsonObject = new JSONObject();
         try{
@@ -64,14 +81,27 @@ public class GetOwnInfo extends AsyncTask<String, Void, String> {
             JSONObject jsonObject = new JSONObject(jsonResult);
             error_code = jsonObject.getInt("error_code");
             if(error_code == 0){
-                getUII.onGotUserInfo(jsonObject.getString("username")
-                        ,jsonObject.getString("name")
-                        ,jsonObject.getString("surname")
-                        ,jsonObject.getString("img_link"));
+                if(getOIC == null) {
+                    getUII.onGotUserInfo(jsonObject.getString("username")
+                            , jsonObject.getString("name")
+                            , jsonObject.getString("surname")
+                            , jsonObject.getString("img_link"));
+                }else{
+                    getOIC.onGotOwnInfo(jsonObject.getString("name"),
+                            jsonObject.getString("surname"),
+                            jsonObject.getString("about"),
+                            jsonObject.getString("username"),
+                            jsonObject.getString("email"));
+                }
             }else{
-                getUII.onWrongToken();
+                if(getOIC == null) {
+                    getUII.onWrongToken();
+                }else{
+                    getOIC.onFailure();
+                }
             }
         } catch (JSONException e) {
+            getOIC.onFailure();
             e.printStackTrace();
         }
     }

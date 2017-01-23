@@ -3,4 +3,5 @@
     <string name="login_activity">Login Activity</string>
     <string name="user_profile_activity">My Profile</string>
     <string name="publication_activity">Publication Activity</string>
+    <string name="skip"><u>skip</u></string>
 </resources>

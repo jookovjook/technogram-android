@@ -15,6 +15,17 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="NewLoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+    <!--
+    //gray bar:
+    <item name="android:windowLightStatusBar">true</item>
+    <item name="android:windowTranslucentStatus">true</item>
+      <item name="android:windowTranslucentNavigation">true</item>
+        -->
+
     <style name="ToolBarWithNavigationBack">
         <item name="navigationIcon"
             id="@+id/home_back">@drawable/vector_drawable_ic_arrow_back_white___px</item>

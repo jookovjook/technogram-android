@@ -6,6 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,8 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import es.guiguegon.gallerymodule.GalleryActivity;
 import es.guiguegon.gallerymodule.GalleryHelper;
@@ -48,6 +54,8 @@ public class SoftwareFragment extends Fragment implements ImagesLoaderInterface,
 
     private ArrayList<LinkProvider> nList = new ArrayList<>();
 
+    List<String> tagsList;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +64,37 @@ public class SoftwareFragment extends Fragment implements ImagesLoaderInterface,
         stage = 0;
         title = (EditText) rootView.findViewById(R.id.title);
         description = (EditText) rootView.findViewById(R.id.description);
+        final Linkify.TransformFilter filter = new Linkify.TransformFilter() {
+            public final String transformUrl(final Matcher match, String url) {
+                return match.group();
+            }
+        };
+        final Pattern hashtagPattern = Pattern.compile("#([ء-يA-Za-z0-9_-]+)");
+        final String hashtagScheme = "content://com.hashtag.jojo/";
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Linkify.addLinks(s, hashtagPattern, hashtagScheme, null, filter);
+                Matcher m = hashtagPattern.matcher(s);
+                tagsList = new ArrayList<String>();
+                while(m.find()){
+                    String hashtag  = m.group(1);
+                    tagsList.add(hashtag);
+                    Log.i("hashtags", String.valueOf(tagsList));
+                }
+
+            }
+        });
         done = (Button) rootView.findViewById(R.id.done);
         expandableLayout = (ExpandableLayout) rootView.findViewById(R.id.expandable_layout);
         adv_opt = (Button) rootView.findViewById(R.id.adv_opt);

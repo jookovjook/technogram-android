@@ -36,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class UserProfileActivity extends AppCompatActivity implements
-        AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface{
+        AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 1f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.2f;
@@ -52,6 +52,7 @@ public class UserProfileActivity extends AppCompatActivity implements
     private String username;
     private CircleImageView avatar;
     private View background;
+    private Boolean own = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class UserProfileActivity extends AppCompatActivity implements
             user_id = bundle.getInt("user_id");
             Log.i("got user id", String.valueOf(user_id));
             username = bundle.getString("username");
+            own = bundle.getBoolean("own");
         }
 
         bindActivity();
@@ -165,7 +167,7 @@ public class UserProfileActivity extends AppCompatActivity implements
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return FeedFragment.newInstance(0, user_id);
-                case 1: return AboutFragment.newInstance("Tset", user_id);
+                case 1: return AboutFragment.newInstance("Tset", user_id, own);
             }
             return null;
         }

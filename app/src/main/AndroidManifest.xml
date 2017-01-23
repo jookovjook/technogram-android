@@ -35,9 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"/>
-
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".user_profile.UserProfileActivity"
@@ -52,8 +50,12 @@
             android:name=".new_publication.NewPublicationActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".new_pub.NewPubActivity" />
-        <activity android:name=".pub.PubActivity"
-            android:theme="@style/UPActivityTheme"/>
+        <activity
+            android:name=".pub.PubActivity"
+            android:theme="@style/UPActivityTheme" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".new_login.NewLoginActivity"
+            android:theme="@style/NewLoginTheme"/>
     </application>
 
 </manifest>

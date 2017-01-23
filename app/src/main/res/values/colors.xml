@@ -7,7 +7,15 @@
     !-->
     <color name="colorPrimary">#606060</color>
     <color name="colorPrimaryDark">#404040</color>
-    <color name="colorAccent">#f0f000</color>
+    <color name="colorAccent">#FFF248</color>
     <color name="colorAccent2">#d0d000</color>
     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorPrimaryLight">#979797</color>
+    <color name="colorGreen">#00d341</color>
+
+    <color name="material_login_login_color">@color/colorAccent</color>
+    <color name="material_login_register_color">@color/colorPrimary</color>
+    <color name="material_login_login_error_color">#ffbebe</color>
+    <color name="material_login_register_error_color">#600002</color>
+
 </resources>
