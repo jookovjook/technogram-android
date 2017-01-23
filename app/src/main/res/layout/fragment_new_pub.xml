@@ -8,15 +8,123 @@
     tools:ignore="RtlHardcoded"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#f0f0f0"
+    android:background="#ffffff"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:clickable="true">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_marginBottom="48dp"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f0f0f0"
+                    android:elevation="4dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
+
+
+                </RelativeLayout>
+
+                <EditText
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorBlue"
+                    android:padding="8dp"
+                    android:hint="Type something here..."
+                    android:gravity="start"
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#ffffff" />
+
+                <!--
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/linksRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"/>
+
+                -->
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:elevation="4dp"
+                android:layout_weight="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f0f0f0">
+
+                <Button
+                    android:layout_margin="16dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_accent_button"
+                    android:text="DONE"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#ffffff"
-        android:layout_gravity="bottom">
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="bottom"
+        android:elevation="3dp">
+
+        <RelativeLayout
+            android:elevation="4dp"
+            android:padding="0dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary">
+
+            <Button
+                android:id="@+id/hashButton"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:text="\u0023"
+                android:textColor="@color/colorPrimaryExtraLight"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_dark_gray_button"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:scrollbarSize="2dp"
+            android:scrollbars="horizontal"
+            android:id="@+id/hashTagRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

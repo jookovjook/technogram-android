@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity implements CheckTokenInter
 
     @Override
     public void onTokenChecked(int user_id) {
-        if(user_id < -2){
+        if(user_id > -1){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

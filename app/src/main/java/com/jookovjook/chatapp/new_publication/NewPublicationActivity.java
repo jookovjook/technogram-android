@@ -79,6 +79,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("sukaaaa", "sukaaaa");
         if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
             Log.i("result code: ", String.valueOf(RESULT_OK));
             List<GalleryMedia> galleryMedias =

@@ -8,6 +8,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.new_new_pub.NewPubFragment;
 
 public class NewPubActivity extends AppCompatActivity implements BranchFragment.BranchSelector{
 
@@ -54,7 +55,7 @@ public class NewPubActivity extends AppCompatActivity implements BranchFragment.
         public Fragment getItem(int position) {
             switch (position){
                 case 0: return BranchFragment.newInstance();
-                case 1: return SoftwareFragment.newInstance();
+                case 1: return NewPubFragment.newInstance();
             }
 
             return BranchFragment.newInstance();

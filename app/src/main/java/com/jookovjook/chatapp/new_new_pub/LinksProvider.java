@@ -1,12 +1,15 @@
-package com.jookovjook.chatapp.new_pub;
+package com.jookovjook.chatapp.new_new_pub;
 
-public class LinkProvider {
+import com.jookovjook.chatapp.new_pub.Logo;
+
+
+public class LinksProvider {
 
     public String link;
     public Logo logo;
     public int selectionId;
 
-    public LinkProvider(){
+    public LinksProvider(){
         this.link = "";
         this.logo = Logo.web;
         this.selectionId = 0;
@@ -25,5 +28,4 @@ public class LinkProvider {
     public void setLogo(Logo logo) {
         this.logo = logo;
     }
-
 }

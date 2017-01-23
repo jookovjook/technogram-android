@@ -22,6 +22,6 @@ public class Config {
     public static final String CHECK_URL = SERVER_URL + "check.php";
     public static final String UPDATE_PROFILE_URL = SERVER_URL + "update_profile.php";
     public static final String UPDATE_PROFILE_IMAGE_URL = SERVER_URL + "update_profile_image.php";
-    public static final String TOKEN = "pegOwmEssh7aG6yJImYTbF3pmzHBaQHuTnNStEf8Cjuzyzxic2mKoI9nm4bN7mOE";
+    public static final String TOKEN = "aWAt5R93QJnPFwq5IhbLCGO2Fe7Heuv";
     public static final String CHECK_TOKEN_URL = SERVER_URL + "check_token.php";
 }
