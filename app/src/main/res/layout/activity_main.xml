@@ -15,7 +15,7 @@
         android:textColor="@color/colorPrimary"
         android:backgroundTint="@color/colorPrimaryDark"
         android:text="New Pub"
-        android:background="@color/colorAccent2"
+        android:background="@color/colorAccent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>
 
@@ -27,7 +27,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/materialup.viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:behavior_overlapTop="30dp"
             android:elevation="4dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -59,15 +59,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <!--
-
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blurView"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        app:blurOverlayColor="#40f0f0f0"/>
-        -->
 
     <FrameLayout
         android:id="@+id/fragment_container"

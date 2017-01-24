@@ -59,16 +59,6 @@
                     android:layout_height="fill_parent"
                     android:background="#ffffff" />
 
-                <!--
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/linksRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"/>
-
-                -->
-
             </LinearLayout>
 
             <RelativeLayout
@@ -79,6 +69,7 @@
                 android:background="#f0f0f0">
 
                 <Button
+                    android:id="@+id/doneButton"
                     android:layout_margin="16dp"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"

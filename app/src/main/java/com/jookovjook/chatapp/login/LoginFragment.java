@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.new_login;
+package com.jookovjook.chatapp.login;
 
 import android.animation.Animator;
 import android.app.Activity;
@@ -24,7 +24,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class NewLoginFragment extends Fragment implements LogIn.LogInCallback{
+public class LoginFragment extends Fragment implements LogIn.LogInCallback{
 
     OnFragmentTouched listener;
     int revealTime = 1000;
@@ -124,7 +124,7 @@ public class NewLoginFragment extends Fragment implements LogIn.LogInCallback{
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onFragmentTouched(NewLoginFragment.this, Metrics.dpToPx(150), Metrics.dpToPx(150));
+                    listener.onFragmentTouched(LoginFragment.this, Metrics.dpToPx(150), Metrics.dpToPx(150));
                 }
             }
         });
@@ -182,12 +182,12 @@ public class NewLoginFragment extends Fragment implements LogIn.LogInCallback{
         return Collections.max(Arrays.asList(distances));
     }
 
-    public static NewLoginFragment newInstance(int centerX, int centerY, int color) {
+    public static LoginFragment newInstance(int centerX, int centerY, int color) {
         Bundle args = new Bundle();
         args.putInt("cx", centerX);
         args.putInt("cy", centerY);
         args.putInt("color", color);
-        NewLoginFragment fragment = new NewLoginFragment();
+        LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
         return fragment;
     }

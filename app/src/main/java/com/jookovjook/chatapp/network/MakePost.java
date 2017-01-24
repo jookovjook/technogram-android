@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.new_new_pub.ImageProvider;
+import com.jookovjook.chatapp.new_pub.ImageProvider;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
@@ -70,18 +70,17 @@ public class MakePost extends AsyncTask<String, Void, String> {
             OutputStreamWriter out = new OutputStreamWriter(mUrlConnection.getOutputStream());
             out.write(jsonArray.toString());
             out.close();
-            Log.i("comment", "getting input stream");
+            Log.i("MakePost", "getting input stream");
             InputStream inputStream = new BufferedInputStream(mUrlConnection.getInputStream());
             s = StreamReader.read(inputStream);
         }catch (Exception e){
-            Log.i("comment", "doInBackground exception");
+            Log.i("MakePost", "doInBackground exception");
         }
         return s;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        Log.i("comment", "onPostExecute running");
         Log.i("answer: ", s);
         super.onPostExecute(s);
         boolean error = true;
@@ -90,7 +89,6 @@ public class MakePost extends AsyncTask<String, Void, String> {
             JSONObject jsonObject = new JSONObject(s);
             publication_id = jsonObject.getInt("publication_id");
             error = jsonObject.getBoolean("error");
-            Log.i("comment", "got");
             Log.i("comment", s);
         }catch (Exception e){
             makePostCalllback.onMakePostError();

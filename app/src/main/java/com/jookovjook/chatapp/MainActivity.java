@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
-import com.jookovjook.chatapp.new_login.NewLoginActivity;
-import com.jookovjook.chatapp.new_new_pub.NewPubFragment;
+import com.jookovjook.chatapp.login.LoginActivity;
+import com.jookovjook.chatapp.new_pub.NewPubFragment;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.login_activity:
-                Intent intent = new Intent(MainActivity.this, NewLoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.user_profile_activity:

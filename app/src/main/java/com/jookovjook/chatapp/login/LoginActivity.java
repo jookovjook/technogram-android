@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.new_login;
+package com.jookovjook.chatapp.login;
 
 import android.animation.Animator;
 import android.content.Intent;
@@ -26,7 +26,7 @@ import com.jookovjook.chatapp.utils.Metrics;
 import io.codetail.animation.arcanimator.ArcAnimator;
 import io.codetail.animation.arcanimator.Side;
 
-public class NewLoginActivity extends AppCompatActivity implements OnFragmentTouched, NewLoginFragment.NewLoginFragmentCallback{
+public class LoginActivity extends AppCompatActivity implements OnFragmentTouched, LoginFragment.NewLoginFragmentCallback{
 
     Button loginButton, signupButton, loginButtonHidden, signupButtonHidden;
     Button centerButton, bottomButton;
@@ -37,7 +37,7 @@ public class NewLoginActivity extends AppCompatActivity implements OnFragmentTou
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_new_login);
+        setContentView(R.layout.activity_login);
         adjustStatusbar();
         findViews();
         calculateMetrics();
@@ -47,7 +47,7 @@ public class NewLoginActivity extends AppCompatActivity implements OnFragmentTou
 
     private void attachFragment(){
         int randomColor = getResources().getColor(R.color.colorAccent);
-        Fragment newLoginFragment = NewLoginFragment.newInstance(Metrics.dpToPx((int)300.0/2), Metrics.dpToPx((int)300.0/2), randomColor);
+        Fragment newLoginFragment = LoginFragment.newInstance(Metrics.dpToPx((int)300.0/2), Metrics.dpToPx((int)300.0/2), randomColor);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newLoginFragment).commit();
     }
 
@@ -160,9 +160,9 @@ public class NewLoginActivity extends AppCompatActivity implements OnFragmentTou
 
     @Override
     public void onFragmentTouched(Fragment fragment, float x, float y) {
-        if (fragment instanceof NewLoginFragment) {
+        if (fragment instanceof LoginFragment) {
 
-            final NewLoginFragment theFragment = (NewLoginFragment) fragment;
+            final LoginFragment theFragment = (LoginFragment) fragment;
 
             Animator unreveal = theFragment.prepareUnrevealAnimator(x, y);
 

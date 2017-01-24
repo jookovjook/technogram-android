@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.jookovjook.chatapp.new_new_pub.ImageAdapter;
-import com.jookovjook.chatapp.new_new_pub.ImageProvider;
+import com.jookovjook.chatapp.new_pub.ImageAdapter;
+import com.jookovjook.chatapp.new_pub.ImageProvider;
 import com.jookovjook.chatapp.utils.AndroidMultiPartEntity;
 import com.jookovjook.chatapp.utils.Config;
 

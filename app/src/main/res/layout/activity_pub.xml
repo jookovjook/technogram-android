@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:pv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded"
@@ -41,14 +42,12 @@
 
                     <com.jookovjook.chatapp.paralaxviewpager.ParallaxViewPager
                         android:id="@+id/viewpager"
-                        xmlns:pv="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
                         pv:interpolator="@anim/decelerate_interpolator"
                         pv:mode="right_overlay"
                         pv:outset="62%"
-                        pv:shadow_width="30dp"
-                        android:transitionName="main_image_transition"/>
+                        pv:shadow_width="30dp" />
 
                     <LinearLayout
                         android:id="@+id/down_layout"
@@ -62,7 +61,6 @@
                             android:layout_height="48dp"
                             android:layout_gravity="top"
                             android:layout_margin="8dp"
-                            android:src="@drawable/profile_image_small"
                             app:border_color="@color/colorPrimary"
                             app:border_width="2dp"/>
 
@@ -76,7 +74,6 @@
                             <TextView
                                 android:layout_marginTop="6dp"
                                 android:id="@+id/title"
-                                android:text="Title"
                                 android:maxLines="1"
                                 android:textColor="#202020"
                                 android:layout_width="wrap_content"
@@ -89,7 +86,6 @@
                                 android:textColor="#606060"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text = "usernmae"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
@@ -113,8 +109,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="This is the description of concept of publication User  can type there some additional information about his publication"/>
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:layout_marginLeft="8dp"
@@ -123,8 +118,7 @@
                         android:layout_gravity="right"
                         android:id="@+id/datetime"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="A long time ago"/>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -183,9 +177,9 @@
                     <EditText
                         android:id="@+id/editText"
                         android:maxLines="4"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Type comment..."
+                        android:hint="Type a comment..."
                         android:layout_weight="2"/>
 
                     <Button

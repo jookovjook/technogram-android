@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.new_login;
+package com.jookovjook.chatapp.login;
 
 import android.support.v4.app.Fragment;
 

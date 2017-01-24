@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.new_new_pub;
+package com.jookovjook.chatapp.new_pub;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import android.widget.EditText;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
+import com.jookovjook.chatapp.network.MakePost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,12 @@ import es.guiguegon.gallerymodule.GalleryHelper;
 import es.guiguegon.gallerymodule.model.GalleryMedia;
 
 public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
-        HashTagsAdapter.HashTagCallback {
+        HashTagsAdapter.HashTagCallback, MakePost.MakePostCalllback {
 
     //UI
     EditText editText;
     RecyclerView recyclerView, hashTagRecycler; //, linksRecycler;
-    Button hashButton;
+    Button hashButton, doneButton;
     NestedScrollView scrollView;
 
     //backend
@@ -47,6 +48,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     ArrayList<ImageProvider> imageList = new ArrayList<>();
     HashTagsAdapter hashTagsAdapter;
     ArrayList<HashTagsProvider> hashTagList = new ArrayList<>();
+    MakePost.MakePostCalllback makePostCalllback;
 
     //constants
     private static final int MAX_IMAGES = 20;
@@ -58,6 +60,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_pub, container, false);
         bindFragment(rootView);
+        makePostCalllback = this;
         return rootView;
     }
 
@@ -66,7 +69,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         setupEditText();
         setupRecyclerView(rootView);
         setupHashTagRecycler(rootView);
-        //setupLinksRecycler();
         setupOthers();
     }
 
@@ -75,8 +77,8 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         hashButton = (Button) rootView.findViewById(R.id.hashButton);
         hashTagRecycler = (RecyclerView) rootView.findViewById(R.id.hashTagRecycler);
-        //linksRecycler = (RecyclerView) rootView.findViewById(R.id.linksRecycler);
         scrollView = (NestedScrollView) rootView.findViewById(R.id.scrollView);
+        doneButton = (Button) rootView.findViewById(R.id.doneButton);
     }
 
     private void setupEditText(){
@@ -259,6 +261,14 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 insertHashTag("");
             }
         });
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MakePost makePost = new MakePost(firstLine, editText.getText().toString(),
+                        imageList, makePostCalllback, getActivity());
+                makePost.execute();
+            }
+        });
     }
 
     private void insertHashTag(String hashtag){
@@ -291,15 +301,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
             editText.setSelection(hashtag.length() + 1);
         }
     }
-
-//    private void setupLinksRecycler(){
-//        final LinearLayoutManager linksLM = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        linksRecycler.setLayoutManager(linksLM);
-//        linksAdapter = new LinksAdapter(getActivity(), linksList, this);
-//        linksList.add(new LinksProvider());
-//        linksRecycler.setAdapter(linksAdapter);
-//        linksRecycler.setNestedScrollingEnabled(false);
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -336,5 +337,18 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     }
 
 
+    @Override
+    public void onMakePostError() {
+        Log.i("Make post", "error");
+    }
 
+    @Override
+    public void onAddImagesError() {
+        Log.i("Make post", "add images error");
+    }
+
+    @Override
+    public void onPostCreated() {
+        Log.i("Make post", "success");
+    }
 }

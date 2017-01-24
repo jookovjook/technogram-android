@@ -49,7 +49,7 @@
             android:name=".pub.PubActivity"
             android:theme="@style/UPActivityTheme" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".new_login.NewLoginActivity"
+        <activity android:name=".login.LoginActivity"
             android:theme="@style/NewLoginTheme"/>
     </application>
 

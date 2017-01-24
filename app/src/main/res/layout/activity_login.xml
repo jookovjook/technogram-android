@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jookovjook.chatapp.new_login.NewLoginActivity">
+    tools:context="com.jookovjook.chatapp.login.LoginActivity">
 
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/black_and_white" />
+        android:src="@drawable/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,6 +20,7 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:stateListAnimator="@animator/button_anim"
             android:text="Log In"/>
 
         <Button
