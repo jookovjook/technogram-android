@@ -23,27 +23,21 @@ public class MakePost extends AsyncTask<String, Void, String> {
 
     private JSONArray jsonArray;
     private ArrayList<ImageProvider> mList;
-    private int license;
-    private int stage;
     private Context context;
 
     public interface MakePostCalllback{
         void onMakePostError();
         void onAddImagesError();
-        void onAddAdvError();
-        void onAddLinksError();
         void onPostCreated();
     }
 
     private MakePostCalllback makePostCalllback;
 
-    public MakePost(String title, String description, ArrayList<ImageProvider> mList, int branch
-                        ,MakePostCalllback makePostCalllback, int license, int stage, Context context){
+    public MakePost(String title, String description, ArrayList<ImageProvider> mList,
+                    MakePostCalllback makePostCalllback, Context context){
         this.jsonArray = new JSONArray();
         this.makePostCalllback = makePostCalllback;
         this.mList = mList;
-        this.license = license;
-        this.stage = stage;
         this.context = context;
         JSONObject jsonObject = new JSONObject();
         try{
@@ -51,7 +45,6 @@ public class MakePost extends AsyncTask<String, Void, String> {
             jsonObject.put("description", description);
             jsonObject.put("user_id", 0);
             jsonObject.put("token", AuthHelper.getToken(context));
-            jsonObject.put("branch", branch);
             jsonArray.put(jsonObject);
             for(int i = 0; i < 1; i++){
                 jsonObject = new JSONObject();
@@ -105,7 +98,7 @@ public class MakePost extends AsyncTask<String, Void, String> {
         if(error){
             makePostCalllback.onMakePostError();
         }else{
-            if(mList.size()>1){
+            if(mList.size() > 1){
                 AddImagesToPost addImagesToPost = new AddImagesToPost(publication_id, mList, context);
                 addImagesToPost.execute();
             }

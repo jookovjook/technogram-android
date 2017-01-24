@@ -54,7 +54,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private String img_link;
     private RecyclerView recyclerView;
     private CircleImageView avatar, avatar_;
-    private TextView title, username, description, datetime, stars;
+    private TextView title, username, description, datetime;
     private EditText editText;
     private Button send;
     private ImageButton star_button;
@@ -73,7 +73,6 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         datetime = (TextView) findViewById(R.id.datetime);
         editText = (EditText) findViewById(R.id.editText);
         send = (Button) findViewById(R.id.send_button);
-        stars = (TextView) findViewById(R.id.stars);
         comment_layout = (LinearLayout) findViewById(R.id.comment_layout);
         textView1 = (TextView) findViewById(R.id.textView1);
         //star_button = (ImageButton) findViewById(R.id.star_button);
@@ -206,23 +205,18 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         this.datetime.setText(DateTimeConverter.convert(date));
         if(stars < 1) stars = 1;
         stars_int = stars - 1;
-        this.stars.setText(String.valueOf(stars_int));
     }
 
     @Override
     public void onGotSoftAdv(int license, int stage) {
         String license_str = SoftAdd.getLicenseById(license);
         if(!license_str.equals("")) {
-            //TextView license_text = (TextView) findViewById(R.id.license);
-            //license_text.setText(" " + license_str + " ");
-            //license_text.setVisibility(View.VISIBLE);
+
         }
 
         String stage_str = SoftAdd.getStageById(stage);
         if(!stage_str.equals("")){
-            //TextView stage_text = (TextView) findViewById(R.id.stage);
-            //stage_text.setText(" " + stage_str + " ");
-            //stage_text.setVisibility(View.VISIBLE);
+
         }
     }
 
