@@ -1,7 +1,6 @@
 package com.jookovjook.chatapp.pub;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -25,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jookovjook.chatapp.LoginActivity;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
 import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
@@ -280,11 +278,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     }
 
     private void logOut(){
-        setResult(RESULT_OK, null);
-        finish();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+
     }
 
     private void customTextView(TextView view) {
