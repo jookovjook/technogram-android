@@ -22,10 +22,4 @@
         android:title="@string/publication_activity"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/new_pub"
-        android:orderInCategory="104"
-        android:title="New Pub"
-        app:showAsAction="never"/>
-
 </menu>

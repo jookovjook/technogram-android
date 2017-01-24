@@ -16,7 +16,6 @@ import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
 import com.jookovjook.chatapp.network.MakePost;
 import com.jookovjook.chatapp.new_new_pub.ImageAdapter;
 import com.jookovjook.chatapp.new_new_pub.ImageProvider;
-import com.jookovjook.chatapp.new_pub.LinkProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class NewPublicationActivity extends AppCompatActivity implements ImagesL
                 if(check != 0) return;
                 String title_ = title.getText().toString();
                 String description_ = description.getText().toString();
-                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, 0, 0, new ArrayList<LinkProvider>(), NewPublicationActivity.this);
+                MakePost makePost = new MakePost(title_, description_, mList, 1, calllback, 0, 0, NewPublicationActivity.this);
                 makePost.execute();
             }
         });

@@ -46,7 +46,6 @@
         <activity
             android:name=".new_publication.NewPublicationActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".new_pub.NewPubActivity" />
         <activity
             android:name=".pub.PubActivity"
             android:theme="@style/UPActivityTheme" />

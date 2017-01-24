@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.new_pub.LinkProvider;
 import com.jookovjook.chatapp.new_new_pub.ImageProvider;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
@@ -24,7 +23,6 @@ public class MakePost extends AsyncTask<String, Void, String> {
 
     private JSONArray jsonArray;
     private ArrayList<ImageProvider> mList;
-    private ArrayList<LinkProvider> nList;
     private int license;
     private int stage;
     private Context context;
@@ -40,12 +38,10 @@ public class MakePost extends AsyncTask<String, Void, String> {
     private MakePostCalllback makePostCalllback;
 
     public MakePost(String title, String description, ArrayList<ImageProvider> mList, int branch
-                        ,MakePostCalllback makePostCalllback, int license, int stage,
-                    ArrayList<LinkProvider> nList, Context context){
+                        ,MakePostCalllback makePostCalllback, int license, int stage, Context context){
         this.jsonArray = new JSONArray();
         this.makePostCalllback = makePostCalllback;
         this.mList = mList;
-        this.nList = nList;
         this.license = license;
         this.stage = stage;
         this.context = context;
@@ -112,12 +108,6 @@ public class MakePost extends AsyncTask<String, Void, String> {
             if(mList.size()>1){
                 AddImagesToPost addImagesToPost = new AddImagesToPost(publication_id, mList, context);
                 addImagesToPost.execute();
-            }
-            AddAdvToSoft addAdvToSoft = new AddAdvToSoft(publication_id, license, stage, context);
-            addAdvToSoft.execute();
-            if (nList.size() > 0) {
-                AddLinksToSoft addLinksToSoft = new AddLinksToSoft(publication_id, nList, context);
-                addLinksToSoft.execute();
             }
             makePostCalllback.onPostCreated();
         }

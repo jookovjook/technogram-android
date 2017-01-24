@@ -21,7 +21,6 @@ import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
 import com.jookovjook.chatapp.new_login.NewLoginActivity;
 import com.jookovjook.chatapp.new_new_pub.NewPubFragment;
-import com.jookovjook.chatapp.new_pub.NewPubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
 
@@ -96,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.publication_activity:
                 Intent intent3 = new Intent(MainActivity.this, TestActivity.class);
                 startActivity(intent3);
-                return true;
-            case R.id.new_pub:
-                Intent intent4 = new Intent(MainActivity.this, NewPubActivity.class);
-                startActivity(intent4);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

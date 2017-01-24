@@ -32,7 +32,7 @@ import es.guiguegon.gallerymodule.GalleryHelper;
 import es.guiguegon.gallerymodule.model.GalleryMedia;
 
 public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
-        HashTagsAdapter.HashTagCallback, LinksAdapter.LinksAdapterCallback {
+        HashTagsAdapter.HashTagCallback {
 
     //UI
     EditText editText;
@@ -47,9 +47,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     ArrayList<ImageProvider> imageList = new ArrayList<>();
     HashTagsAdapter hashTagsAdapter;
     ArrayList<HashTagsProvider> hashTagList = new ArrayList<>();
-
-    LinksAdapter linksAdapter;
-    ArrayList<LinksProvider> linksList = new ArrayList<>();
 
     //constants
     private static final int MAX_IMAGES = 20;
@@ -338,10 +335,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         hashTagsAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onTextAdded() {
-        linksList.add(new LinksProvider());
-        linksAdapter.notifyDataSetChanged();
-    }
+
 
 }
