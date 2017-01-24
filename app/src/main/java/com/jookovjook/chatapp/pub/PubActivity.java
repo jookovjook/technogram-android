@@ -215,16 +215,16 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     public void onGotSoftAdv(int license, int stage) {
         String license_str = SoftAdd.getLicenseById(license);
         if(!license_str.equals("")) {
-            TextView license_text = (TextView) findViewById(R.id.license);
-            license_text.setText(" " + license_str + " ");
-            license_text.setVisibility(View.VISIBLE);
+            //TextView license_text = (TextView) findViewById(R.id.license);
+            //license_text.setText(" " + license_str + " ");
+            //license_text.setVisibility(View.VISIBLE);
         }
 
         String stage_str = SoftAdd.getStageById(stage);
         if(!stage_str.equals("")){
-            TextView stage_text = (TextView) findViewById(R.id.stage);
-            stage_text.setText(" " + stage_str + " ");
-            stage_text.setVisibility(View.VISIBLE);
+            //TextView stage_text = (TextView) findViewById(R.id.stage);
+            //stage_text.setText(" " + stage_str + " ");
+            //stage_text.setVisibility(View.VISIBLE);
         }
     }
 

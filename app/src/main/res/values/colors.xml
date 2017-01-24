@@ -11,9 +11,12 @@
     <color name="colorGreen">#91b309</color>
     <color name="colorBlue">#1E1882</color>
 
+
+    <!--TODO deletet his
     <color name="material_login_login_color">@color/colorAccent</color>
     <color name="material_login_register_color">@color/colorPrimary</color>
     <color name="material_login_login_error_color">#ffbebe</color>
     <color name="material_login_register_error_color">#600002</color>
+    -->
 
 </resources>
