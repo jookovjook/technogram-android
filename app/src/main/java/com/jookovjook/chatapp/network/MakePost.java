@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.new_pub.LinkProvider;
-import com.jookovjook.chatapp.new_publication.ImageProvider;
+import com.jookovjook.chatapp.new_new_pub.ImageProvider;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;

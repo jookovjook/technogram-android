@@ -41,9 +41,6 @@
             android:name=".user_profile.UserProfileActivity"
             android:theme="@style/UPActivityTheme" />
         <activity
-            android:name=".publication.PublicationActivity"
-            android:theme="@style/UPActivityTheme" />
-        <activity
             android:name="es.guiguegon.gallerymodule.GalleryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity

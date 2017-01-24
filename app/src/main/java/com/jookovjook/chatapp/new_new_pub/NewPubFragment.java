@@ -21,8 +21,6 @@ import android.widget.EditText;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
-import com.jookovjook.chatapp.new_publication.ImageAdapter;
-import com.jookovjook.chatapp.new_publication.ImageProvider;
 
 import java.util.ArrayList;
 import java.util.List;
