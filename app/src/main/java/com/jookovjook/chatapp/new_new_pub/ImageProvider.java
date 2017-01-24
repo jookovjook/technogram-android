@@ -1,4 +1,4 @@
-package com.jookovjook.chatapp.new_publication;
+package com.jookovjook.chatapp.new_new_pub;
 
 import android.util.Log;
 
