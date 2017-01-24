@@ -3,8 +3,8 @@ package com.jookovjook.chatapp.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.feed_fragment.FeedCardProvider;
-import com.jookovjook.chatapp.interfaces.GetPublicationsInterfase;
+import com.jookovjook.chatapp.interfaces.NewGetPublicationsInterfase;
+import com.jookovjook.chatapp.new_feed_fragment.FeedCardProvider;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -23,9 +23,9 @@ public class GetPublications extends AsyncTask<String, Void, String> {
 
     private int type;
     private JSONObject jsonObject;
-    private GetPublicationsInterfase getPsI;
+    private NewGetPublicationsInterfase getPsI;
 
-    public GetPublications(int type, int param, GetPublicationsInterfase getPsI, int last_id){
+    public GetPublications(int type, int param, NewGetPublicationsInterfase getPsI, int last_id){
         this.getPsI = getPsI;
         this.type = type;
         this.jsonObject = new JSONObject();
@@ -43,7 +43,6 @@ public class GetPublications extends AsyncTask<String, Void, String> {
         String s = "";
         try {
             URL url;
-            //url = new URL(Config.GET_ALL_PUBLICATIONS_URL);
             if(type == 0) {
                 url = new URL(Config.GET_USER_PUBLICATIONS_URL);
             }else{

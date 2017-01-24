@@ -1,8 +1,8 @@
 package com.jookovjook.chatapp.feed_fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +17,11 @@ import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
 import com.jookovjook.chatapp.network.Server;
 
+import org.zakariya.stickyheaders.PagedLoadScrollListener;
+import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
+
 public class FeedFragment extends Fragment implements GetPubsInterfase, Server.ServerCallback {
 
-    private FeedCardAdapter feedCardAdapter;
     private int type;
     private int param;
     Boolean loading = true;
@@ -30,6 +32,8 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
     private TextView suka;
     Server.ServerCallback callback = this;
     int tapCount = 0;
+    private com.jookovjook.chatapp.new_feed_fragment.FeedCardAdapter feedCardAdapter;
+    PagedLoadScrollListener.LoadCompleteNotifier loadCompleteNotifier;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,12 +61,38 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
 
     private void bindFragment(View view){
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this);
+        //feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this);
         loading = true;
-        final LinearLayoutManager mLayoutManager  = new LinearLayoutManager(getActivity());
+        //final LinearLayoutManager mLayoutManager  = new LinearLayoutManager(getActivity());
         assert recyclerView != null;
-        recyclerView.setLayoutManager(mLayoutManager);
+        feedCardAdapter = new com.jookovjook.chatapp.new_feed_fragment.FeedCardAdapter(type, param, getActivity(), this);
+        //recyclerView.setLayoutManager(mLayoutManager);
+        //recyclerView.setAdapter(feedCardAdapter);
+
+        final StickyHeaderLayoutManager stickyHeaderLayoutManager = new StickyHeaderLayoutManager();
+        recyclerView.setLayoutManager(stickyHeaderLayoutManager);
+
+        stickyHeaderLayoutManager.setHeaderPositionChangedCallback(new StickyHeaderLayoutManager.HeaderPositionChangedCallback() {
+            @Override
+            public void onHeaderPositionChanged(int sectionIndex, View header, StickyHeaderLayoutManager.HeaderPosition oldPosition, StickyHeaderLayoutManager.HeaderPosition newPosition) {
+                //Log.i(TAG, "onHeaderPositionChanged: section: " + sectionIndex + " -> old: " + oldPosition.name() + " new: " + newPosition.name());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    boolean elevated = newPosition == StickyHeaderLayoutManager.HeaderPosition.STICKY;
+                    header.setElevation(elevated ? 8 : 0);
+                }
+            }
+        });
+
         recyclerView.setAdapter(feedCardAdapter);
+
+//        recyclerView.addOnScrollListener(new PagedLoadScrollListener(stickyHeaderLayoutManager) {
+//            @Override
+//            public void onLoadMore(int page, LoadCompleteNotifier loadComplete) {
+//                FeedFragment.this.loadCompleteNotifier = loadCompleteNotifier;
+//                feedCardAdapter.loadNextTen();
+//            }
+//        });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int visibleItemCount;
             int totalItemCount;
@@ -73,8 +103,8 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 visibleItemCount = recyclerView.getChildCount();
-                totalItemCount = mLayoutManager.getItemCount();
-                firstVisibleItemIndex = mLayoutManager.findFirstVisibleItemPosition();
+                totalItemCount = stickyHeaderLayoutManager.getItemCount();
+                firstVisibleItemIndex = stickyHeaderLayoutManager.getFirstVisibleItemViewHolder(true).getPosition();
 
 //                if (loading) {
 //                    if (totalItemCount > previousTotal) {
@@ -83,15 +113,15 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
 //                    }
 //                }
                 if(!loaded_all)
-                if(!loading)
-                    if ((totalItemCount - visibleItemCount) <= firstVisibleItemIndex) {
-                        Log.i("RV", "end of list reached");
-                        feedCardAdapter.loadNextTen();
-                        loading = true;
-                        //you should start loading bottom elements
-                        Log.i("RV", "start loading");
+                    if(!loading)
+                        if ((totalItemCount - visibleItemCount) <= firstVisibleItemIndex) {
+                            Log.i("RV", "end of list reached");
+                            feedCardAdapter.loadNextTen();
+                            loading = true;
+                            //you should start loading bottom elements
+                            Log.i("RV", "start loading");
 
-                    }
+                        }
 //                    else if (firstVisibleItemIndex == 0){
 //                        Log.i("RV", "top of list reached");
 //                        //loading = true;

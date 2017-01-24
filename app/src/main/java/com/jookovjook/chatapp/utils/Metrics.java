@@ -5,6 +5,9 @@ import android.content.res.Resources;
 
 public class Metrics {
 
+    public int screenWidth;
+    public int screenHeight;
+
     public  static int dpToPx(int dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);

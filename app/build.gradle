@@ -68,4 +68,6 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
     compile 'com.github.asyl.animation:arcanimator:1.0.0'
+
+    compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
 }

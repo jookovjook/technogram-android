@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f0f0f0"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:id="@+id/headerLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="#f0f0f0">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/profile_image_small"
+            app:border_color="@color/colorPrimary"
+            app:border_width="1dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:text="username"
+                android:id="@+id/feed_card_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Today at 10:40 PM"
+                android:textSize="13sp"
+                android:alpha="0.7"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_marginRight="1dp"
+            android:layout_width="24dp"
+            android:minWidth="24dp"
+            android:layout_height="30dp"
+            android:id="@+id/card_more_button"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/dialog2_card_more_button_selector"
+            android:layout_weight="0" />
+
+    </LinearLayout>
+
+</LinearLayout>

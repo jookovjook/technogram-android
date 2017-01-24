@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#e0e0e0"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:clipToPadding="false"
+        android:elevation="4dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="#f0f0f0">
+
+        <ImageView
+            android:transitionName="main_image_transition"
+            android:id="@+id/main_image"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/nature_1"/>
+
+        <LinearLayout
+            android:clipToPadding="false"
+            android:elevation="4dp"
+            android:background="#f0f0f0"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/feed_card_title"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Lorem ipsum"/>
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:text="#dolor sit amet, consectetur ad ipiscing elit, sed do #eiusmod tempor #incididunt ut labore et dolore #dolor sit amet, consectetur ad ipiscing elit, sed do #eiusmod tempor #incididunt ut labore et dolore"
+                android:maxLines="2"/>
+
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/views"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:text="10 views"/>
+
+                <LinearLayout
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlue"
+                        android:text="Add a comment (10)..."/>
+
+                    <ImageView
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_favorite_black_48dp"
+                        android:tint="#FF8787"/>
+
+                    <TextView
+                        android:id="@+id/likes"
+                        android:layout_gravity="center"
+                        android:textColor="#FF8787"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(5)" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationsInterfase;
 import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
-import com.jookovjook.chatapp.network.GetPublications;
 import com.jookovjook.chatapp.pub.PubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
@@ -65,7 +64,6 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
         public TextView comments;
         public ImageButton card_more_button;
         public LinearLayout down_layout;
-        public CircleImageView circleImageView;
         public CardView cardView;
         public ImageView main_image;
         public TextView text;
@@ -99,8 +97,8 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
     }
 
     public void execute(){
-        GetPublications getPublications = new GetPublications(type, param, this, -1);
-        getPublications.execute();
+        //GetPublications getPublications = new GetPublications(type, param, this, -1);
+        //getPublications.execute();
     }
 
     @Override
@@ -201,8 +199,8 @@ public class FeedCardAdapter extends RecyclerView.Adapter<FeedCardAdapter.MyView
 
     public void loadNextTen(){
         int last_pub_id = mList.get(mList.size() - 1).getPublication_id();
-        GetPublications getPublications = new GetPublications(type, param, this, last_pub_id);
-        getPublications.execute();
+        //GetPublications getPublications = new GetPublications(type, param, this, last_pub_id);
+        //getPublications.execute();
     };
 
 }

@@ -89,7 +89,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
             img_link = bundle.getString("img_link");
             pub_id = bundle.getInt("publication_id");
             Log.i("pub activity ", String.valueOf(pub_id));
-            ActivityCompat.postponeEnterTransition(this);
+            //ActivityCompat.postponeEnterTransition(this);
             GetPublicationImages getPublicationImages = new GetPublicationImages(pub_id, this);
             getPublicationImages.execute();
             GetPublication getPublication = new GetPublication(pub_id, this);
