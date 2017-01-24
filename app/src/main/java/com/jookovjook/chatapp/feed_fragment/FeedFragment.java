@@ -32,7 +32,7 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
     private TextView suka;
     Server.ServerCallback callback = this;
     int tapCount = 0;
-    private com.jookovjook.chatapp.new_feed_fragment.FeedCardAdapter feedCardAdapter;
+    private FeedCardAdapter feedCardAdapter;
     PagedLoadScrollListener.LoadCompleteNotifier loadCompleteNotifier;
 
     @Override
@@ -65,7 +65,7 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
         loading = true;
         //final LinearLayoutManager mLayoutManager  = new LinearLayoutManager(getActivity());
         assert recyclerView != null;
-        feedCardAdapter = new com.jookovjook.chatapp.new_feed_fragment.FeedCardAdapter(type, param, getActivity(), this);
+        feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this);
         //recyclerView.setLayoutManager(mLayoutManager);
         //recyclerView.setAdapter(feedCardAdapter);
 

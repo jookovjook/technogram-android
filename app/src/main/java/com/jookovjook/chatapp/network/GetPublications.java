@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jookovjook.chatapp.interfaces.NewGetPublicationsInterfase;
-import com.jookovjook.chatapp.new_feed_fragment.FeedCardProvider;
+import com.jookovjook.chatapp.feed_fragment.FeedCardProvider;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
