@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,8 +23,8 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPubsInterfase;
 import com.jookovjook.chatapp.interfaces.NewGetPublicationsInterfase;
-import com.jookovjook.chatapp.network.GetPublications;
-import com.jookovjook.chatapp.pub.PubActivity;
+import com.jookovjook.chatapp.network.GetAllPublications;
+import com.jookovjook.chatapp.network.LikePub;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
@@ -35,12 +38,13 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicationsInterfase {
+public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicationsInterfase, LikePub.LikePubCallback {
 
     static final String TAG = FeedCardAdapter.class.getSimpleName();
     static final boolean USE_DEBUG_APPEARANCE = false;
     private int screenWidth;
     private int screenHeight;
+    private LikePub.LikePubCallback callback = this;
 
     private ArrayList<FeedCardProvider> mList;
     private Context context;
@@ -48,8 +52,13 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
     private int type;
     private int param;
     private GetPubsInterfase gPI;
+    private FeedCardAdapterCallback feedCallback;
 
     private int REQUEST_EXIT = 1;
+
+    public interface FeedCardAdapterCallback{
+        void onDoubleLiked();
+    }
 
     @Override
     public void onGotPublication(FeedCardProvider feedCardProvider) {
@@ -63,6 +72,26 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         gPI.onGotAll(last_id);
     }
 
+    @Override
+    public void onDisliked() {
+
+    }
+
+    @Override
+    public void onLiked() {
+
+    }
+
+    @Override
+    public void onDoubleLiked() {
+
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
     public class ItemViewHolder extends SectioningAdapter.ItemViewHolder {
 
         RelativeLayout relativeLayout;
@@ -73,6 +102,7 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         public TextView comments;
         public TextView likes;
         public ImageView main_image;
+        public ImageView heart;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -83,6 +113,7 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
             likes = (TextView) itemView.findViewById(R.id.likes);
             main_image = (ImageView) itemView.findViewById(R.id.main_image);
             text = (TextView) itemView.findViewById(R.id.text);
+            heart = (ImageView) itemView.findViewById(R.id.heart);
         }
 
     }
@@ -106,8 +137,8 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         }
     }
 
-
-    public FeedCardAdapter(int type, int param, Context context, GetPubsInterfase gPI) {
+    public FeedCardAdapter(int type, int param, Context context, GetPubsInterfase gPI, FeedCardAdapterCallback feedCallback) {
+        this.feedCallback = feedCallback;
         DisplayMetrics displaymetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displaymetrics);
@@ -122,8 +153,8 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
     }
 
     public void execute(){
-        GetPublications getPublications = new GetPublications(type, param, this, -1);
-        getPublications.execute();
+        GetAllPublications getAllPublications = new GetAllPublications(context, type, param, this, -1);
+        getAllPublications.execute();
     }
 
     @Override
@@ -149,21 +180,21 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
     @Override
     public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int itemType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.new_pub_item, parent, false);
+        View v = inflater.inflate(R.layout.pub_item, parent, false);
         return new ItemViewHolder(v);
     }
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.new_pub_header, parent, false);
+        View v = inflater.inflate(R.layout.pub_header, parent, false);
         return new HeaderViewHolder(v);
     }
 
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, int sectionIndex, int itemIndex, int itemType) {
+    public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, final int sectionIndex, int itemIndex, int itemType) {
         final ItemViewHolder ivh = (ItemViewHolder) viewHolder;
         ViewGroup.LayoutParams layoutParams =  ivh.relativeLayout.getLayoutParams();
         layoutParams.height = screenWidth;
@@ -172,26 +203,100 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         final FeedCardProvider feedCardProvider = mList.get(sectionIndex);
         ivh.title.setText(feedCardProvider.title);
         ivh.text.setText(feedCardProvider.text);
-        ivh.views.setText(String.valueOf(feedCardProvider.views) + " views");
-        ivh.comments.setText("Add a comment (" + String.valueOf(feedCardProvider.views) + ")...");
-        ivh.likes.setText("(" + String.valueOf(feedCardProvider.likes) + ")");
+        ivh.views.setText(String.valueOf(feedCardProvider.views - 1) + " views");
+        ivh.comments.setText("Add a comment (" + String.valueOf(feedCardProvider.comments) + ")...");
+        ivh.likes.setText("(" + String.valueOf(feedCardProvider.likes - 1) + ")");
         Picasso.with(context)
                 .load(Config.IMAGE_RESOURCES_URL + feedCardProvider.img_link)
-                .resize(720,720).onlyScaleDown().centerCrop().into(ivh.main_image);
-        ivh.main_image.setOnClickListener(new View.OnClickListener() {
+                .resize(720, 720).onlyScaleDown().centerCrop().into(ivh.main_image);
+        ivh.main_image.setOnClickListener(new DoubleClickListener() {
             @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(context, PubActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("publication_id",feedCardProvider.pub_id);
-                bundle.putString("img_link",feedCardProvider.img_link);
-                intent.putExtras(bundle);
-                //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, (View) ivh.main_image, "main_image_transition");
-                //((Activity) context).startActivityForResult(intent, REQUEST_EXIT, options.toBundle());
-                context.startActivity(intent);
+            public void onSingleClick(View v) {
+                Log.i("click", "single");
+            }
+
+            @Override
+            public void onDoubleClick(View v) {
+                Log.i("click", "double");
             }
         });
+//                  final Intent intent = new Intent(context, PubActivity.class);
+//                  Bundle bundle = new Bundle();
+//                  bundle.putInt("publication_id",feedCardProvider.pub_id);
+//                  bundle.putString("img_link",feedCardProvider.img_link);
+//                  intent.putExtras(bundle);
+//                  //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, (View) ivh.main_image, "main_image_transition");
+//                  //((Activity) context).startActivityForResult(intent, REQUEST_EXIT, options.toBundle());
+//                  context.startActivity(intent);
+
+
+        setLike(ivh.heart, feedCardProvider.like);
+        ivh.heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikePub likePub = new LikePub(callback, context, feedCardProvider.pub_id);
+                likePub.execute();
+                switch (mList.get(sectionIndex).like){
+                    case 0:
+                        mList.get(sectionIndex).like = 1;
+                        mList.get(sectionIndex).likes ++;
+                        setLike(ivh.heart, 1);
+                        incLikes(ivh.likes, 1, mList.get(sectionIndex).likes);
+                        break;
+                    case 1:
+                        feedCallback.onDoubleLiked();
+                        mList.get(sectionIndex).like = 2;
+                        mList.get(sectionIndex).likes ++;
+                        setLike(ivh.heart, 2);
+                        incLikes(ivh.likes, 2, mList.get(sectionIndex).likes);
+                        break;
+                    default:
+                        mList.get(sectionIndex).like = 0;
+                        mList.get(sectionIndex).likes -= 2;
+                        setLike(ivh.heart, 0);
+                        incLikes(ivh.likes, 0, mList.get(sectionIndex).likes);
+                        break;
+                }
+            }
+        });
+
     };
+
+    private void setLike(ImageView imageView, int like){
+        if(like == 1){
+            imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.heart_full));
+            imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorHeartUnliked));
+            imageView.clearAnimation();
+        }else{
+            if(like == 2){
+                imageView.clearAnimation();
+                imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.heart_double));
+                imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorHeart));
+                Animation heartAnimation = AnimationUtils.loadAnimation(context, R.anim.heart_anim);
+                imageView.setAnimation(heartAnimation);
+            }else{
+                imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.heart_empty));
+                imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorHeartUnliked));
+                imageView.clearAnimation();
+            }
+        }
+    }
+
+    private void incLikes(TextView textView, int i, int current){
+        switch(i){
+            case 1:
+                textView.setText("(" + String.valueOf(current - 1) + ")");
+                textView.setTextColor(ContextCompat.getColor(context, R.color.colorHeartUnliked));
+                break;
+            case 2:
+                textView.setText("(" + String.valueOf(current - 1) + ")");
+                textView.setTextColor(ContextCompat.getColor(context, R.color.colorHeart));
+                break;
+            default:
+                textView.setText("(" + String.valueOf(current - 1) + ")");
+                textView.setTextColor(ContextCompat.getColor(context, R.color.colorHeartUnliked));
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -232,8 +337,8 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
     public void loadNextTen(){
         int last_pub_id = mList.get(mList.size() - 1).pub_id;
         Log.i("New Feed Fragmnet", "loadNextTexn, pub_id = " + String.valueOf(last_pub_id));
-        GetPublications getPublications = new GetPublications(type, param, this, last_pub_id);
-        getPublications.execute();
+        GetAllPublications getAllPublications = new GetAllPublications(context, type, param, this, last_pub_id);
+        getAllPublications.execute();
     };
 
 }

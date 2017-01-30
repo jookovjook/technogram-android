@@ -16,12 +16,11 @@ public class Config {
     public static final String GET_PUBLICATION_IMAGES_URL = SERVER_URL +  "get_publication_images.php";
     public static final String GET_USER_SMALL_AVATAR_URL = SERVER_URL + "get_user_avatar_small.php";
     public static final String IMAGE_RESOURCES_URL = SERVER_URL + "image_resources/";
-    public static final String ADD_ADV_TO_SOFT_URL = SERVER_URL + "add_adv_to_soft.php";
-    public static final String ADD_LINKS_TO_SOFT_URL = SERVER_URL + "add_links_to_soft.php";
     public static final String REGISTER_URL = SERVER_URL + "register.php";
     public static final String CHECK_URL = SERVER_URL + "check.php";
     public static final String UPDATE_PROFILE_URL = SERVER_URL + "update_profile.php";
     public static final String UPDATE_PROFILE_IMAGE_URL = SERVER_URL + "update_profile_image.php";
     public static final String TOKEN = "aWAt5R93QJnPFwq5IhbLCGO2Fe7Heuv";
     public static final String CHECK_TOKEN_URL = SERVER_URL + "check_token.php";
+    public static final String LIKE_PUB_URL = SERVER_URL + "like_pub";
 }

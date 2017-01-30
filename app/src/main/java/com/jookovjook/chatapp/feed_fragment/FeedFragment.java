@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,7 +23,7 @@ import com.jookovjook.chatapp.network.Server;
 import org.zakariya.stickyheaders.PagedLoadScrollListener;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-public class FeedFragment extends Fragment implements GetPubsInterfase, Server.ServerCallback {
+public class FeedFragment extends Fragment implements GetPubsInterfase, Server.ServerCallback, FeedCardAdapter.FeedCardAdapterCallback {
 
     private int type;
     private int param;
@@ -30,10 +33,12 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
     private ProgressBar loading_spinner;
     private Button retryButton;
     private TextView suka;
+    private ImageView bigHeart;
     Server.ServerCallback callback = this;
     int tapCount = 0;
     private FeedCardAdapter feedCardAdapter;
     PagedLoadScrollListener.LoadCompleteNotifier loadCompleteNotifier;
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,12 +65,13 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
     }
 
     private void bindFragment(View view){
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        bigHeart = (ImageView) view.findViewById(R.id.bigHeart);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         //feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this);
         loading = true;
         //final LinearLayoutManager mLayoutManager  = new LinearLayoutManager(getActivity());
         assert recyclerView != null;
-        feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this);
+        feedCardAdapter = new FeedCardAdapter(type, param, getActivity(), this, this);
         //recyclerView.setLayoutManager(mLayoutManager);
         //recyclerView.setAdapter(feedCardAdapter);
 
@@ -105,7 +111,6 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = stickyHeaderLayoutManager.getItemCount();
                 firstVisibleItemIndex = stickyHeaderLayoutManager.getFirstVisibleItemViewHolder(true).getPosition();
-
 //                if (loading) {
 //                    if (totalItemCount > previousTotal) {
 //                        loading = false;
@@ -162,5 +167,32 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
         networkLayout.setVisibility(View.VISIBLE);
         loading_spinner.setVisibility(View.INVISIBLE);
         if(tapCount <= 4 || tapCount >= 7) suka.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onDoubleLiked() {
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.recycler_anim);
+        Animation bigHeartAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.big_heart_anim);
+        recyclerView.clearAnimation();
+        recyclerView.setAnimation(animation);
+        this.bigHeart.setVisibility(View.VISIBLE);
+        bigHeartAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                bigHeart.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        bigHeart.clearAnimation();
+        this.bigHeart.setAnimation(bigHeartAnim);
     }
 }

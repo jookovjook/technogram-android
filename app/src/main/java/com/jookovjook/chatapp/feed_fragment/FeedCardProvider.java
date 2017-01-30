@@ -16,10 +16,11 @@ public class FeedCardProvider {
     public String text;
     public Date date;
     public String small_avatar;
+    public int like;
 
     public FeedCardProvider(int pub_id, int user_id, String username, String title,
                             int views, int likes, int comments, String img_link,
-                            String text, Date date, String small_avatar){
+                            String text, Date date, String small_avatar, int like){
         this.pub_id = pub_id;
         this.user_id = user_id;
         this.username = username;
@@ -31,6 +32,7 @@ public class FeedCardProvider {
         this.text = text;
         this.date = date;
         this.small_avatar = small_avatar;
+        this.like = like;
     }
 
 }

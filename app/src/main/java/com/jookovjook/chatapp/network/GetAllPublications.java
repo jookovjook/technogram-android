@@ -1,10 +1,12 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jookovjook.chatapp.interfaces.NewGetPublicationsInterfase;
 import com.jookovjook.chatapp.feed_fragment.FeedCardProvider;
+import com.jookovjook.chatapp.interfaces.NewGetPublicationsInterfase;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -19,19 +21,20 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GetPublications extends AsyncTask<String, Void, String> {
+public class GetAllPublications extends AsyncTask<String, Void, String> {
 
     private int type;
     private JSONObject jsonObject;
     private NewGetPublicationsInterfase getPsI;
 
-    public GetPublications(int type, int param, NewGetPublicationsInterfase getPsI, int last_id){
+    public GetAllPublications(Context context, int type, int param, NewGetPublicationsInterfase getPsI, int last_id){
         this.getPsI = getPsI;
         this.type = type;
         this.jsonObject = new JSONObject();
             try {
                 if(type == 0) jsonObject.put("user_id", param);
                 jsonObject.put("last_id", last_id);
+                jsonObject.put("token", AuthHelper.getToken(context));
             } catch (Exception e) {
                 Log.i("get publications", "error creating json");
             }
@@ -78,7 +81,7 @@ public class GetPublications extends AsyncTask<String, Void, String> {
                 int user_id = jsonObject.getInt("user_id");
                 String title = jsonObject.getString("title");
                 int views = jsonObject.getInt("views");
-                int stars = jsonObject.getInt("stars");
+                int stars = jsonObject.getInt("likes") + jsonObject.getInt("x2likes");
                 int comments = jsonObject.getInt("comments");
                 String username = jsonObject.getString("username");
                 String img_link = jsonObject.getString("img_link");
@@ -86,8 +89,10 @@ public class GetPublications extends AsyncTask<String, Void, String> {
                 String datetime = jsonObject.getString("datetime");
                 Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(datetime);
                 String small_avatar = jsonObject.getString("small_avatar");
+                int like = jsonObject.getInt("like");
                 FeedCardProvider feedCardProvider = new FeedCardProvider
-                        (publication_id, user_id, username, title, views, stars, comments, img_link, text, date, small_avatar);
+                        (publication_id, user_id, username, title, views, stars, comments, img_link,
+                                text, date, small_avatar, like);
                 getPsI.onGotPublication(feedCardProvider);
             }
             getPsI.onGotAll(last_id);
