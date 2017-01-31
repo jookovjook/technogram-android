@@ -1,12 +1,13 @@
 package com.jookovjook.chatapp.login;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Point;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
 
     Button loginButton, signupButton, loginButtonHidden, signupButtonHidden;
     Button centerButton, bottomButton;
+    FrameLayout fragmentContainer;
     int absHeight, absWidth;
     int rectLogin[] = new int[2];
     int butFlyTime = 350;
@@ -82,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
         centerButton = (Button) findViewById(R.id.centerButton);
         bottomButton = (Button) findViewById(R.id.bottomButton);
         skipTextView = (TextView) findViewById(R.id.skipTextView);
+        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
     }
 
     private void adjustViews(){
@@ -110,13 +114,10 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
             @Override
             public void onClick(View v) {
                 loginButton.getLocationOnScreen(rectLogin);
-
                 ArcAnimator arcAnimator = ArcAnimator.createArcAnimator(loginButton, centerButton, 90, Side.RIGHT).setDuration(butFlyTime);
                 arcAnimator.addListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
-
-                    }
+                    public void onAnimationStart(com.nineoldandroids.animation.Animator animation) { }
 
                     @Override
                     public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
@@ -124,14 +125,10 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
                     }
 
                     @Override
-                    public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
-
-                    }
+                    public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) { }
 
                     @Override
-                    public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
-
-                    }
+                    public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) { }
                 });
                 arcAnimator.setInterpolator(new AccelerateInterpolator());
                 arcAnimator.start();
@@ -160,17 +157,16 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
 
     @Override
     public void onFragmentTouched(Fragment fragment, float x, float y) {
+        fragmentContainer.clearAnimation();
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.colorEmpty));
+        ObjectAnimator.ofFloat(fragmentContainer, "z", 0).setDuration(0).start();
         if (fragment instanceof LoginFragment) {
-
             final LoginFragment theFragment = (LoginFragment) fragment;
-
             Animator unreveal = theFragment.prepareUnrevealAnimator(x, y);
-
             unreveal.addListener(new Animator.AnimatorListener() {
 
                 @Override
-                public void onAnimationStart(Animator animation) {
-                }
+                public void onAnimationStart(Animator animation) { }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -210,17 +206,39 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animation) {
-                }
+                public void onAnimationCancel(Animator animation) { }
 
                 @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
+                public void onAnimationRepeat(Animator animation) { }
             });
             unreveal.start();
         }
     }
 
+    @Override
+    public void onFragmentRevealed() {
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(fragmentContainer, "z", Metrics.dpToPx(4));
+        animator.setStartDelay(300);
+        animator.setDuration(300);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                fragmentContainer.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorAccent));
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) { }
+
+            @Override
+            public void onAnimationCancel(Animator animation) { }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
+        });
+        animator.start();
+        //ObjectAnimator.ofFloat(fragmentContainer, "z", Metrics.dpToPx(4)).setDuration(300).start();
+    }
 
     @Override
     public void onSuccess() {

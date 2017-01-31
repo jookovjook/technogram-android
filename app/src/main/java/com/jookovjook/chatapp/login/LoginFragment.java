@@ -35,6 +35,7 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
     RelativeLayout redLayout;
     NewLoginFragmentCallback newLoginFragmentCallBack;
     int cx_, cy_, radius_, init_radius;
+    Boolean revealed = false;
 
     public interface NewLoginFragmentCallback{
         void onSuccess();
@@ -69,22 +70,39 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
                 final int cx = getArguments().getInt("cx");
                 final int cy = getArguments().getInt("cy");
 
-                final int radius = (int) Math.hypot(right, bottom);
+                //final int radius = (int) Math.hypot(right, bottom);
+                final int radius = (int) (Math.hypot(rootView.getHeight(), rootView.getWidth()));
 
                 cx_ = cx;
                 cy_ = cy;
                 radius_ = radius;
 
-                init_radius = (int) Math.hypot(loginButton.getHeight(), loginButton.getWidth());
+                init_radius = (int) (Math.hypot(loginButton.getHeight(), loginButton.getWidth())/3.0);
+                //init_radius = 0;
 
-                Animator reveal = ViewAnimationUtils.createCircularReveal(v, cx, cy, init_radius, radius);
+                Animator reveal = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, radius);
                 reveal.setInterpolator(new DecelerateInterpolator(2f));
                 reveal.setDuration(revealTime);
+                reveal.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        listener.onFragmentRevealed();
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        revealed = true;
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) { }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) { }
+                });
                 reveal.start();
             }
         });
-
-
 
         username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,7 +141,8 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
+                if (listener != null & revealed) {
+
                     listener.onFragmentTouched(LoginFragment.this, Metrics.dpToPx(150), Metrics.dpToPx(150));
                 }
             }
@@ -154,7 +173,7 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
      */
     public Animator prepareUnrevealAnimator(float cx, float cy) {
         int radius = getEnclosingCircleRadius(getView(), (int) cx, (int) cy);
-        Animator anim = ViewAnimationUtils.createCircularReveal(getView(), (int) cx, (int) cy, radius, 0);
+        Animator anim = ViewAnimationUtils.createCircularReveal(getView(), (int) cx, (int) cy, radius, init_radius);
         anim.setInterpolator(new AccelerateInterpolator(2f));
         anim.setDuration(unrevealTime);
         return anim;
