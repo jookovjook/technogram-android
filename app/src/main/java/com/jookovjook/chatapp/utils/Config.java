@@ -7,8 +7,8 @@ public class Config {
     public static final String MAKE_POST_URL = SERVER_URL + "make_post.php";
     public static final String ADD_IMAGES_TO_PUBLICATION_URL = SERVER_URL + "add_images_to_publication.php";
     public static final String GET_PUBLICATION_URL = SERVER_URL + "get_publication.php";
-    public static final String GET_USER_PUBLICATIONS_URL = SERVER_URL + "get_user_publications.php";
-    public static final String GET_ALL_PUBLICATIONS_URL = SERVER_URL + "get_all_publications.php";
+    public static final String GET_USER_PUBLICATIONS_URL = SERVER_URL + "get_user_pubs.php";
+    public static final String GET_ALL_PUBLICATIONS_URL = SERVER_URL + "get_all_pubs_boost.php";
     public static final String GET_USER_INFO_URL = SERVER_URL + "get_user_info.php";
     public static final String GET_OWN_INFO_URL = SERVER_URL + "get_own_info.php";
     public static final String GET_USER_ADD_INFO_URL = SERVER_URL + "get_user_add_info.php";

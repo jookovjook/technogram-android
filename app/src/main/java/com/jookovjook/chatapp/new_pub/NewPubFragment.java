@@ -125,8 +125,8 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 int all_lines = editText.getLineCount();
                 int current_line = getCurrentCursorLine(editText);
                 Log.i("lines", String.valueOf(all_lines) + " " + String.valueOf(current_line));
-                if((all_lines - current_line) <= 1)
-                    scrollView.fullScroll(View.FOCUS_DOWN);
+                //if((all_lines - current_line) <= 1)
+                    //scrollView.fullScroll(View.FOCUS_DOWN);
             }
 
         });

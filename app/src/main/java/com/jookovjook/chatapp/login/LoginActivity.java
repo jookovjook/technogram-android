@@ -37,10 +37,13 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
     int rectLogin[] = new int[2];
     int butFlyTime = 350;
     TextView skipTextView;
+    Fragment newLoginFragment;
+    ObjectAnimator elevUpAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         adjustStatusbar();
         findViews();
         calculateMetrics();
@@ -50,7 +53,8 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
 
     private void attachFragment(){
         int randomColor = getResources().getColor(R.color.colorAccent);
-        Fragment newLoginFragment = LoginFragment.newInstance(Metrics.dpToPx((int)300.0/2), Metrics.dpToPx((int)300.0/2), randomColor);
+        newLoginFragment = LoginFragment.newInstance(Metrics.dpToPx((int)300.0/2), Metrics.dpToPx((int)300.0/2), randomColor);
+
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newLoginFragment).commit();
     }
 
@@ -157,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
 
     @Override
     public void onFragmentTouched(Fragment fragment, float x, float y) {
+        elevUpAnim.cancel();
         fragmentContainer.clearAnimation();
         fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.colorEmpty));
         ObjectAnimator.ofFloat(fragmentContainer, "z", 0).setDuration(0).start();
@@ -217,11 +222,11 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
 
     @Override
     public void onFragmentRevealed() {
+        elevUpAnim = ObjectAnimator.ofFloat(fragmentContainer, "z", Metrics.dpToPx(4));
+        elevUpAnim.setStartDelay(300);
+        elevUpAnim.setDuration(300);
+        elevUpAnim.addListener(new Animator.AnimatorListener() {
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(fragmentContainer, "z", Metrics.dpToPx(4));
-        animator.setStartDelay(300);
-        animator.setDuration(300);
-        animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 fragmentContainer.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorAccent));
@@ -236,8 +241,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
             @Override
             public void onAnimationRepeat(Animator animation) { }
         });
-        animator.start();
-        //ObjectAnimator.ofFloat(fragmentContainer, "z", Metrics.dpToPx(4)).setDuration(300).start();
+        elevUpAnim.start();
     }
 
     @Override

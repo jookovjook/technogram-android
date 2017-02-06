@@ -74,6 +74,7 @@ public class GetAllPublications extends AsyncTask<String, Void, String> {
         try {
             int last_id = -1;
             jsonArray = new JSONArray(jsonResult);
+            Log.i("FeedCardAdapter", "jsonArrayLength = " + String.valueOf(jsonArray.length()));
             for(int i = 0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int publication_id = jsonObject.getInt("publication_id");
@@ -85,10 +86,22 @@ public class GetAllPublications extends AsyncTask<String, Void, String> {
                 int comments = jsonObject.getInt("comments");
                 String username = jsonObject.getString("username");
                 String img_link = jsonObject.getString("img_link");
+
+//                String filenameArray[] = img_link.split("\\.");
+//                String extension = filenameArray[filenameArray.length-1];
+//                if(!extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") & !extension.equals("gif"))
+//                    img_link = "grid.png";
+
                 String text = jsonObject.getString("text");
                 String datetime = jsonObject.getString("datetime");
                 Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(datetime);
                 String small_avatar = jsonObject.getString("small_avatar");
+
+//                filenameArray = small_avatar.split("\\.");
+//                extension = filenameArray[filenameArray.length-1];
+//                if(!extension.equals("png") & !extension.equals("jpg") & !extension.equals("jpeg") & !extension.equals("gif"))
+//                    small_avatar = "grid.png";
+
                 int like = jsonObject.getInt("like");
                 FeedCardProvider feedCardProvider = new FeedCardProvider
                         (publication_id, user_id, username, title, views, stars, comments, img_link,

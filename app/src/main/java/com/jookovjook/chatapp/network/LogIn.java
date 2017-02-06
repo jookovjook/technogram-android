@@ -84,18 +84,21 @@ public class LogIn extends AsyncTask<String, Void, String> {
                     AuthHelper.setUsername(context, username);
                     AuthHelper.setToken(context, token);
                     AuthHelper.setUserId(context, user_id);
+                    AuthHelper.setAvatar(context, jsonObject.getString("avatar"));
                     break;
                 case 1:
                     logInCallback.onWrongUsername();
                     AuthHelper.setUsername(context, "");
                     AuthHelper.setToken(context, "");
                     AuthHelper.setUserId(context, -1);
+                    AuthHelper.setAvatar(context, "");
                     break;
                 case 2:
                     logInCallback.onWrongPassword();
                     AuthHelper.setUsername(context, username);
                     AuthHelper.setToken(context, "");
                     AuthHelper.setUserId(context, -1);
+                    AuthHelper.setAvatar(context, "");
                     break;
                 default:
                     Log.i("LogIn", jsonResult);
@@ -103,6 +106,7 @@ public class LogIn extends AsyncTask<String, Void, String> {
                     AuthHelper.setUsername(context, "");
                     AuthHelper.setToken(context, "");
                     AuthHelper.setUserId(context, -1);
+                    AuthHelper.setAvatar(context, "");
                     break;
             }
         }catch(Exception e){
@@ -112,6 +116,7 @@ public class LogIn extends AsyncTask<String, Void, String> {
             AuthHelper.setUsername(context, "");
             AuthHelper.setToken(context, "");
             AuthHelper.setUserId(context, -1);
+            AuthHelper.setAvatar(context, "");
         }
     }
 }

@@ -35,7 +35,7 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
     RelativeLayout redLayout;
     NewLoginFragmentCallback newLoginFragmentCallBack;
     int cx_, cy_, radius_, init_radius;
-    Boolean revealed = false;
+    public Boolean revealed = false;
 
     public interface NewLoginFragmentCallback{
         void onSuccess();
@@ -87,12 +87,11 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
                     @Override
                     public void onAnimationStart(Animator animation) {
                         listener.onFragmentRevealed();
+                        revealed = true;
                     }
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
-                        revealed = true;
-                    }
+                    public void onAnimationEnd(Animator animation) { }
 
                     @Override
                     public void onAnimationCancel(Animator animation) { }
@@ -165,7 +164,7 @@ public class LoginFragment extends Fragment implements LogIn.LogInCallback{
     }
 
     /**
-     * Get the animator to unreveal the circle
+     * Get the ElevationUpAnim to unreveal the circle
      *
      * @param cx center x of the circle (or where the view was touched)
      * @param cy center y of the circle (or where the view was touched)

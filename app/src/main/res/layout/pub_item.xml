@@ -23,11 +23,9 @@
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/nature_1"/>
+            android:layout_height="match_parent" />
 
         <LinearLayout
-            android:focusable="true"
             android:clipToPadding="false"
             android:elevation="4dp"
             android:background="#f0f0f0"

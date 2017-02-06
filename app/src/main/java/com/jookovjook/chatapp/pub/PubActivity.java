@@ -61,6 +61,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private PostComment.PostCommentI postCommentI = this;
     private LinearLayout comment_layout;
     private TextView textView1;
+    private Boolean loggedIn = false;
 
     private void findViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -85,6 +86,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         if(bundle != null){
             img_link = bundle.getString("img_link");
             pub_id = bundle.getInt("publication_id");
+            loggedIn = bundle.getBoolean("loggedIn");
             Log.i("pub activity ", String.valueOf(pub_id));
             //ActivityCompat.postponeEnterTransition(this);
             GetPublicationImages getPublicationImages = new GetPublicationImages(pub_id, this);
@@ -104,13 +106,6 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     }
 
     private void setupOther(){
-        //        star_button.setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                stars_int ++;
-        //                stars.setText(String.valueOf(stars_int));
-        //            }
-        //        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +120,12 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
             }
         });
         customTextView(textView1);
+        if(loggedIn)
+        {
+            comment_layout.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + AuthHelper.getAvatar(this)).resize(128, 128)
+                    .onlyScaleDown().centerCrop().into(this.avatar_);
+        }
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -163,6 +164,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
                 if(position == 0) {
                     Picasso.with(PubActivity.this)
                             .load(Config.IMAGE_RESOURCES_URL + img_link)
+                            .error(R.drawable.grid)
                             .noFade().resize(720, 720).onlyScaleDown().noFade().centerCrop()
                             .into(imageView, new Callback() {
                                 @Override
@@ -180,6 +182,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
                 }else {
                     Picasso.with(PubActivity.this)
                             .load(images.get(position - 1))
+                            .error(R.drawable.grid)
                             .noFade().resize(720, 720).onlyScaleDown().noFade().centerCrop()
                             .into(imageView);
                 }
@@ -198,7 +201,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
 
     @Override
     public void onGotPublication(String title, String text, int views, int stars, int comments, String username, String avatar, Date date) {
-        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar);
+        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar).error(R.drawable.grid).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar);
         this.username.setText("\u0040" + username);
         this.title.setText(title);
         this.description.setText(text);

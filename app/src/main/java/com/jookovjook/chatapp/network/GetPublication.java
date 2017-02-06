@@ -68,13 +68,6 @@ public class GetPublication extends AsyncTask<String, Void, String> {
             String avatar = jsonObject.getString("small_avatar");
             String datetime = jsonObject.getString("datetime");
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(datetime);
-            jsonObject = jsonArray.getJSONObject(1);
-            boolean adv_exists = jsonObject.getBoolean("exists");
-            if(adv_exists){
-                int license = jsonObject.getInt("license");
-                int stage = jsonObject.getInt("stage");
-                getPI.onGotSoftAdv(license, stage);
-            }
             getPI.onGotPublication(title, text, views, stars, comments, username, avatar, date);
         } catch (Exception e){
             Log.i("get publication","error parsing income json");

@@ -26,27 +26,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#f0f0f0"
-                    android:elevation="4dp">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp" />
-
-
-                </RelativeLayout>
-
                 <EditText
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimaryDark"
@@ -56,28 +35,34 @@
                     android:gravity="start"
                     android:id="@+id/editText"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="#ffffff" />
 
-            </LinearLayout>
-
-            <RelativeLayout
-                android:elevation="4dp"
-                android:layout_weight="0"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f0f0f0">
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:background="#f0f0f0"
+                android:elevation="4dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp" />
 
                 <Button
                     android:id="@+id/doneButton"
                     android:layout_margin="16dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_accent_button"
+                    style="@style/myColoredButton"
+                    android:colorButtonNormal="@color/colorAccent"
+                    android:background="@drawable/primary"
                     android:text="DONE"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
