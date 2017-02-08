@@ -46,8 +46,12 @@
             android:name=".pub.PubActivity"
             android:theme="@style/UPActivityTheme" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".login.LoginActivity"
-            android:theme="@style/NewLoginTheme"/>
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/NewLoginTheme" />
+        <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".settings.InfoSettActivity"
+            android:theme="@style/UPActivityTheme"/>
     </application>
 
 </manifest>

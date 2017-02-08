@@ -20,6 +20,7 @@ public class UpdateProfile extends AsyncTask<String, Void, String> {
 
     private JSONObject jsonObject;
     private UpdateProfileCallback uPC = null;
+    private UpdateProfileSimpleCallback uPSC = null;
     private Boolean name = false, surname = false, about = false, username = false, password = false, email = false;
 
     public interface UpdateProfileCallback{
@@ -35,6 +36,11 @@ public class UpdateProfile extends AsyncTask<String, Void, String> {
         void onPasswordFailure();
         void onEmailSuc();
         void onEmailFailure();
+    }
+
+    public interface UpdateProfileSimpleCallback{
+        void onSuccess(String s);
+        void onError(String message);
     }
 
     public UpdateProfile(Context context){
@@ -54,6 +60,16 @@ public class UpdateProfile extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         this.uPC = uPC;
+    }
+
+    public UpdateProfile(Context context, UpdateProfileSimpleCallback uPSC){
+        this.jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", AuthHelper.getToken(context));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.uPSC = uPSC;
     }
 
     public void addName(String name){
@@ -136,56 +152,66 @@ public class UpdateProfile extends AsyncTask<String, Void, String> {
             if(this.name){
                 int name = jsonObject.getInt("name");
                 switch(name){
-                    case 0: Log.i("UpdateProfile", "Name updated successfully"); break;
-                    default: Log.i("UpdateProfile", "Error. Name was not updated"); break;
+                    case 0: onSuccess("Name updated successfully"); break;
+                    default: onError("Error. Name was not updated."); break;
                 }
             }
             if(this.surname){
                 int surname = jsonObject.getInt("surname");
                 switch(surname){
-                    case 0: Log.i("UpdateProfile", "Surname updated successfully"); break;
-                    default: Log.i("UpdateProfile", "Error. Surname was not updated"); break;
+                    case 0: onSuccess("Surname updated successfully"); break;
+                    default: onError("Error. Surname was not updated."); break;
                 }
+
             }
             if(this.about){
                 int about = jsonObject.getInt("about");
                 switch(about){
-                    case 0: Log.i("UpdateProfile", "About updated successfully"); break;
-                    default: Log.i("UpdateProfile", "Error. About was not updated"); break;
+                    case 0: onSuccess("About updated successfully"); break;
+                    default: onError("Error. About information was not updated."); break;
                 }
             }
             if(this.username){
                 int username = jsonObject.getInt("username");
                 switch(username){
-                    case 0: Log.i("UpdateProfile", "Username updated successfully"); break;
-                    case 2: Log.i("UpdateProfile", "Error. Inserted username is too short"); break;
-                    case 3: Log.i("UpdateProfile", "Error. User with such username already exists"); break;
-                    default: Log.i("UpdateProfile", "Error. Username was not updated"); break;
+                    case 0: onSuccess("Username updated successfully"); break;
+                    case 2: onError("Error. Inserted username is less than 4 characters."); break;
+                    case 3: onError("Error. User with this username already exists."); break;
+                    default: onError("Error. Username was not updated."); break;
                 }
             }
             if(this.password){
                 int password = jsonObject.getInt("password");
                 switch(password){
-                    case 0: Log.i("UpdateProfile", "Password updated successfully"); break;
-                    case 2: Log.i("UpdateProfile", "Error. Current password is wrong"); break;
-                    case 3: Log.i("UpdateProfile", "Error. New password is too short"); break;
-                    case 4: Log.i("UpdateProfile", "Error. New password is unsafe"); break;
-                    case 5: Log.i("UpdateProfile", "Error. Wrong email by updating password without token"); break;
-                    default: Log.i("UpdateProfile", "Error. Password was not updated"); break;
+                    case 0: onSuccess("Password updated successfully"); break;
+                    case 2: onError("Error. Current password is wrong"); break;
+                    case 3: onError("Error. New password is too short"); break;
+                    case 4: onError("Error. New password is unsafe"); break;
+                    case 5: onError("Error. Wrong email by updating password without token"); break;
+                    default: onError("Error. Password was not updated"); break;
                 }
             }
             if(this.email){
                 int email = jsonObject.getInt("email");
                 switch(email){
-                    case 0: Log.i("UpdateProfile", "Email updated successfully"); break;
-                    case 2: Log.i("UpdateProfile", "Error. Inserted email is fake"); break;
-                    case 3: Log.i("UpdateProfile", "Error. User with such email already exists"); break;
-                    default: Log.i("UpdateProfile", "Error. Email was not updated"); break;
+                    case 0: onSuccess("Email updated successfully"); break;
+                    case 2: onError("Error. Inserted email is fake"); break;
+                    case 3: onError("Error. User with such email already exists"); break;
+                    default: onError("Error. Email was not updated"); break;
                 }
             }
         }catch (Exception e){
+            onError("Error parsing income json");
             e.printStackTrace();
         }
+    }
+
+    private void onError(String s){
+        if(uPSC != null) uPSC.onError(s);
+    }
+
+    private void onSuccess(String s){
+        if(uPSC != null) uPSC.onSuccess(s);
     }
 
 }

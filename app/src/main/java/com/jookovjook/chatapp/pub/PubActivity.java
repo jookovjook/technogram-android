@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,10 +16,12 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,40 +31,52 @@ import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.GetPublicationInterface;
 import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
 import com.jookovjook.chatapp.network.GetOwnInfo;
-import com.jookovjook.chatapp.network.GetPublication;
 import com.jookovjook.chatapp.network.GetPublicationImages;
+import com.jookovjook.chatapp.network.LikePub;
 import com.jookovjook.chatapp.network.PostComment;
 import com.jookovjook.chatapp.paralaxviewpager.ParallaxViewPager;
 import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.jookovjook.chatapp.utils.DateTimeConverter;
-import com.jookovjook.chatapp.utils.SoftAdd;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PubActivity extends AppCompatActivity implements GetPublicationInterface, PostComment.PostCommentI, GetUserInfoInterface{
+public class PubActivity extends AppCompatActivity implements GetPublicationInterface,
+        PostComment.PostCommentI, GetUserInfoInterface, LikePub.LikePubCallback, ParallaxViewPager.VPDoubleClickListener{
 
     private CommentAdapter commentAdapter;
     private ArrayList<CommentProvider> mList = new ArrayList<>();
     private ParallaxViewPager mParallaxViewPager;
     private ArrayList<String> images = new ArrayList<>();
-    private int pub_id, stars_int;
+    private int pub_id, like, likes;
     private String img_link;
     private RecyclerView recyclerView;
     private CircleImageView avatar, avatar_;
     private TextView title, username, description, datetime;
     private EditText editText;
     private Button send;
-    private ImageButton star_button;
+    private ImageView imageLike;
     private PostComment.PostCommentI postCommentI = this;
     private LinearLayout comment_layout;
-    private TextView textView1;
+    private TextView textView1, likesText;
     private Boolean loggedIn = false;
+    private LikesChangedCallBack callBack;
+
+    @Override
+    public void onVPDoubleClicked() {
+        Log.d("TEST", "onDoubleTap");
+        onLikeClicked();
+    }
+
+    public interface LikesChangedCallBack extends Serializable {
+        void onLikesChanged(int likes, int like);
+    }
 
     private void findViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -76,23 +91,37 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         send = (Button) findViewById(R.id.send_button);
         comment_layout = (LinearLayout) findViewById(R.id.comment_layout);
         textView1 = (TextView) findViewById(R.id.textView1);
-        //star_button = (ImageButton) findViewById(R.id.star_button);
+        imageLike = (ImageView) findViewById(R.id.imageLike);
+        likesText = (TextView) findViewById(R.id.likesText);
     }
 
     private void proceedBunle(){
-        stars_int = 0;
         Bundle bundle = getIntent().getExtras();
         pub_id = -1;
         if(bundle != null){
             img_link = bundle.getString("img_link");
             pub_id = bundle.getInt("publication_id");
             loggedIn = bundle.getBoolean("loggedIn");
+            datetime.setText(bundle.getString("datetime"));
+            title.setText(bundle.getString("title"));
+            description.setText(bundle.getString("text"));
+            username.setText("\u0040" + bundle.getString("username"));
+            Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + bundle.getString("avatar"))
+                    .error(R.drawable.grid).resize(128, 128)
+                    .onlyScaleDown().centerCrop().into(this.avatar);
             Log.i("pub activity ", String.valueOf(pub_id));
+            like = bundle.getInt("like");
+            likes = bundle.getInt("likes");
             //ActivityCompat.postponeEnterTransition(this);
             GetPublicationImages getPublicationImages = new GetPublicationImages(pub_id, this);
             getPublicationImages.execute();
-            GetPublication getPublication = new GetPublication(pub_id, this);
-            getPublication.execute();
+            //GetPublication getPublication = new GetPublication(pub_id, this);
+            //getPublication.execute();
+            try {
+                //callBack = (LikesChangedCallBack) bundle.getSerializable("callback");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -123,9 +152,113 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         if(loggedIn)
         {
             comment_layout.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + AuthHelper.getAvatar(this)).resize(128, 128)
+            Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + AuthHelper.getAvatar(this))
+                    .error(R.drawable.grid).resize(128, 128)
                     .onlyScaleDown().centerCrop().into(this.avatar_);
         }
+        changeLikeIcon();
+        incLikes(likesText, like, likes);
+        imageLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLikeClicked();
+                Log.i("PubActivity", "image clicked!");
+            }
+        });
+    }
+
+    private void setLike(final ImageView imageView, final int like){
+        Animation anim = new ScaleAnimation(
+                1f, 0.5f, // Start and end values for the X axis scaling
+                1f, 0.5f, // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setFillAfter(true); // Needed to keep the result of the animation
+        anim.setDuration(75);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                changeLikeIcon();
+                Animation anim2 = new ScaleAnimation(
+                        0.5f, 1f, // Start and end values for the X axis scaling
+                        0.5f, 1f, // Start and end values for the Y axis scaling
+                        Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                anim2.setFillAfter(true); // Needed to keep the result of the animation
+                anim2.setDuration(75);
+                imageLike.startAnimation(anim2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+        imageLike.startAnimation(anim);
+    }
+
+    private void changeLikeIcon(){
+        if(like == 1){
+            imageLike.setImageDrawable(PubActivity.this.getResources().getDrawable(R.drawable.heart_full));
+            imageLike.setColorFilter(ContextCompat.getColor(PubActivity.this, R.color.colorHeartUnliked));
+            imageLike.clearAnimation();
+        }else{
+            if(like == 2){
+                imageLike.clearAnimation();
+                imageLike.setImageDrawable(PubActivity.this.getResources().getDrawable(R.drawable.heart_double));
+                imageLike.setColorFilter(ContextCompat.getColor(PubActivity.this, R.color.colorHeart));
+                Animation heartAnimation = AnimationUtils.loadAnimation(PubActivity.this, R.anim.heart_anim);
+                imageLike.setAnimation(heartAnimation);
+            }else{
+                imageLike.setImageDrawable(PubActivity.this.getResources().getDrawable(R.drawable.heart_empty));
+                imageLike.setColorFilter(ContextCompat.getColor(PubActivity.this, R.color.colorHeartUnliked));
+                imageLike.clearAnimation();
+            }
+        }
+    }
+
+    private void incLikes(TextView textView, int i, int current){
+        switch(i){
+            case 1:
+                textView.setText("(" + String.valueOf(current) + ")");
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorHeartUnliked));
+                break;
+            case 2:
+                textView.setText("(" + String.valueOf(current) + ")");
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorHeart));
+                break;
+            default:
+                textView.setText("(" + String.valueOf(current) + ")");
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorHeartUnliked));
+        }
+    }
+
+    private void onLikeClicked(){
+        LikePub likePub = new LikePub(this, this, pub_id);
+        likePub.execute();
+        switch (like){
+            case 0:
+                like = 1;
+                likes ++;
+                setLike(imageLike, 1);
+                incLikes(likesText, 1, likes);
+                break;
+            case 1:
+                //feedCallback.onDoubleLiked();
+                like = 2;
+                likes ++;
+                setLike(imageLike, 2);
+                incLikes(likesText, 2, likes);
+                break;
+            default:
+                like = 0;
+                likes -= 2;
+                setLike(imageLike, 0);
+                incLikes(likesText, 0, likes);
+                break;
+        }
+        //callBack.onLikesChanged(likes, like);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -146,7 +279,6 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
 
     private void initViewPager() {
         PagerAdapter adapter = new PagerAdapter() {
-
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {
                 return arg0 == arg1;
@@ -197,30 +329,17 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
             }
         };
         mParallaxViewPager.setAdapter(adapter);
+        mParallaxViewPager.setVpDoubleClickListener(this);
     }
 
     @Override
     public void onGotPublication(String title, String text, int views, int stars, int comments, String username, String avatar, Date date) {
-        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar).error(R.drawable.grid).resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar);
+        Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar).error(R.drawable.grid)
+                .resize(128, 128).onlyScaleDown().centerCrop().into(this.avatar);
         this.username.setText("\u0040" + username);
         this.title.setText(title);
         this.description.setText(text);
         this.datetime.setText(DateTimeConverter.convert(date));
-        if(stars < 1) stars = 1;
-        stars_int = stars - 1;
-    }
-
-    @Override
-    public void onGotSoftAdv(int license, int stage) {
-        String license_str = SoftAdd.getLicenseById(license);
-        if(!license_str.equals("")) {
-
-        }
-
-        String stage_str = SoftAdd.getStageById(stage);
-        if(!stage_str.equals("")){
-
-        }
     }
 
     @Override
@@ -250,6 +369,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     @Override
     public void onGotUserInfo(String username, String name, String surname, String avatar_link) {
         Picasso.with(this).load(Config.IMAGE_RESOURCES_URL + avatar_link).resize(128, 128)
+                .error(R.drawable.grid)
                 .onlyScaleDown().centerCrop().into(this.avatar_, new Callback() {
             @Override
             public void onSuccess() {
@@ -265,9 +385,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     }
 
     @Override
-    public void onWrongToken() {
-        //logOut();
-    }
+    public void onWrongToken() { }
 
     private void loadOwnAvatar(){
         GetOwnInfo getOwnInfo = new GetOwnInfo(AuthHelper.getToken(this), this);
@@ -308,5 +426,25 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         spanTxt.append(" to leave a comment");
         view.setMovementMethod(LinkMovementMethod.getInstance());
         view.setText(spanTxt, TextView.BufferType.SPANNABLE);
+    }
+
+    @Override
+    public void onDisliked() {
+
+    }
+
+    @Override
+    public void onLiked() {
+
+    }
+
+    @Override
+    public void onDoubleLiked() {
+
+    }
+
+    @Override
+    public void onError() {
+
     }
 }

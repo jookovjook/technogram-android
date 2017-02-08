@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
@@ -19,12 +20,7 @@ import com.jookovjook.chatapp.R;
 import static android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT;
 import static android.graphics.drawable.GradientDrawable.Orientation.RIGHT_LEFT;
 
-/**
- * Created: ybq
- * Date: 2014-08-15
- * Description:
- */
-public class ParallaxViewPager extends ViewPager {
+public class ParallaxViewPager extends ViewPager{
 
     private Mode mMode;
     private int mShadowStart = Color.parseColor("#33000000");
@@ -47,6 +43,9 @@ public class ParallaxViewPager extends ViewPager {
     private Interpolator mInterpolator;
     private int mOutset;
     private float mOutsetFraction = 0.5f;
+    private long lastClick = 0;
+    private float x1 = -100, y1 = -100;
+    private VPDoubleClickListener vpDoubleClickListener;
 
     public ParallaxViewPager(Context context) {
         this(context, null);
@@ -84,6 +83,42 @@ public class ParallaxViewPager extends ViewPager {
             setInterpolator(context, resID);
         }
         a.recycle();
+    }
+
+    public interface VPDoubleClickListener{
+        void onVPDoubleClicked();
+    }
+
+    public void setVpDoubleClickListener(VPDoubleClickListener vpDoubleClickListener){
+        this.vpDoubleClickListener = vpDoubleClickListener;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        long nowClick = System.currentTimeMillis();
+        float x2, y2;
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:{
+                x1 = ev.getX();
+                y1 = ev.getY();
+                break;
+            }
+            case MotionEvent.ACTION_UP:{
+                x2 = ev.getX();
+                y2 = ev.getY();
+                double space = Math.hypot(x2 - x1, y2 - y1);
+                if(space < 25 & nowClick - lastClick < 300){
+                    if (vpDoubleClickListener != null) {
+                        vpDoubleClickListener.onVPDoubleClicked();
+                    }
+                }
+                lastClick = nowClick;
+                break;
+            }
+            default:break;
+        }
+        return super.onTouchEvent(ev);
     }
 
     public int getOutset() {
@@ -211,5 +246,4 @@ public class ParallaxViewPager extends ViewPager {
             setPageTransformer(false, mParallaxTransformer);
         }
     }
-
 }

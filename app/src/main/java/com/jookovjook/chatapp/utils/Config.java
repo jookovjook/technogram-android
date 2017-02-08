@@ -1,6 +1,8 @@
 package com.jookovjook.chatapp.utils;
 
 public class Config {
+    //10.91.6.248
+    //10.83.10.50
     public static final String SERVER_URL = "http://10.91.6.248/chatApp/";
     public static final String AUTH_URL = SERVER_URL + "auth.php";
     public static final String FILE_UPLOAD_URL = SERVER_URL + "fileUpload.php";

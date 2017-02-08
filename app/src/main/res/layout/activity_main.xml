@@ -8,16 +8,25 @@
     tools:context="com.jookovjook.chatapp.MainActivity"
     android:background="#e0e0e0">
 
-    <Button
-        android:id="@+id/newPub"
+    <LinearLayout
+        android:id="@+id/coloredLayout"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
-        android:textColor="@color/colorPrimary"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:text="New Pub"
-        android:background="@color/colorAccent"
+        android:background="@drawable/color_animation_list"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true">
+
+        <Button
+            android:id="@+id/newPub"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:textColor="#000000"
+            android:backgroundTint="@color/colorTransparent"
+            android:text="New Pub"
+            android:background="@color/colorTransparent" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

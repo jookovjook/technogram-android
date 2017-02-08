@@ -12,6 +12,8 @@
     <color name="colorPrimaryExtraLight">#e0e0e0</color>
     <color name="colorGreen">#91b309</color>
     <color name="colorBlue">#1E1882</color>
+    <color name="colorBlueLight">#4E40c2</color>
+    <color name="colorWhite">#ffffff</color>
 
     <color name="colorHeartUnliked">#FF8787</color>
     <color name="colorHeart">#FF4040</color>

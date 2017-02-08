@@ -54,6 +54,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.comment.setText(Html.fromHtml(comment_text));
         Picasso.with(mContext)
                 .load(Config.IMAGE_RESOURCES_URL + cProvider.getAvatar())
+                .error(R.drawable.grid)
                 .resize(64, 64).onlyScaleDown().centerCrop().into(holder.avatar);
     }
 

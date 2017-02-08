@@ -41,7 +41,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicationsInterfase, LikePub.LikePubCallback {
+public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicationsInterfase
+        ,LikePub.LikePubCallback, PubActivity.LikesChangedCallBack {
 
     static final String TAG = FeedCardAdapter.class.getSimpleName();
     static final boolean USE_DEBUG_APPEARANCE = false;
@@ -57,10 +58,21 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
     private int param;
     private GetPubsInterfase gPI;
     private FeedCardAdapterCallback feedCallback;
+    private PubActivity.LikesChangedCallBack likesCallback = this;
+    private int lastIndexClicked = -1;
 
     private int REQUEST_EXIT = 1;
 
-    public interface FeedCardAdapterCallback{
+    @Override
+    public void onLikesChanged(int likes, int like) {
+        if(lastIndexClicked > 0){
+            mList.get(lastIndexClicked).like = like;
+            mList.get(lastIndexClicked).likes = likes;
+            notifyAllSectionsDataSetChanged();
+         }
+    }
+
+    public interface FeedCardAdapterCallback {
         void onDoubleLiked();
     }
 
@@ -196,7 +208,6 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         return new HeaderViewHolder(v);
     }
 
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, final int sectionIndex, int itemIndex, int itemType) {
@@ -229,10 +240,19 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
                     Log.d("TEST", "onSingleTapConfirmed");
                     final Intent intent = new Intent(context, PubActivity.class);
                     Bundle bundle = new Bundle();
+                    bundle.putString("title", feedCardProvider.title);
+                    bundle.putString("text", feedCardProvider.text);
+                    bundle.putString("avatar", feedCardProvider.small_avatar);
+                    bundle.putString("username", feedCardProvider.username);
+                    bundle.putString("datetime", DateTimeConverter.convert(feedCardProvider.date));
                     bundle.putInt("publication_id",feedCardProvider.pub_id);
                     bundle.putString("img_link",feedCardProvider.img_link);
                     bundle.putBoolean("loggedIn", loggedIn);
+                    bundle.putInt("like", feedCardProvider.like);
+                    bundle.putInt("likes", feedCardProvider.likes);
+                    //bundle.putSerializable("callback", likesCallback);
                     intent.putExtras(bundle);
+                    lastIndexClicked = sectionIndex;
                     //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, (View) ivh.main_image, "main_image_transition");
                     //((Activity) context).startActivityForResult(intent, REQUEST_EXIT, options.toBundle());
                     context.startActivity(intent);
@@ -293,6 +313,32 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         }
     }
 
+    private void onLikeClicked(FeedCardProvider feedCardProvider, int sectionIndex, ItemViewHolder ivh){
+        LikePub likePub = new LikePub(callback, context, feedCardProvider.pub_id);
+        likePub.execute();
+        switch (mList.get(sectionIndex).like){
+            case 0:
+                mList.get(sectionIndex).like = 1;
+                mList.get(sectionIndex).likes ++;
+                setLike(ivh.heart, 1);
+                incLikes(ivh.likes, 1, mList.get(sectionIndex).likes);
+                break;
+            case 1:
+                feedCallback.onDoubleLiked();
+                mList.get(sectionIndex).like = 2;
+                mList.get(sectionIndex).likes ++;
+                setLike(ivh.heart, 2);
+                incLikes(ivh.likes, 2, mList.get(sectionIndex).likes);
+                break;
+            default:
+                mList.get(sectionIndex).like = 0;
+                mList.get(sectionIndex).likes -= 2;
+                setLike(ivh.heart, 0);
+                incLikes(ivh.likes, 0, mList.get(sectionIndex).likes);
+                break;
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindHeaderViewHolder(SectioningAdapter.HeaderViewHolder viewHolder, int sectionIndex, int headerType) {
@@ -321,32 +367,6 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         };
         hvh.username.setOnClickListener(onClickListener);
         hvh.user_avatar.setOnClickListener(onClickListener);
-    }
-
-    private void onLikeClicked(FeedCardProvider feedCardProvider, int sectionIndex, ItemViewHolder ivh){
-        LikePub likePub = new LikePub(callback, context, feedCardProvider.pub_id);
-        likePub.execute();
-        switch (mList.get(sectionIndex).like){
-            case 0:
-                mList.get(sectionIndex).like = 1;
-                mList.get(sectionIndex).likes ++;
-                setLike(ivh.heart, 1);
-                incLikes(ivh.likes, 1, mList.get(sectionIndex).likes);
-                break;
-            case 1:
-                feedCallback.onDoubleLiked();
-                mList.get(sectionIndex).like = 2;
-                mList.get(sectionIndex).likes ++;
-                setLike(ivh.heart, 2);
-                incLikes(ivh.likes, 2, mList.get(sectionIndex).likes);
-                break;
-            default:
-                mList.get(sectionIndex).like = 0;
-                mList.get(sectionIndex).likes -= 2;
-                setLike(ivh.heart, 0);
-                incLikes(ivh.likes, 0, mList.get(sectionIndex).likes);
-                break;
-        }
     }
 
     @Override

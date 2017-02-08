@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
     private void attachFragment(){
         int randomColor = getResources().getColor(R.color.colorAccent);
         newLoginFragment = LoginFragment.newInstance(Metrics.dpToPx((int)300.0/2), Metrics.dpToPx((int)300.0/2), randomColor);
-
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newLoginFragment).commit();
     }
 

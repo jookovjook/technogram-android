@@ -148,6 +148,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         final LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(rvLayoutManager);
+
         imageAdapter = new ImageAdapter(imageList, getActivity(), this);
         recyclerView.setAdapter(imageAdapter);
     }
@@ -309,7 +310,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
             List<GalleryMedia> galleryMedias =
                     data.getParcelableArrayListExtra(GalleryActivity.RESULT_GALLERY_MEDIA_LIST);
             for (int i = 0; i < galleryMedias.size(); i++) {
-                imageList.add(new ImageProvider(galleryMedias.get(i).mediaUri()));
+                imageList.add(new ImageProvider(galleryMedias.get(i).mediaUri(), getActivity()));
             }
             imageAdapter.notifyDataSetChanged();
         }

@@ -1,5 +1,6 @@
 package com.jookovjook.chatapp.network;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ProgressBar;
 import com.jookovjook.chatapp.new_pub.ImageAdapter;
 import com.jookovjook.chatapp.new_pub.ImageProvider;
 import com.jookovjook.chatapp.utils.AndroidMultiPartEntity;
+import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 
 import org.apache.http.HttpEntity;
@@ -37,9 +39,11 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
     private int code;
     private String message;
     private Boolean error;
+    private Context context;
 
-    public UploadFile(ImageProvider imageProvider, ImageAdapter.VHItem vhItem){
+    public UploadFile(ImageProvider imageProvider, ImageAdapter.VHItem vhItem, Context context){
         //this.holder = holder;
+        this.context = context;
         this.code = 207;
         this.message = "Client: error connecting to sever.";
         this.error = true;
@@ -118,7 +122,7 @@ public class UploadFile extends AsyncTask<Void, Integer, String> {
             // Adding file data to http body
             entity.addPart("image", new FileBody(sourceFile));
             // Extra parameters if you want to pass to server
-            entity.addPart("token", new StringBody(Config.TOKEN));
+            entity.addPart("token", new StringBody(AuthHelper.getToken(context)));
             totalSize = entity.getContentLength();
             httppost.setEntity(entity);
             // Making server call

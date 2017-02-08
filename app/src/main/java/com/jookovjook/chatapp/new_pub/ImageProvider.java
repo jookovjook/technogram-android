@@ -1,5 +1,6 @@
 package com.jookovjook.chatapp.new_pub;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.jookovjook.chatapp.network.UploadFile;
@@ -13,9 +14,11 @@ public class ImageProvider {
     private int _id;
     private ImageAdapter.VHItem vhItem;
     private UploadFile uploadFile;
+    private Context context;
 
-    public ImageProvider(String uri){
+    public ImageProvider(String uri, Context context){
         Log.i("uri", uri);
+        this.context = context;
         this._id = -1;
         this.filename = null;
         this.uri = uri;
@@ -23,12 +26,12 @@ public class ImageProvider {
         this.uploading_status = 0f;
         this.filename = null;
         this.vhItem = null;
-        uploadFile = new UploadFile(this, vhItem);
+        uploadFile = new UploadFile(this, vhItem, context);
         uploadFile.execute();
     }
 
     public void reload(){
-        uploadFile = new UploadFile(this, vhItem);
+        uploadFile = new UploadFile(this, vhItem, context);
         uploadFile.execute();
     }
 
