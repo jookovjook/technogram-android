@@ -1,6 +1,6 @@
 package com.jookovjook.chatapp.settings;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +16,12 @@ import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.network.UpdateProfile;
-import com.jookovjook.chatapp.utils.AuthHelper;
 
-public class InfoSettActivity extends AppCompatActivity implements UpdateProfile.UpdateProfileSimpleCallback{
+public class PassSettActivity extends AppCompatActivity implements UpdateProfile.UpdateProfileSimpleCallback{
 
     String type, value;
     Toolbar mToolbar;
-    EditText editText;
+    EditText currentPass, newPass;
     ImageView doneButton;
     TextView responseText;
     UpdateProfile.UpdateProfileSimpleCallback callback = this;
@@ -31,8 +30,7 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_sett);
-        proceedBundle();
+        setContentView(R.layout.activity_pass_sett);
         setupLayouts();
     }
 
@@ -64,8 +62,8 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
     }
 
     public void setupLayouts(){
-        editText = (EditText) findViewById(R.id.editText);
-        editText.setText(value);
+        currentPass = (EditText) findViewById(R.id.currentPass);
+        newPass = (EditText) findViewById(R.id.newPass);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
         mToolbar.setTitle(type);
@@ -93,33 +91,12 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editText.getText().toString().equals(value))
+                if(currentPass.getText().toString().equals(value))
                 {
                     onBackPressed();
                 }else {
-                    UpdateProfile updateProfile = new UpdateProfile(InfoSettActivity.this, callback);
-                    switch (type) {
-                        case InfoAdapter.USERNAME: {
-                            updateProfile.addUsername(editText.getText().toString());
-                            break;
-                        }
-                        case InfoAdapter.NAME:{
-                            updateProfile.addName(editText.getText().toString());
-                            break;
-                        }
-                        case InfoAdapter.SURNAME:{
-                            updateProfile.addSurname(editText.getText().toString());
-                            break;
-                        }
-                        case InfoAdapter.ABOUT:{
-                            updateProfile.addAbout(editText.getText().toString());
-                            break;
-                        }
-                        case SecurityAdapter.EMAIL:{
-                            updateProfile.addEmail(editText.getText().toString());
-                            break;
-                        }
-                    }
+                    UpdateProfile updateProfile = new UpdateProfile(PassSettActivity.this, callback);
+                    updateProfile.addPassword(currentPass.getText().toString(), newPass.getText().toString());
                     updateProfile.execute();
                     loadingSpinner.setVisibility(View.VISIBLE);
                     doneButton.setClickable(false);
@@ -135,34 +112,8 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
     @Override
     public void onSuccess(String s) {
         responseText.setText(s);
-        String text = editText.getText().toString();
         //loadingSpinner.setVisibility(View.GONE);
-        switch (type) {
-            case InfoAdapter.USERNAME: {
-                AuthHelper.setUsername(this, text);
-                break;
-            }
-            case InfoAdapter.NAME:{
-                AuthHelper.setNAME(this, text);
-                break;
-            }
-            case InfoAdapter.SURNAME:{
-                AuthHelper.setSURNAME(this, text);
-                break;
-            }
-            case InfoAdapter.ABOUT:{
-                AuthHelper.setABOUT(this, text);
-                break;
-            }
-            case SecurityAdapter.EMAIL:{
-                AuthHelper.setEMAIL(this, text);
-                break;
-            }
-        }
-        Intent intent=new Intent();
-        intent.putExtra("RESULT_STRING", text);
-        setResult(RESULT_OK, intent);
-        finish();
+        onBackPressed();
     }
 
     @Override
@@ -171,4 +122,5 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
         loadingSpinner.setVisibility(View.GONE);
         doneButton.setClickable(true);
     }
+
 }

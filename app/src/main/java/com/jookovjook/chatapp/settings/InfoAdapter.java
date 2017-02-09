@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.utils.AuthHelper;
 
 import java.util.ArrayList;
 
@@ -40,16 +41,16 @@ class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder>{
 
     public InfoAdapter(Context context){
         this.context = context;
+        update();
+    }
+
+    public void update(){
         mList = new ArrayList<>();
-//        mList.add(new SettingsProvider("username", AuthHelper.getUsername(context)));
-//        mList.add(new SettingsProvider("Name" , AuthHelper.getNAME(context)));
-//        mList.add(new SettingsProvider("Surname" , AuthHelper.getNAME(context)));
-//        mList.add(new SettingsProvider("e-mail" , AuthHelper.getEMAIL(context)));
-//        mList.add(new SettingsProvider("About" , AuthHelper.getABOUT(context)));
-        mList.add(new SettingsProvider(USERNAME, "gruntovka"));
-        mList.add(new SettingsProvider(NAME , "Grunt"));
-        mList.add(new SettingsProvider(SURNAME , "BigRusianB"));
-        mList.add(new SettingsProvider(ABOUT , "Lorem ipsum che to tam"));
+        mList.add(new SettingsProvider(USERNAME, AuthHelper.getUsername(context)));
+        mList.add(new SettingsProvider(NAME , AuthHelper.getNAME(context)));
+        mList.add(new SettingsProvider(SURNAME , AuthHelper.getNAME(context)));
+        mList.add(new SettingsProvider(ABOUT , AuthHelper.getABOUT(context)));
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,7 +73,7 @@ class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder>{
                 bundle.putString("type", sProvider.type);
                 bundle.putString("value", sProvider.value);
                 intent.putExtras(bundle);
-                ((Activity)context).startActivityForResult(intent, 1);
+                ((Activity)context).startActivityForResult(intent, SettingsActivity.REQUEST_CODE_SETTING);
             }
         });
     }

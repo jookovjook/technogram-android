@@ -19,15 +19,16 @@ import java.net.URL;
 public class UpdateProfileImage extends AsyncTask<String, Void, String> {
 
     private JSONObject jsonObject;
-    private UpdateProfileCallback uPC = null;
+    private UpdateProfileImageCallback uPC = null;
 
-    public interface UpdateProfileCallback{
-        void onSuccess();
+    public interface UpdateProfileImageCallback{
+        void onSuccess(String img_link);
         void onFailure();
     }
 
-    public UpdateProfileImage(Context context, String img_link, int id){
+    public UpdateProfileImage(Context context, String img_link, int id, UpdateProfileImageCallback uPC){
         this.jsonObject = new JSONObject();
+        this.uPC = uPC;
         try {
             jsonObject.put("token", AuthHelper.getToken(context));
             jsonObject.put("img_link", img_link);
@@ -67,8 +68,10 @@ public class UpdateProfileImage extends AsyncTask<String, Void, String> {
             int img_link = jsonObject.getInt("img_link");
             if(img_link == 0){
                 Log.i("UpdateProfileImage", "success");
+                uPC.onSuccess(this.jsonObject.getString("img_link"));
             }else{
                 Log.i("IpdateProfileImage", "failure");
+                uPC.onFailure();
             }
         }catch (Exception e){
             e.printStackTrace();

@@ -67,6 +67,17 @@ public class LogIn extends AsyncTask<String, Void, String> {
         return s;
     }
 
+    private void emptyAuthHelper(){
+        AuthHelper.setUsername(context, "");
+        AuthHelper.setToken(context, "");
+        AuthHelper.setUserId(context, -1);
+        AuthHelper.setAvatar(context, "");
+        AuthHelper.setNAME(context, "");
+        AuthHelper.setSURNAME(context, "");
+        AuthHelper.setABOUT(context, "");
+        AuthHelper.setEMAIL(context, "");
+    }
+
     @Override
     protected void onPostExecute(String jsonResult) {
         super.onPostExecute(jsonResult);
@@ -85,38 +96,31 @@ public class LogIn extends AsyncTask<String, Void, String> {
                     AuthHelper.setToken(context, token);
                     AuthHelper.setUserId(context, user_id);
                     AuthHelper.setAvatar(context, jsonObject.getString("avatar"));
+                    AuthHelper.setNAME(context, jsonObject.getString("name"));
+                    AuthHelper.setSURNAME(context, jsonObject.getString("surname"));
+                    AuthHelper.setABOUT(context, jsonObject.getString("about"));
+                    AuthHelper.setEMAIL(context, jsonObject.getString("email"));
                     break;
                 case 1:
                     logInCallback.onWrongUsername();
-                    AuthHelper.setUsername(context, "");
-                    AuthHelper.setToken(context, "");
-                    AuthHelper.setUserId(context, -1);
-                    AuthHelper.setAvatar(context, "");
+                    emptyAuthHelper();
                     break;
                 case 2:
                     logInCallback.onWrongPassword();
+                    emptyAuthHelper();
                     AuthHelper.setUsername(context, username);
-                    AuthHelper.setToken(context, "");
-                    AuthHelper.setUserId(context, -1);
-                    AuthHelper.setAvatar(context, "");
                     break;
                 default:
                     Log.i("LogIn", jsonResult);
                     logInCallback.onUnknownError();
-                    AuthHelper.setUsername(context, "");
-                    AuthHelper.setToken(context, "");
-                    AuthHelper.setUserId(context, -1);
-                    AuthHelper.setAvatar(context, "");
+                    emptyAuthHelper();
                     break;
             }
         }catch(Exception e){
             Log.i("LogIn", jsonResult);
             e.printStackTrace();
             logInCallback.onUnknownError();
-            AuthHelper.setUsername(context, "");
-            AuthHelper.setToken(context, "");
-            AuthHelper.setUserId(context, -1);
-            AuthHelper.setAvatar(context, "");
+            emptyAuthHelper();
         }
     }
 }

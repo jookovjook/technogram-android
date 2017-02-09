@@ -121,7 +121,7 @@ public class TestActivity extends AppCompatActivity implements UploadImage.Uploa
     @Override
     public void onSuccess(String filename, int id) {
         Log.i("TestActivity", filename);
-        UpdateProfileImage updateProfileImage = new UpdateProfileImage(TestActivity.this, filename, id);
+        UpdateProfileImage updateProfileImage = new UpdateProfileImage(TestActivity.this, filename, id, null);
         updateProfileImage.execute();
     }
 

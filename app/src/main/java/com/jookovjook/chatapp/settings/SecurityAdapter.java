@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.utils.AuthHelper;
 
 import java.util.ArrayList;
 
@@ -38,13 +39,12 @@ class SecurityAdapter extends RecyclerView.Adapter<SecurityAdapter.ViewHolder>{
 
     public SecurityAdapter(Context context){
         this.context = context;
+        update();
+    }
+
+    public void update() {
         mList = new ArrayList<>();
-//        mList.add(new SettingsProvider("username", AuthHelper.getUsername(context)));
-//        mList.add(new SettingsProvider("Name" , AuthHelper.getNAME(context)));
-//        mList.add(new SettingsProvider("Surname" , AuthHelper.getNAME(context)));
-//        mList.add(new SettingsProvider("e-mail" , AuthHelper.getEMAIL(context)));
-//        mList.add(new SettingsProvider("About" , AuthHelper.getABOUT(context)));
-        mList.add(new SettingsProvider(EMAIL, "gruntovka@tg.com"));
+        mList.add(new SettingsProvider(EMAIL, AuthHelper.getEMAIL(context)));
         mList.add(new SettingsProvider(PASSWORD , "\u2022 \u2022 \u2022 \u2022 \u2022 \u2022 \u2022 \u2022"));
     }
 
@@ -62,12 +62,17 @@ class SecurityAdapter extends RecyclerView.Adapter<SecurityAdapter.ViewHolder>{
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, InfoSettActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("type", sProvider.type);
-                bundle.putString("value", sProvider.value);
-                intent.putExtras(bundle);
-                ((Activity)context).startActivityForResult(intent, 1);
+                Intent intent;
+                if(sProvider.type.equals(PASSWORD)) {
+                    intent = new Intent(context, PassSettActivity.class);
+                }else{
+                    intent = new Intent(context, InfoSettActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", sProvider.type);
+                    bundle.putString("value", sProvider.value);
+                    intent.putExtras(bundle);
+                }
+                ((Activity) context).startActivityForResult(intent, SettingsActivity.REQUEST_CODE_SETTING);
             }
         });
     }
