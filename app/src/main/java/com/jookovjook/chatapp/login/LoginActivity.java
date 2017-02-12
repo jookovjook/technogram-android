@@ -182,9 +182,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
                     ArcAnimator arcAnimator = ArcAnimator.createArcAnimator(loginButton, loginButtonHidden, 90, Side.RIGHT) .setDuration(butFlyTime);
                     arcAnimator.addListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
                         @Override
-                        public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
-
-                        }
+                        public void onAnimationStart(com.nineoldandroids.animation.Animator animation) { }
 
                         @Override
                         public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
@@ -192,14 +190,10 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
                         }
 
                         @Override
-                        public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
-
-                        }
+                        public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) { }
 
                         @Override
-                        public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
-
-                        }
+                        public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) { }
                     });
                     arcAnimator.setInterpolator(new DecelerateInterpolator());
                     arcAnimator.start();

@@ -25,18 +25,18 @@ public class MakePost extends AsyncTask<String, Void, String> {
     private ArrayList<ImageProvider> mList;
     private Context context;
 
-    public interface MakePostCalllback{
+    public interface MakePostCallback {
         void onMakePostError();
         void onAddImagesError();
         void onPostCreated();
     }
 
-    private MakePostCalllback makePostCalllback;
+    private MakePostCallback makePostCallback;
 
     public MakePost(String title, String description, ArrayList<ImageProvider> mList,
-                    MakePostCalllback makePostCalllback, Context context){
+                    MakePostCallback makePostCallback, Context context){
         this.jsonArray = new JSONArray();
-        this.makePostCalllback = makePostCalllback;
+        this.makePostCallback = makePostCallback;
         this.mList = mList;
         this.context = context;
         JSONObject jsonObject = new JSONObject();
@@ -91,16 +91,16 @@ public class MakePost extends AsyncTask<String, Void, String> {
             error = jsonObject.getBoolean("error");
             Log.i("comment", s);
         }catch (Exception e){
-            makePostCalllback.onMakePostError();
+            makePostCallback.onMakePostError();
         }
         if(error){
-            makePostCalllback.onMakePostError();
+            makePostCallback.onMakePostError();
         }else{
             if(mList.size() > 1){
                 AddImagesToPost addImagesToPost = new AddImagesToPost(publication_id, mList, context);
                 addImagesToPost.execute();
             }
-            makePostCalllback.onPostCreated();
+            makePostCallback.onPostCreated();
         }
 
     }

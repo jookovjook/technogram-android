@@ -28,32 +28,47 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".user_profile.UserProfileActivity"
-            android:theme="@style/UPActivityTheme" />
+            android:theme="@style/UPActivityTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="es.guiguegon.gallerymodule.GalleryActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".pub.PubActivity"
-            android:theme="@style/UPActivityTheme" />
-        <activity android:name=".TestActivity" />
+            android:theme="@style/UPActivityTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TestActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".login.LoginActivity"
-            android:theme="@style/NewLoginTheme" />
-        <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".settings.InfoSettActivity"
-            android:theme="@style/UPActivityTheme"/>
-        <activity android:name=".settings.PassSettActivity"
-            android:theme="@style/UPActivityTheme"/>
+            android:theme="@style/NewLoginTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".settings.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".settings.InfoSettActivity"
+            android:theme="@style/UPActivityTheme"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".settings.PassSettActivity"
+            android:theme="@style/UPActivityTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".new_pub.NewPubActivity"
+            android:theme="@style/UPActivityTheme"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

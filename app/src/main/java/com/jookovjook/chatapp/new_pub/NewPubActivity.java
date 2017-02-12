@@ -1,5 +1,4 @@
-package com.jookovjook.chatapp.settings;
-
+package com.jookovjook.chatapp.new_pub;
 
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,30 +6,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
-import com.jookovjook.chatapp.network.UpdateProfile;
 
-public class PassSettActivity extends AppCompatActivity implements UpdateProfile.UpdateProfileSimpleCallback{
+public class NewPubActivity extends AppCompatActivity implements NewPubFragment.FragmentPublishCallback{
 
-    String type, value;
     Toolbar mToolbar;
-    EditText currentPass, newPass;
-    ImageView doneButton;
-    TextView responseText;
-    UpdateProfile.UpdateProfileSimpleCallback callback = this;
     ProgressBar loadingSpinner;
+    ImageView doneButton;
+    NewPubFragment newPubFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pass_sett);
+        setContentView(R.layout.activity_new_pub);
         setupLayouts();
     }
 
@@ -40,6 +33,7 @@ public class PassSettActivity extends AppCompatActivity implements UpdateProfile
         if (resourceId > 0) {
             result = getResources().getDimensionPixelSize(resourceId);
         }
+        result = 0;
         return result;
     }
 
@@ -54,15 +48,9 @@ public class PassSettActivity extends AppCompatActivity implements UpdateProfile
     }
 
     public void setupLayouts(){
-        currentPass = (EditText) findViewById(R.id.currentPass);
-        newPass = (EditText) findViewById(R.id.newPass);
-//        currentPass.setTransformationMethod(new PasswordTransformationMethod());
-//        currentPass.setTypeface(Typeface.DEFAULT);
-//        newPass.setTransformationMethod(new PasswordTransformationMethod());
-//        newPass.setTypeface(Typeface.DEFAULT);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-        mToolbar.setTitle(type);
+        mToolbar.setTitle("New Pub");
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 onBackPressed();
@@ -83,40 +71,34 @@ public class PassSettActivity extends AppCompatActivity implements UpdateProfile
         lp2.setMargins(0, getStatusBarHeight() + getActionBarHeight(), 0, 0);
         mainContent.setLayoutParams(lp2);
 
+        loadingSpinner = (ProgressBar) findViewById(R.id.loadingSpinner);
+
         doneButton = (ImageView) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentPass.getText().toString().equals(value))
-                {
-                    onBackPressed();
-                }else {
-                    UpdateProfile updateProfile = new UpdateProfile(PassSettActivity.this, callback);
-                    updateProfile.addPassword(currentPass.getText().toString(), newPass.getText().toString());
-                    updateProfile.execute();
-                    loadingSpinner.setVisibility(View.VISIBLE);
-                    doneButton.setClickable(false);
-                }
+
+                loadingSpinner.setVisibility(View.VISIBLE);
+                doneButton.setClickable(false);
+                newPubFragment.publish();
             }
         });
 
-        responseText = (TextView) findViewById(R.id.responseText);
+        newPubFragment = (NewPubFragment) NewPubFragment.newInstance();
+        newPubFragment.setFragmentPublishCallback(this);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newPubFragment).commit();
 
-        loadingSpinner = (ProgressBar) findViewById(R.id.loadingSpinner);
     }
 
     @Override
-    public void onSuccess(String s) {
-        responseText.setText(s);
-        //loadingSpinner.setVisibility(View.GONE);
-        onBackPressed();
-    }
-
-    @Override
-    public void onError(String message) {
-        responseText.setText(message);
+    public void onPublishSuccessful() {
         loadingSpinner.setVisibility(View.GONE);
         doneButton.setClickable(true);
     }
 
+    @Override
+    public void onPublishError() {
+        loadingSpinner.setVisibility(View.GONE);
+        doneButton.setClickable(true);
+    }
 }

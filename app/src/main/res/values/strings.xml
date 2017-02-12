@@ -4,4 +4,7 @@
     <string name="user_profile_activity">My Profile</string>
     <string name="publication_activity">Publication Activity</string>
     <string name="skip"><u>skip</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

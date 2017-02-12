@@ -2,12 +2,12 @@ package com.jookovjook.chatapp;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -19,10 +19,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.jookovjook.chatapp.about_fragment.AboutFragment;
+import com.jookovjook.chatapp.about_fragment.AboutOwnFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
 import com.jookovjook.chatapp.login.LoginActivity;
-import com.jookovjook.chatapp.new_pub.NewPubFragment;
+import com.jookovjook.chatapp.new_pub.NewPubActivity;
 import com.jookovjook.chatapp.user_profile.UserProfileActivity;
 import com.jookovjook.chatapp.utils.AuthHelper;
 
@@ -53,15 +53,18 @@ public class MainActivity extends AppCompatActivity {
         newPub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
+                Intent intent = new Intent(MainActivity.this, NewPubActivity.class);
+                startActivity(intent);
 
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-
-                NewPubFragment newCustomFragment = (NewPubFragment) NewPubFragment.newInstance();
-                transaction.replace(R.id.fragment_container, newCustomFragment );
-                transaction.addToBackStack(null);
-                transaction.commit();
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//
+//                FragmentTransaction transaction = fragmentManager.beginTransaction();
+//                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+//
+//                NewPubFragment newCustomFragment = (NewPubFragment) NewPubFragment.newInstance();
+//                transaction.replace(R.id.fragment_container, newCustomFragment );
+//                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 
@@ -124,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void openLink(String s){
+        s = s.replaceAll("[^a-zA-Z/:._0-9-]","");
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(s.replace(" ","")));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }else{
+            Log.e("Error opening link", s);
+        }
+    }
+
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //
@@ -152,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 //case 0: return SoftwareFragment.newInstance();
                 case 0: return FeedFragment.newInstance(1, -1);
                 case 1: return FeedFragment.newInstance(0, 0);
-                case 2: return AboutFragment.newInstance("Tset", 1, false);
+                case 2: return AboutOwnFragment.newInstance("Tset", 1, false);
             }
             return null;
         }

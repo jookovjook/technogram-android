@@ -1,9 +1,11 @@
 package com.jookovjook.chatapp.utils;
 
 public class Config {
+
+    //192.168.42.57
     //10.91.6.248
-    //10.83.10.50
-    public static final String SERVER_URL = "http://10.91.6.248/chatApp/";
+
+    public static final String SERVER_URL = "http://192.168.42.57/chatApp/";
     public static final String AUTH_URL = SERVER_URL + "auth.php";
     public static final String FILE_UPLOAD_URL = SERVER_URL + "fileUpload.php";
     public static final String MAKE_POST_URL = SERVER_URL + "make_post.php";
@@ -22,7 +24,8 @@ public class Config {
     public static final String CHECK_URL = SERVER_URL + "check.php";
     public static final String UPDATE_PROFILE_URL = SERVER_URL + "update_profile.php";
     public static final String UPDATE_PROFILE_IMAGE_URL = SERVER_URL + "update_profile_image.php";
-    public static final String TOKEN = "aWAt5R93QJnPFwq5IhbLCGO2Fe7Heuv";
     public static final String CHECK_TOKEN_URL = SERVER_URL + "check_token.php";
     public static final String LIKE_PUB_URL = SERVER_URL + "like_pub";
+
+
 }

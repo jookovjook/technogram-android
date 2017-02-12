@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded"
-    android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ffffff"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    android:clickable="true">
+    android:clickable="true"
+    android:background="#ffffff" >
 
     <android.support.v4.widget.NestedScrollView
         android:layout_marginBottom="48dp"
@@ -36,20 +35,34 @@
                     android:id="@+id/editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="250dp"
+                    android:minLines="1"
                     android:background="#ffffff" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:background="#f0f0f0"
-                android:elevation="4dp">
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="150dp">
+
+                    <ImageView
+                        android:id="@+id/addPhotosButton"
+                        android:layout_centerVertical="true"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_add_a_photo" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </RelativeLayout>
+
+                <!--
 
                 <Button
                     android:id="@+id/doneButton"
@@ -61,6 +74,15 @@
                     android:colorButtonNormal="@color/colorAccent"
                     android:background="@drawable/primary"
                     android:text="DONE"/>
+
+                    -->
+
+                <TextView
+                    android:id="@+id/responseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Response"/>
+
 
             </LinearLayout>
 

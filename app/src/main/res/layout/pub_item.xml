@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#e0e0e0"
     android:layout_gravity="center">
 
     <RelativeLayout
@@ -28,7 +27,7 @@
         <LinearLayout
             android:clipToPadding="false"
             android:elevation="4dp"
-            android:background="#f0f0f0"
+            android:background="#ffffff"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +100,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="(5)" />
-
 
                 </LinearLayout>
 

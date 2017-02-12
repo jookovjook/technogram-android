@@ -1,6 +1,8 @@
 package com.jookovjook.chatapp.user_profile;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -26,8 +28,7 @@ import android.widget.TextView;
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.about_fragment.AboutFragment;
 import com.jookovjook.chatapp.feed_fragment.FeedFragment;
-import com.jookovjook.chatapp.interfaces.GetUserInfoInterface;
-import com.jookovjook.chatapp.network.GetUserInfo;
+import com.jookovjook.chatapp.network.NewGetUserInfo;
 import com.jookovjook.chatapp.utils.Config;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -36,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class UserProfileActivity extends AppCompatActivity implements
-        AppBarLayout.OnOffsetChangedListener, GetUserInfoInterface {
+        AppBarLayout.OnOffsetChangedListener, NewGetUserInfo.GetUserInfoCallback {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 1f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.2f;
@@ -49,47 +50,73 @@ public class UserProfileActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private TextView mUsername, mNameSurname;
     int user_id;
-    private String username;
+    private String username, avatarLink;
     private CircleImageView avatar;
     private View background;
     private Boolean own = false;
+    private Boolean avatarPreload = false;
+    private AboutFragment aboutFragment;
+    private NewGetUserInfo.UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        findViews();
+        proceedBundle();
+        bindActivity();
 
+    }
+
+    private void proceedBundle(){
         Bundle bundle = getIntent().getExtras();
         user_id = -1;
         username = "";
         if (bundle != null) {
-            user_id = bundle.getInt("user_id");
-            Log.i("got user id", String.valueOf(user_id));
-            username = bundle.getString("username");
-            own = bundle.getBoolean("own");
-        }
+            try {
+                user_id = bundle.getInt("user_id");
+                own = bundle.getBoolean("own");
+                username = bundle.getString( "username");
+                mUsername.setText("\u0040" + username);
+                avatarLink = bundle.getString("avatar");
+                Picasso.with(this)
+                        .load(Config.IMAGE_RESOURCES_URL + avatarLink)
+                        .resize(256, 256).onlyScaleDown().centerCrop().into(avatar, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        setAvatarFadeInAnimation(avatar);
+                    }
 
-        bindActivity();
+                    @Override
+                    public void onError() {
+                        setAvatarFadeInAnimation(avatar);
+                    }
+                });
+                avatarPreload = true;
+                Picasso.with(this)
+                        .load(Config.IMAGE_RESOURCES_URL + avatarLink)
+                        .resize(180, 180)
+                        .centerCrop()
+                        .transform(new BlurTransformation(this, 5))
+                        .into((ImageView) background);
 
-        mAppBarLayout.addOnOffsetChangedListener(this);
-        //toolbar animation
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
-        //toolbar animation
-        mToolbar.inflateMenu(R.menu.menu_user_profile);
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                onBackPressed();
+            }catch (Exception e){
+
+                e.printStackTrace();
             }
-        });
-        //tabs layout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.materialup_tabs);
-        ViewPager viewPager  = (ViewPager) findViewById(R.id.materialup_viewpager);
-        viewPager.setAdapter(new TabsAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
+        }
+    }
 
-        GetUserInfo getUserInfo = new GetUserInfo(user_id, this);
-        getUserInfo.execute();
+    void findViews(){
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mTitle          = (TextView) findViewById(R.id.main_textview_title);
+        mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
+        mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
+        mUsername = (TextView) findViewById(R.id.username);
+        mNameSurname = (TextView) findViewById(R.id.name_surname);
+        mUsername.setText("\u0040" +  username);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
+        background = findViewById(R.id.background);
     }
 
     @Override
@@ -104,54 +131,63 @@ public class UserProfileActivity extends AppCompatActivity implements
     }
 
     private void bindActivity() {
-        mToolbar        = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
         setStatusBarHeight();
         CollapsingToolbarLayout main_collapsing = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         main_collapsing.setMinimumHeight(getStatusBarHeight() + getActionBarHeight());
-        mTitle          = (TextView) findViewById(R.id.main_textview_title);
-        mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
-        mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
-        mUsername = (TextView) findViewById(R.id.username);
-        mNameSurname = (TextView) findViewById(R.id.name_surname);
-        mUsername.setText("\u0040" +  username);
-        avatar = (CircleImageView) findViewById(R.id.avatar);
-        background = findViewById(R.id.background);
-
-    }
-
-    @Override
-    public void onGotUserInfo(String username, String name, String surname, String img_link) {
-        Log.i("got user info", img_link);
-        mNameSurname.setText(name + " " + surname);
-        Picasso.with(this)
-                .load(Config.IMAGE_RESOURCES_URL + img_link)
-                .resize(256, 256).onlyScaleDown().centerCrop().into(avatar, new Callback() {
-            @Override
-            public void onSuccess() {
-                setAvatarFadeInAnimation(avatar);
-            }
-
-            @Override
-            public void onError() {
-                setAvatarFadeInAnimation(avatar);
+        mAppBarLayout.addOnOffsetChangedListener(this);
+        //toolbar animation
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
+        //toolbar animation
+        mToolbar.inflateMenu(R.menu.menu_user_profile);
+        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                onBackPressed();
             }
         });
-        Picasso.with(this)
-                .load(Config.IMAGE_RESOURCES_URL + img_link)
-                .resize(180, 180)
-                .centerCrop()
-                .transform(new BlurTransformation(this, 5))
-                .into((ImageView) background);
-
+        //tabs layout
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.materialup_tabs);
+        ViewPager viewPager  = (ViewPager) findViewById(R.id.materialup_viewpager);
+        aboutFragment = AboutFragment.newInstance();
+        viewPager.setAdapter(new TabsAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+        NewGetUserInfo getUserInfo = new NewGetUserInfo(user_id, this);
+        getUserInfo.execute();
     }
 
     @Override
-    public void onWrongToken() {
+    public void onGotUserInfo(NewGetUserInfo.UserInfo userInfo) {
+        Log.i("UserProfileActivity", "gotUserInfo");
+        mNameSurname.setText(userInfo.name + " " + userInfo.surname);
+//        Picasso.with(this)
+//                .load(Config.IMAGE_RESOURCES_URL + userInfo.avatar)
+//                .resize(256, 256).onlyScaleDown().centerCrop().into(avatar, new Callback() {
+//            @Override
+//            public void onSuccess() {
+//                if(!avatarPreload) setAvatarFadeInAnimation(avatar);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                if(!avatarPreload) setAvatarFadeInAnimation(avatar);
+//            }
+//        });
+//        Picasso.with(this)
+//                .load(Config.IMAGE_RESOURCES_URL + userInfo.avatar)
+//                .resize(180, 180)
+//                .centerCrop()
+//                .transform(new BlurTransformation(this, 5))
+//                .into((ImageView) background);
 
+        aboutFragment.updateInfo(userInfo);
     }
 
-    //tabs layout
+    @Override
+    public void onErrorGettingUserInfo() {
+        Log.i("UserProfileActivity", "error gotUserInfo");
+    }
+
     class TabsAdapter extends FragmentPagerAdapter {
 
         public TabsAdapter(FragmentManager fm) {
@@ -167,7 +203,7 @@ public class UserProfileActivity extends AppCompatActivity implements
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return FeedFragment.newInstance(0, user_id);
-                case 1: return AboutFragment.newInstance("Tset", user_id, own);
+                case 1: return aboutFragment;
             }
             return null;
         }
@@ -181,8 +217,6 @@ public class UserProfileActivity extends AppCompatActivity implements
             return "";
         }
     }
-
-    /* Hiding toolbar animation */
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -294,6 +328,7 @@ public class UserProfileActivity extends AppCompatActivity implements
     private void setAvatarFadeInAnimation(final View viewToAnimate) {
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
             animation.setFillAfter(true);
+            //animation.setDuration(100);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -310,7 +345,19 @@ public class UserProfileActivity extends AppCompatActivity implements
 
                 }
             });
-            viewToAnimate.startAnimation(animation);
+        //viewToAnimate.clearAnimation();
+        viewToAnimate.startAnimation(animation);
+    }
+
+    public void openLink(String s){
+        s = s.replaceAll("[^a-zA-Z/:._0-9-]","");
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(s.replace(" ","")));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }else{
+            Log.e("Error opening link", s);
+        }
     }
 
 }

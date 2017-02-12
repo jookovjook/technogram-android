@@ -360,6 +360,7 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
                 Bundle bundle = new Bundle();
                 bundle.putInt("user_id", feedCardProvider.user_id);
                 bundle.putString("username", feedCardProvider.username);
+                bundle.putString("avatar", feedCardProvider.small_avatar);
                 bundle.putBoolean("own", (AuthHelper.getUserId(context) == feedCardProvider.user_id));
                 intent.putExtras(bundle);
                 context.startActivity(intent);

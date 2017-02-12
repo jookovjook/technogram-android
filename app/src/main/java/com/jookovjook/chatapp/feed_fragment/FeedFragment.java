@@ -84,7 +84,7 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
                 //Log.i(TAG, "onHeaderPositionChanged: section: " + sectionIndex + " -> old: " + oldPosition.name() + " new: " + newPosition.name());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     boolean elevated = newPosition == StickyHeaderLayoutManager.HeaderPosition.STICKY;
-                    header.setElevation(elevated ? 8 : 0);
+                    header.setElevation(elevated ? 8 : 3);
                 }
             }
         });
@@ -110,7 +110,12 @@ public class FeedFragment extends Fragment implements GetPubsInterfase, Server.S
                 super.onScrolled(recyclerView, dx, dy);
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = stickyHeaderLayoutManager.getItemCount();
-                firstVisibleItemIndex = stickyHeaderLayoutManager.getFirstVisibleItemViewHolder(true).getPosition();
+                try {
+                    firstVisibleItemIndex = stickyHeaderLayoutManager.getFirstVisibleItemViewHolder(true).getPosition();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    firstVisibleItemIndex = 0;
+                }
 //                if (loading) {
 //                    if (totalItemCount > previousTotal) {
 //                        loading = false;

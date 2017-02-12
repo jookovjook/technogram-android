@@ -160,9 +160,9 @@ public class InfoSettActivity extends AppCompatActivity implements UpdateProfile
             }
         }
         Intent intent=new Intent();
-        intent.putExtra("RESULT_STRING", text);
+        intent.putExtra("RESULT_STRING", editText.getText());
         setResult(RESULT_OK, intent);
-        finish();
+        onBackPressed();
     }
 
     @Override

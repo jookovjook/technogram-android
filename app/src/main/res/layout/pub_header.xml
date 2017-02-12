@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f0f0f0"
+    android:background="#ffffff"
     android:elevation="4dp">
 
     <LinearLayout
@@ -12,8 +12,7 @@
         android:id="@+id/headerLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="#f0f0f0">
+        android:layout_weight="0">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"

@@ -18,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.interfaces.ImagesLoaderInterface;
@@ -33,13 +36,15 @@ import es.guiguegon.gallerymodule.GalleryHelper;
 import es.guiguegon.gallerymodule.model.GalleryMedia;
 
 public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
-        HashTagsAdapter.HashTagCallback, MakePost.MakePostCalllback {
+        HashTagsAdapter.HashTagCallback, MakePost.MakePostCallback {
 
     //UI
     EditText editText;
+    TextView responseText;
     RecyclerView recyclerView, hashTagRecycler; //, linksRecycler;
-    Button hashButton, doneButton;
+    Button hashButton;
     NestedScrollView scrollView;
+    ImageView addPhotosButton;
 
     //backend
     List<String> tagsList;
@@ -48,20 +53,43 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     ArrayList<ImageProvider> imageList = new ArrayList<>();
     HashTagsAdapter hashTagsAdapter;
     ArrayList<HashTagsProvider> hashTagList = new ArrayList<>();
-    MakePost.MakePostCalllback makePostCalllback;
+    MakePost.MakePostCallback makePostCallback = this;
+    ImagesLoaderInterface imagesLoaderInterface = this;
 
     //constants
     private static final int MAX_IMAGES = 20;
     public static final int REQUEST_CODE_GALLERY = 1;
     private static final int RESULT_OK = -1;
 
+    FragmentPublishCallback callback;
+
+    public interface FragmentPublishCallback{
+        void onPublishSuccessful();
+        void onPublishError();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_pub, container, false);
         bindFragment(rootView);
-        makePostCalllback = this;
         return rootView;
+    }
+
+    public void publish(){
+        if(imageList.size() > 0) {
+            MakePost makePost = new MakePost(firstLine, editText.getText().toString(),
+                    imageList, makePostCallback, getActivity());
+            makePost.execute();
+            responseText.setText("Creating post...");
+        }else{
+            responseText.setText("You have to attach at least 1 image");
+            callback.onPublishError();
+        }
+    }
+
+    public void setFragmentPublishCallback(FragmentPublishCallback callback){
+        this.callback = callback;
     }
 
     private void bindFragment(View rootView){
@@ -78,7 +106,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         hashButton = (Button) rootView.findViewById(R.id.hashButton);
         hashTagRecycler = (RecyclerView) rootView.findViewById(R.id.hashTagRecycler);
         scrollView = (NestedScrollView) rootView.findViewById(R.id.scrollView);
-        doneButton = (Button) rootView.findViewById(R.id.doneButton);
+        responseText = (TextView) rootView.findViewById(R.id.responseText);
     }
 
     private void setupEditText(){
@@ -132,8 +160,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         });
     }
 
-    public int getCurrentCursorLine(EditText editText)
-    {
+    public int getCurrentCursorLine(EditText editText) {
         int selectionStart = Selection.getSelectionStart(editText.getText());
         Layout layout = editText.getLayout();
 
@@ -148,9 +175,42 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         final LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(rvLayoutManager);
-
-        imageAdapter = new ImageAdapter(imageList, getActivity(), this);
+        imageAdapter = new ImageAdapter(imageList, getActivity(), imagesLoaderInterface);
         recyclerView.setAdapter(imageAdapter);
+
+        addPhotosButton = (ImageView) rootView.findViewById(R.id.addPhotosButton);
+
+        final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) addPhotosButton.getLayoutParams();
+        layoutParams.setMargins(100, 0, 0, 0);
+        addPhotosButton.setLayoutParams(layoutParams);
+        addPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesLoaderInterface.onAddImagesClicked();
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int totaldx = 0;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                totaldx = recyclerView.computeHorizontalScrollOffset();
+                layoutParams.setMargins((int) (100-totaldx/2.50), 0, 0, 0);
+                addPhotosButton.setLayoutParams(layoutParams);
+                float point = (float) (totaldx/300.0);
+                float size = 1 - point*point;
+                float alph = (float) (totaldx/200.0);
+                float alpha = 1 - alph*alph;
+                if(alpha <= 0.01) addPhotosButton.setClickable(false);
+                else addPhotosButton.setClickable(true);
+                addPhotosButton.setAlpha(alpha);
+                addPhotosButton.setScaleX(size);
+                addPhotosButton.setScaleY(size);
+
+                super.onScrolled(recyclerView, dx, dy);
+
+            }
+        });
     }
 
     private void setupHashTagRecycler(View rootView){
@@ -262,14 +322,11 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 insertHashTag("");
             }
         });
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MakePost makePost = new MakePost(firstLine, editText.getText().toString(),
-                        imageList, makePostCalllback, getActivity());
-                makePost.execute();
-            }
-        });
+
+//                MakePost makePost = new MakePost(firstLine, editText.getText().toString(),
+//                        imageList, makePostCallback, getActivity());
+//                makePost.execute();
+
     }
 
     private void insertHashTag(String hashtag){
@@ -337,19 +394,24 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         hashTagsAdapter.notifyDataSetChanged();
     }
 
-
     @Override
     public void onMakePostError() {
+        callback.onPublishError();
+        responseText.setText("Error creating pub");
         Log.i("Make post", "error");
     }
 
     @Override
     public void onAddImagesError() {
         Log.i("Make post", "add images error");
+        callback.onPublishError();
+        responseText.setText("Error adding images to pub");
     }
 
     @Override
     public void onPostCreated() {
         Log.i("Make post", "success");
+        responseText.setText("Successful!");
+        callback.onPublishSuccessful();
     }
 }

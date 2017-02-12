@@ -85,9 +85,6 @@ public class SettingsActivity extends AppCompatActivity implements UploadImage.U
         Log.i("requestCode", String.valueOf(requestCode));
         if (requestCode == REQUEST_CODE_SETTING) {
             if (resultCode == RESULT_OK) {
-                //Use Data to get string
-                String string = data.getStringExtra("RESULT_STRING");
-                Log.i("got result", string);
                 infoAdapter.update();
                 securityAdapter.update();
             }
