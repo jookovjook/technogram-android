@@ -13,9 +13,10 @@
         android:id="@+id/main.toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryLight"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:background="#ffffff"
+        app:theme="@style/ToolbarNewPub"
         android:elevation="4dp"
+        app:titleTextColor="@color/colorPrimary"
         style="@style/ToolBarWithNavigationBack">
 
     </android.support.v7.widget.Toolbar>
@@ -34,7 +35,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_publish_black"
-            android:tint="#ffffff"/>
+            android:tint="@color/colorPrimary"/>
 
         <ProgressBar
             android:background="@color/colorPrimaryLight"

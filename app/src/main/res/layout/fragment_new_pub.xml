@@ -2,14 +2,10 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="RtlHardcoded"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    android:clickable="true"
     android:background="#ffffff" >
 
     <android.support.v4.widget.NestedScrollView
@@ -25,66 +21,74 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <EditText
-                    android:textSize="18sp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textColorLink="@color/colorBlue"
-                    android:padding="8dp"
-                    android:hint="Type something here..."
-                    android:gravity="start"
-                    android:id="@+id/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minLines="1"
-                    android:background="#ffffff" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:layout_height="150dp">
 
-                <RelativeLayout
+                <ImageView
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha="0.75"
+                    android:id="@+id/addPhotosImage"
+                    android:layout_width="173dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/add_images"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/addPhotosButton" />
+
+                <ImageView
+                    android:id="@+id/addPhotosButton"
+                    android:layout_centerVertical="true"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_add_photo_doodle" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp">
-
-                    <ImageView
-                        android:id="@+id/addPhotosButton"
-                        android:layout_centerVertical="true"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_add_a_photo" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-
-                </RelativeLayout>
-
-                <!--
-
-                <Button
-                    android:id="@+id/doneButton"
-                    android:layout_margin="16dp"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/myColoredButton"
-                    android:colorButtonNormal="@color/colorAccent"
-                    android:background="@drawable/primary"
-                    android:text="DONE"/>
-
-                    -->
+                    android:layout_height="match_parent" />
 
                 <TextView
-                    android:id="@+id/responseText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Response"/>
+                    android:alpha="0"
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
 
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/responseText"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="Response"/>
+
+            <EditText
+                android:inputType="textMultiLine|textNoSuggestions|textCapSentences"
+                android:textSize="19sp"
+                android:textColor="@color/colorPrimary"
+                android:textColorLink="@color/colorBlueLight"
+                android:padding="8dp"
+                android:hint=""
+                android:gravity="start"
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff" />
+
+            <RelativeLayout
+                android:id="@+id/layoutBelowEditText"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:alpha="0.75"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/type_here_text"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -117,12 +121,32 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:scrollbarSize="2dp"
-            android:scrollbars="horizontal"
-            android:id="@+id/hashTagRecycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:scrollbarSize="2dp"
+                android:scrollbars="horizontal"
+                android:id="@+id/hashTagRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/leftShadow"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/new_frag_ab_grad"/>
+
+            <ImageView
+                android:id="@+id/rightShadow"
+                android:rotation="180"
+                android:layout_alignParentRight="true"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/new_frag_ab_grad"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

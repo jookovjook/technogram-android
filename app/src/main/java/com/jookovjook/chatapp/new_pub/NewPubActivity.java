@@ -1,5 +1,7 @@
 package com.jookovjook.chatapp.new_pub;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +61,9 @@ public class NewPubActivity extends AppCompatActivity implements NewPubFragment.
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mToolbar.getLayoutParams();
         layoutParams.height = getStatusBarHeight() + getActionBarHeight();
         mToolbar.setLayoutParams(layoutParams);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+        mToolbar.setNavigationIcon(upArrow);
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) relativeLayout.getLayoutParams();

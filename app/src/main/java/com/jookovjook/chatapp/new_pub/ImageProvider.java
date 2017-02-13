@@ -1,11 +1,13 @@
 package com.jookovjook.chatapp.new_pub;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.jookovjook.chatapp.R;
 import com.jookovjook.chatapp.network.UploadFile;
 
-public class ImageProvider {
+public class ImageProvider implements CalculateColor.CalculateColorCallback{
 
     private String uri;
     private Boolean uploaded;
@@ -15,6 +17,7 @@ public class ImageProvider {
     private ImageAdapter.VHItem vhItem;
     private UploadFile uploadFile;
     private Context context;
+    public int color = 0;
 
     public ImageProvider(String uri, Context context){
         Log.i("uri", uri);
@@ -28,6 +31,10 @@ public class ImageProvider {
         this.vhItem = null;
         uploadFile = new UploadFile(this, vhItem, context);
         uploadFile.execute();
+        this.color = 0;
+        CalculateColor calculateColor = new CalculateColor(uri, context, this);
+        Thread thread = new Thread(calculateColor);
+        thread.start();
     }
 
     public void reload(){
@@ -75,4 +82,23 @@ public class ImageProvider {
     public String getFilename() {
         return filename;
     }
+
+    @Override
+    public void onColorCalculated(int color) {
+        this.color = color;
+
+        if(vhItem != null){
+            if(color == 1){
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        vhItem.deleteImageButton.setImageResource(R.drawable.ic_cancel_white);
+                    }
+                });
+
+            }
+        }
+    }
+
+
 }

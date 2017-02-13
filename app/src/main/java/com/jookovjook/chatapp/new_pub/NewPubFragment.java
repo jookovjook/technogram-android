@@ -1,21 +1,28 @@
 package com.jookovjook.chatapp.new_pub;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
-import android.text.Selection;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.util.Linkify;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,14 +47,16 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
 
     //UI
     EditText editText;
-    TextView responseText;
+    TextView responseText, textView;
     RecyclerView recyclerView, hashTagRecycler; //, linksRecycler;
     Button hashButton;
     NestedScrollView scrollView;
-    ImageView addPhotosButton;
+    ImageView addPhotosButton,addPhotosImage;
+    RelativeLayout layoutBelowEditText;
 
     //backend
-    List<String> tagsList;
+    List<String> tagsList, linksList;
+    List<Integer> tagsStart, tagsEnd, mentsStart, mentsEnd, linksStart, linksEnd;
     String firstLine;
     ImageAdapter imageAdapter;
     ArrayList<ImageProvider> imageList = new ArrayList<>();
@@ -55,9 +64,10 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     ArrayList<HashTagsProvider> hashTagList = new ArrayList<>();
     MakePost.MakePostCallback makePostCallback = this;
     ImagesLoaderInterface imagesLoaderInterface = this;
+    TextWatcher txtwt;
 
     //constants
-    private static final int MAX_IMAGES = 20;
+    private static final int MAX_IMAGES = 10;
     public static final int REQUEST_CODE_GALLERY = 1;
     private static final int RESULT_OK = -1;
 
@@ -107,39 +117,59 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         hashTagRecycler = (RecyclerView) rootView.findViewById(R.id.hashTagRecycler);
         scrollView = (NestedScrollView) rootView.findViewById(R.id.scrollView);
         responseText = (TextView) rootView.findViewById(R.id.responseText);
+        layoutBelowEditText = (RelativeLayout) rootView.findViewById(R.id.layoutBelowEditText);
+        addPhotosButton = (ImageView) rootView.findViewById(R.id.addPhotosButton);
+        addPhotosImage = (ImageView)rootView.findViewById(R.id.addPhotosImage);
+        textView = (TextView) rootView.findViewById(R.id.textView);
     }
 
     private void setupEditText(){
         editText.setNestedScrollingEnabled(true);
-        final Linkify.TransformFilter filter = new Linkify.TransformFilter() {
-            public final String transformUrl(final Matcher match, String url) {
-                return match.group();
-            }
-        };
-        final Pattern hashtagPattern = Pattern.compile("#([ء-يA-Za-zа-яА-Я0-9_-]+)");
-        final String hashtagScheme = "content://com.hashtag.jojo/";
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+        final Pattern hashtagPattern = Pattern.compile("#([A-Za-zа-яА-Я0-9_-]+)");
+        final Pattern mentionsPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
+        final Pattern linksPattern = Pattern.compile("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
+
+        txtwt = new TextWatcher() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
-            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
-                //GET #HASHTAGS
-                Linkify.addLinks(s, hashtagPattern, hashtagScheme, null, filter);
+
+                //GET #HASHTAGS, @MENTIONS AND HTTP://HYPER.LINKS
                 Matcher m = hashtagPattern.matcher(s);
-                tagsList = new ArrayList<String>();
+                Matcher m1 = mentionsPattern.matcher(s);
+                Matcher linksMatcher = linksPattern.matcher(s);
+                tagsList = new ArrayList<>();
+                tagsStart = new ArrayList<>();
+                tagsEnd = new ArrayList<>();
                 while (m.find()) {
-                    String hashtag = m.group(1);
-                    tagsList.add(hashtag);
-                    Log.i("hashtags", String.valueOf(tagsList));
+                    tagsStart.add(m.start(1));
+                    tagsEnd.add(m.end(1));
+                    tagsList.add(m.group(1));
                 }
+                //mentsList = new ArrayList<>();
+                mentsStart = new ArrayList<>();
+                mentsEnd = new ArrayList<>();
+                while (m1.find()){
+                    //mentsList.add(m1.group(1));
+                    mentsStart.add(m1.start(1));
+                    mentsEnd.add(m1.end(1));
+                }
+                linksStart = new ArrayList<>();
+                linksEnd = new ArrayList<>();
+                while(linksMatcher.find()){
+                    //linksList.add(linksMatcher.group(0));
+                    linksStart.add(linksMatcher.start());
+                    linksEnd.add(linksMatcher.end());
+                }
+                //Log.i("linksList", String.valueOf(linksList));
+
 
                 //GET 1ST LINE
                 String multiLines = String.valueOf(s);
@@ -149,26 +179,57 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 if(lines.length == 0) firstLine = "";
                 else firstLine = lines[0];
 
-                //Scroll down
-                int all_lines = editText.getLineCount();
-                int current_line = getCurrentCursorLine(editText);
-                Log.i("lines", String.valueOf(all_lines) + " " + String.valueOf(current_line));
-                //if((all_lines - current_line) <= 1)
-                    //scrollView.fullScroll(View.FOCUS_DOWN);
+
+                //SET SPANNEABLE
+
+                Spannable spanRange = new SpannableString(multiLines);
+                TextAppearanceSpan tas = new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Holo_Large);
+                spanRange.setSpan(tas, 0, lines[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                for(int i = 0; i < tagsList.size(); i++){
+                    spanRange.setSpan(new ForegroundColorSpan(
+                            ResourcesCompat.getColor(getResources(), R.color.colorBlue, null)),
+                            tagsStart.get(i)-1, tagsEnd.get(i),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                for(int i = 0; i < mentsStart.size(); i++){
+                    spanRange.setSpan(new ForegroundColorSpan(
+                                    ResourcesCompat.getColor(getResources(), R.color.colorAccentDark, null)),
+                            mentsStart.get(i)-1, mentsEnd.get(i),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                for(int i = 0; i < linksStart.size(); i++){
+                    spanRange.setSpan(
+                            new URLSpan(""),
+                            linksStart.get(i), linksEnd.get(i),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                editText.removeTextChangedListener(txtwt);
+                int selectionStart = editText.getSelectionStart();
+                int selectionEnd = editText.getSelectionEnd();
+                editText.setText(spanRange);
+                editText.setSelection(selectionStart);
+                //Log.i("_editext length", String.valueOf(editText.getText().toString().length()));
+                //Log.i("textview length", String.valueOf(textView.getText().toString().length()));
+                editText.addTextChangedListener(txtwt);
+
+                textView.setText(spanRange);
+
             }
 
+        };
+
+        editText.addTextChangedListener(txtwt);
+
+
+        layoutBelowEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                editText.setSelection(editText.length());
+            }
         });
-    }
-
-    public int getCurrentCursorLine(EditText editText) {
-        int selectionStart = Selection.getSelectionStart(editText.getText());
-        Layout layout = editText.getLayout();
-
-        if (!(selectionStart == -1)) {
-            return layout.getLineForOffset(selectionStart);
-        }
-
-        return -1;
     }
 
     private void setupRecyclerView(View rootView){
@@ -178,7 +239,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         imageAdapter = new ImageAdapter(imageList, getActivity(), imagesLoaderInterface);
         recyclerView.setAdapter(imageAdapter);
 
-        addPhotosButton = (ImageView) rootView.findViewById(R.id.addPhotosButton);
 
         final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) addPhotosButton.getLayoutParams();
         layoutParams.setMargins(100, 0, 0, 0);
@@ -189,6 +249,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 imagesLoaderInterface.onAddImagesClicked();
             }
         });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totaldx = 0;
 
@@ -201,6 +262,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 float size = 1 - point*point;
                 float alph = (float) (totaldx/200.0);
                 float alpha = 1 - alph*alph;
+                alpha *= 0.75;
                 if(alpha <= 0.01) addPhotosButton.setClickable(false);
                 else addPhotosButton.setClickable(true);
                 addPhotosButton.setAlpha(alpha);
@@ -213,13 +275,46 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         });
     }
 
-    private void setupHashTagRecycler(View rootView){
+    private void setupHashTagRecycler(final View rootView){
         hashTagRecycler = (RecyclerView) rootView.findViewById(R.id.hashTagRecycler);
         final LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         hashTagRecycler.setLayoutManager(rvLayoutManager);
         setupTags(0, 0);
         hashTagsAdapter = new HashTagsAdapter(hashTagList, getActivity(), this);
         hashTagRecycler.setAdapter(hashTagsAdapter);
+        hashTagRecycler.addOnScrollListener(new RecyclerView.OnScrollListener(){
+
+            ImageView leftShadow = (ImageView) rootView.findViewById(R.id.leftShadow);
+            ImageView rightShadow = (ImageView) rootView.findViewById(R.id.rightShadow);
+            int totaldx = 0;
+            int previousVsible = 0;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                totaldx = hashTagRecycler.computeHorizontalScrollOffset();
+                float alph = (float) (totaldx * 2.0/hashTagRecycler.getHeight());
+                //float alpha = 1 - alph;
+                leftShadow.setAlpha(alph);
+                int nowVisible = rvLayoutManager.findLastCompletelyVisibleItemPosition();
+                if(nowVisible > previousVsible & nowVisible == hashTagList.size() - 1){
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setDuration(200);
+                    fadeOut.setFillAfter(true);
+                    rightShadow.clearAnimation();
+                    rightShadow.setAnimation(fadeOut);
+                }
+                if(nowVisible < previousVsible & previousVsible == hashTagList.size() - 1){
+                    Animation fadeIn = new AlphaAnimation(0, 1);
+                    fadeIn.setDuration(200);
+                    fadeIn.setFillAfter(true);
+                    rightShadow.clearAnimation();
+                    rightShadow.setAnimation(fadeIn);
+                }
+                previousVsible = nowVisible;
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+        });
     }
 
     private void setupTags(int level, int type){
@@ -330,7 +425,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     }
 
     private void insertHashTag(String hashtag){
-        Log.i("addingHash", hashtag);
+        //Log.i("addingHash", hashtag);
         String text = editText.getText().toString();
         int insertedChars = hashtag.length() + 1;
         int selectionStart = editText.getSelectionStart();
@@ -345,7 +440,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 String textStarts = text.substring(0, selectionStart);
                 String textEnds = text.substring(selectionEnd, text.length());
 
-                if (!text.substring(selectionStart - 1).equals(" ")) {
+                if (!text.substring(selectionStart - 1).equals(" ") & !text.substring(selectionStart - 1).equals("\n")) {
                     text = textStarts + " ";
                     insertedChars++;
                 }
@@ -370,6 +465,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 imageList.add(new ImageProvider(galleryMedias.get(i).mediaUri(), getActivity()));
             }
             imageAdapter.notifyDataSetChanged();
+            addPhotosImage.setVisibility(View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -414,4 +510,5 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         responseText.setText("Successful!");
         callback.onPublishSuccessful();
     }
+
 }

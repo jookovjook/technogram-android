@@ -67,7 +67,7 @@
             android:theme="@style/UPActivityTheme"
             android:screenOrientation="portrait"/>
         <activity android:name=".new_pub.NewPubActivity"
-            android:theme="@style/UPActivityTheme"
+            android:theme="@style/NewPubTheme"
             android:screenOrientation="portrait"/>
     </application>
 
