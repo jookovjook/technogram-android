@@ -8,19 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.jookovjook.chatapp.R;
+import com.jookovjook.chatapp.anims.CloudAnimFragment;
 
-public class NewPubActivity extends AppCompatActivity implements NewPubFragment.FragmentPublishCallback{
+public class NewPubActivity extends AppCompatActivity implements NewPubFragment.FragmentPublishCallback, CloudAnimFragment.CloudAnimCallback{
 
     Toolbar mToolbar;
-    ProgressBar loadingSpinner;
-    ImageView doneButton;
+//    ProgressBar loadingSpinner;
+//    ImageView doneButton;
     NewPubFragment newPubFragment;
+    CloudAnimFragment cloudFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,34 +76,32 @@ public class NewPubActivity extends AppCompatActivity implements NewPubFragment.
         lp2.setMargins(0, getStatusBarHeight() + getActionBarHeight(), 0, 0);
         mainContent.setLayoutParams(lp2);
 
-        loadingSpinner = (ProgressBar) findViewById(R.id.loadingSpinner);
-
-        doneButton = (ImageView) findViewById(R.id.doneButton);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                loadingSpinner.setVisibility(View.VISIBLE);
-                doneButton.setClickable(false);
-                newPubFragment.publish();
-            }
-        });
-
         newPubFragment = (NewPubFragment) NewPubFragment.newInstance();
         newPubFragment.setFragmentPublishCallback(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newPubFragment).commit();
+
+        cloudFragment = CloudAnimFragment.newInstance(false);
+        getSupportFragmentManager().beginTransaction().add(R.id.cloudContainer, cloudFragment).commit();
 
     }
 
     @Override
     public void onPublishSuccessful() {
-        loadingSpinner.setVisibility(View.GONE);
-        doneButton.setClickable(true);
+        cloudFragment.success();
     }
 
     @Override
     public void onPublishError() {
-        loadingSpinner.setVisibility(View.GONE);
-        doneButton.setClickable(true);
+        cloudFragment.error();
+    }
+
+    @Override
+    public void onStartPressed() {
+        newPubFragment.publish();
+    }
+
+    @Override
+    public void onSuccessEnd() {
+
     }
 }

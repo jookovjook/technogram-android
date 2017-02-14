@@ -27,27 +27,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginRight="12dp"
-            android:id="@+id/doneButton"
-            android:layout_alignParentRight="true"
+        <FrameLayout
             android:layout_centerVertical="true"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_publish_black"
-            android:tint="@color/colorPrimary"/>
-
-        <ProgressBar
-            android:background="@color/colorPrimaryLight"
-            android:visibility="gone"
-            android:layout_marginRight="12dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/loadingSpinner"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/colorAccent" />
+            android:id="@+id/cloudContainer"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize">
+        </FrameLayout>
 
     </RelativeLayout>
 

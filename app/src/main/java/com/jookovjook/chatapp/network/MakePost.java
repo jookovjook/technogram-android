@@ -91,9 +91,19 @@ public class MakePost extends AsyncTask<String, Void, String> {
             error = jsonObject.getBoolean("error");
             Log.i("comment", s);
         }catch (Exception e){
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e1) {
+//                e1.printStackTrace();
+//            }
             makePostCallback.onMakePostError();
         }
         if(error){
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e1) {
+//                e1.printStackTrace();
+//            }
             makePostCallback.onMakePostError();
         }else{
             if(mList.size() > 1){

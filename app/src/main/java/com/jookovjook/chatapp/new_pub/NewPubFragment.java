@@ -51,7 +51,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
     RecyclerView recyclerView, hashTagRecycler; //, linksRecycler;
     Button hashButton;
     NestedScrollView scrollView;
-    ImageView addPhotosButton,addPhotosImage;
+    ImageView addPhotosButton, addPhotosImage, typeHereSign;
     RelativeLayout layoutBelowEditText;
 
     //backend
@@ -121,6 +121,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
         addPhotosButton = (ImageView) rootView.findViewById(R.id.addPhotosButton);
         addPhotosImage = (ImageView)rootView.findViewById(R.id.addPhotosImage);
         textView = (TextView) rootView.findViewById(R.id.textView);
+        typeHereSign = (ImageView) rootView.findViewById(R.id.typeHereSign);
     }
 
     private void setupEditText(){
@@ -140,7 +141,6 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 //GET #HASHTAGS, @MENTIONS AND HTTP://HYPER.LINKS
                 Matcher m = hashtagPattern.matcher(s);
                 Matcher m1 = mentionsPattern.matcher(s);
@@ -179,6 +179,12 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 if(lines.length == 0) firstLine = "";
                 else firstLine = lines[0];
 
+                if(multiLines.length() > 0){
+                    typeHereSign.setVisibility(View.GONE);
+                }
+                else {
+                    typeHereSign.setVisibility(View.VISIBLE);
+                }
 
                 //SET SPANNEABLE
 
@@ -262,7 +268,7 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 float size = 1 - point*point;
                 float alph = (float) (totaldx/200.0);
                 float alpha = 1 - alph*alph;
-                alpha *= 0.75;
+                alpha *= 1.0;
                 if(alpha <= 0.01) addPhotosButton.setClickable(false);
                 else addPhotosButton.setClickable(true);
                 addPhotosButton.setAlpha(alpha);

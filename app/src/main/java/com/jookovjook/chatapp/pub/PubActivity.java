@@ -1,15 +1,19 @@
 package com.jookovjook.chatapp.pub;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -54,7 +58,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private ArrayList<CommentProvider> mList = new ArrayList<>();
     private ParallaxViewPager mParallaxViewPager;
     private ArrayList<String> images = new ArrayList<>();
-    private int pub_id, like, likes;
+    private int pub_id, like, likes, firstlyTyped = 0;
     private String img_link;
     private RecyclerView recyclerView;
     private CircleImageView avatar, avatar_;
@@ -67,6 +71,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     private TextView textView1, likesText;
     private Boolean loggedIn = false;
     private LikesChangedCallBack callBack;
+    private NestedScrollView nestedScrollView;
 
     @Override
     public void onVPDoubleClicked() {
@@ -93,6 +98,7 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
         textView1 = (TextView) findViewById(R.id.textView1);
         imageLike = (ImageView) findViewById(R.id.imageLike);
         likesText = (TextView) findViewById(R.id.likesText);
+        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
     }
 
     private void proceedBunle(){
@@ -163,6 +169,23 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
             public void onClick(View v) {
                 onLikeClicked();
                 Log.i("PubActivity", "image clicked!");
+            }
+        });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(firstlyTyped == 0) nestedScrollView.fullScroll(View.FOCUS_DOWN);
+                firstlyTyped ++;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -446,5 +469,13 @@ public class PubActivity extends AppCompatActivity implements GetPublicationInte
     @Override
     public void onError() {
 
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

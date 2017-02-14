@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffff"
+    android:layout_width="?attr/actionBarSize"
+    android:layout_height="?attr/actionBarSize"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp">
+
+        <ImageView
+            android:tint="@color/colorPrimary"
+            android:id="@+id/cloud"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_cloud_black"/>
+
+        <RelativeLayout
+            android:layout_marginTop="2.5dp"
+            android:layout_marginLeft="4dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:rotation="45">
+
+            <ImageView
+                android:visibility="gone"
+                android:tint="#ffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/imageView1"
+                android:layout_width="5dp"
+                android:layout_height="2dp"
+                android:src="@drawable/ic_cloud_shape"/>
+
+
+            <ImageView
+                android:visibility="gone"
+                android:tint="#ffffff"
+                android:id="@+id/imageView2"
+                android:layout_width="2dp"
+                android:layout_height="9dp"
+                android:src="@drawable/ic_cloud_shape"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:visibility="visible"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_cloud_arrow"/>
+
+        <ImageView
+            android:tint="#ffffff"
+            android:id="@+id/signUp"
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="2dp"
+            android:layout_height="6dp"
+            android:src="@drawable/ic_cloud_shape"/>
+
+        <ImageView
+            android:tint="#ffffff"
+            android:id="@+id/signDown"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:src="@drawable/ic_cloud_shape"/>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:rotation="270"
+        android:alpha="1.0"
+        android:visibility="gone"
+        android:layout_marginRight="19dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/loadingSpinner"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="#ffffff" />
+
+</RelativeLayout>
