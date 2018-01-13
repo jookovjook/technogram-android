@@ -125,10 +125,14 @@ Watch this YouTube live DEMO:
 
 ## Credits
 
-Created by @jookovjook.
-    vk.com/jookovjook
-    fb.com/jookovjook
-    t.me/jookovjook
+Created by [jookovjook](https://github.com/jookovjook).
+
+[vk.com/jookovjook](https://vk.com/jookovjook)
+
+[fb.com/jookovjook](https://fb.com/jookovjook)
+
+[t.me/jookovjook](t.me/jookovjook)
+    
 You are welcome to participate the project!
 
 ## Donations
