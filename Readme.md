@@ -1,4 +1,4 @@
-![Alamofire: Elegant Networking in Swift](https://github.com/jookovjook/technogram-andoid/blob/master/Art.png)
+![Alamofire: Elegant Networking in Swift](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
 
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Alamofire.svg)](https://img.shields.io/cocoapods/v/Alamofire.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
