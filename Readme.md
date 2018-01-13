@@ -59,8 +59,9 @@ $ git clone https://github.com/jookovjook/technogram-android
 
 ### Authorization
 
-![1.auth](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png)
-![2.auth](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png)
+![1.png](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png =320x180)
+![2.png](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png =320x180)
+
 
 
 ## FAQ
