@@ -30,6 +30,8 @@ TechnoGram is a social network for IT specialists. There is a place, where it's 
 
 Current repo represent TechnoGram mobile app for Android.
 
+Server side availible at [technogram-server](https://github.com/jookovjook/technogram-server) repo.
+
 ## Features
 
 - [x] Username/e-mail authorization
