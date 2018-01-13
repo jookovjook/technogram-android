@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatApp</string>
+    <string name="app_name">TechnoGram</string>
     <string name="login_activity">Login Activity</string>
     <string name="user_profile_activity">My Profile</string>
     <string name="publication_activity">Publication Activity</string>

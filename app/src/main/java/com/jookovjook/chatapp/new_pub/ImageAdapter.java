@@ -62,8 +62,10 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             setAnimation(vhItem.imageItemLayout, position);
             if(imageProvider.color == 1){
                 vhItem.deleteImageButton.setImageResource(R.drawable.ic_cancel_white);
+                //vhItem.deleteImageButton.setImageResource(R.drawable.path7);
             }else{
                 vhItem.deleteImageButton.setImageResource(R.drawable.ic_cancel_black);
+                //vhItem.deleteImageButton.setImageResource(R.drawable.path7);
             }
             Glide.with(mContext).load(imageProvider.getUri()).fitCenter().into(vhItem.image);
             if (imageProvider.getUploaded()){

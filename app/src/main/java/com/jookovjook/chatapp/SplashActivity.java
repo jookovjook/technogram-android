@@ -3,8 +3,10 @@ package com.jookovjook.chatapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.jookovjook.chatapp.interfaces.CheckTokenInterface;
+import com.jookovjook.chatapp.login.LoginActivity;
 import com.jookovjook.chatapp.network.CheckToken;
 import com.jookovjook.chatapp.utils.AuthHelper;
 
@@ -22,11 +24,13 @@ public class SplashActivity extends AppCompatActivity implements CheckTokenInter
     @Override
     public void onTokenChecked(int user_id) {
         if(user_id > -1){
+            Log.i("SplashActivity", "You are logged in");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }else{
-            Intent intent = new Intent(this, MainActivity.class);
+            Log.i("SplashActivity", "You are not logged in");
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }

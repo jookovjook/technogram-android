@@ -1,6 +1,7 @@
 package com.jookovjook.chatapp.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.jookovjook.chatapp.utils.StreamReader;
 
@@ -29,6 +30,7 @@ class AbstractQuery extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String s = "";
+        Log.i("Abstract query", this.url);
         try {
             URL url = new URL(this.url);
             HttpURLConnection mUrlConnection = (HttpURLConnection) url.openConnection();
@@ -50,6 +52,7 @@ class AbstractQuery extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        Log.i("AbstractQuery", s);
         callback.onPostExecute(s);
     }
 }

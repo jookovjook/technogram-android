@@ -21,6 +21,8 @@ import com.jookovjook.chatapp.utils.AuthHelper;
 import com.jookovjook.chatapp.utils.Config;
 import com.squareup.picasso.Picasso;
 
+import java.util.Random;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AboutOwnFragment extends Fragment implements NewGetUserInfo.GetUserInfoCallback{
@@ -127,10 +129,21 @@ public class AboutOwnFragment extends Fragment implements NewGetUserInfo.GetUser
 
     @Override
     public void onGotUserInfo(NewGetUserInfo.UserInfo userInfo) {
-        viewsStats.setText(String.valueOf(userInfo.views));
-        likesStats.setText(String.valueOf(userInfo.likes));
-        x2LikesStats.setText(String.valueOf(userInfo.x2likes));
-        subsStats.setText(String.valueOf(userInfo.subs));
+        Random random = new Random();
+        int min = 0;
+        int max = 10;
+        int rnd = random.nextInt(max - min + 1) + min;
+//        viewsStats.setText(String.valueOf(userInfo.views));
+//        likesStats.setText(String.valueOf(userInfo.likes));
+//        x2LikesStats.setText(String.valueOf(userInfo.x2likes));
+//        subsStats.setText(String.valueOf(userInfo.subs));
+        viewsStats.setText(String.valueOf(rnd));
+        rnd = random.nextInt(max - min + 1) + min;
+        likesStats.setText(String.valueOf(rnd));
+        rnd = random.nextInt(max - min + 1) + min;
+        x2LikesStats.setText(String.valueOf(rnd));
+        rnd = random.nextInt(max - min + 1) + min;
+        subsStats.setText(String.valueOf(rnd));
     }
 
     @Override

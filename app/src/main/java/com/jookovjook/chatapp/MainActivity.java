@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             switch(i) {
                 //case 0: return SoftwareFragment.newInstance();
                 case 0: return FeedFragment.newInstance(1, -1);
-                case 1: return FeedFragment.newInstance(0, 0);
+                case 1: return FeedFragment.newInstance(1, -1);  //.newInstance(0, 0);
                 case 2: return AboutOwnFragment.newInstance("Tset", 1, false);
             }
             return null;
@@ -175,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch(position) {
                 //case 0: return "New Pub";
-                case 0: return "Recommended";
-                case 1: return "Subscription";
+                case 0: return "All";
+                case 1: return "Subs";
                 case 2: return "My Profile";
             }
             return "";

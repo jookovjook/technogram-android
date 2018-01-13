@@ -104,6 +104,8 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentTouche
         lp.setMargins(0, 0, (int)(absWidth/2.0) - 250, 100);
         signupButton.setLayoutParams(lp);
         signupButtonHidden.setLayoutParams(lp);
+        signupButton.setEnabled(false);
+        signupButton.setAlpha(.5f);
 
         lp = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_HORIZONTAL);

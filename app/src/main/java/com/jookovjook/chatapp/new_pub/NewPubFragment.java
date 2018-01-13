@@ -406,12 +406,12 @@ public class NewPubFragment extends Fragment implements ImagesLoaderInterface,
                 hashTagList.add(new HashTagsProvider("best", 5, 6));
                 break;
             case 6:
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 1));
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 2));
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 3));
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 4));
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 5));
-                hashTagList.add(new HashTagsProvider("mamkoTraher", 6, 6));
+                hashTagList.add(new HashTagsProvider("App", 6, 1));
+                hashTagList.add(new HashTagsProvider("App", 6, 2));
+                hashTagList.add(new HashTagsProvider("App", 6, 3));
+                hashTagList.add(new HashTagsProvider("App", 6, 4));
+                hashTagList.add(new HashTagsProvider("App", 6, 5));
+                hashTagList.add(new HashTagsProvider("App", 6, 6));
                 break;
         }
     }

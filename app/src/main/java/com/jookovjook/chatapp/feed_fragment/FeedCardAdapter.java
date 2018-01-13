@@ -219,7 +219,7 @@ public class FeedCardAdapter extends SectioningAdapter implements NewGetPublicat
         final FeedCardProvider feedCardProvider = mList.get(sectionIndex);
         ivh.title.setText(feedCardProvider.title);
         ivh.text.setText(feedCardProvider.text);
-        ivh.views.setText(String.valueOf(feedCardProvider.views) + " views");
+//        ivh.views.setText(String.valueOf(feedCardProvider.views) + " views");
         ivh.comments.setText("Add a comment (" + String.valueOf(feedCardProvider.comments) + ")...");
         ivh.likes.setText("(" + String.valueOf(feedCardProvider.likes) + ")");
         Picasso.with(context)
