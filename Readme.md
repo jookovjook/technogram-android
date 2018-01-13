@@ -2,6 +2,7 @@
 
 TechnoGram is a new social network for IT specialists. This repo provides Android part of network.
 
+- [Introduction](#introduction)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Communication](#communication)
@@ -9,13 +10,22 @@ TechnoGram is a new social network for IT specialists. This repo provides Androi
 - [Overview](#overview)
     - [Authorization](#authorization)
     - [Publications](#publications)
-    - [New publication](#new)
-    - [Comment posts](#comment)
-    - [Edit profile](#edit)
+    - [New publication](#new-publication)
+    - [Comment posts](#comment-posts)
+    - [Edit profile](#edit-profile)
 - [FAQ](#faq)
-- [Credits](#credits)
+- [Contacts](#ontacts)
 - [Donations](#donations)
 - [License](#license)
+
+## Introduction
+
+TechnoGram is a social network for IT specialists. There is a place, where it's users can:
+• Share ther ideas and achievements to other people
+• Discuss topics with
+• Share their goals
+
+Current repo represent TechnoGram mobile app for Android.
 
 ## Features
 
@@ -88,7 +98,7 @@ You can create a new publication by pressing `NEW PUB` at the main screen.
 
 <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/3.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/4.png" width="240">
 
-You can also attach photos, @mentions, #hashtags and links (like https://github.com/jookovjook/technogram-andoid#authorization) to your publication
+You can also attach `photos`, `@mentions`, `#hashtags` and `links` (like https://github.com/jookovjook/technogram-andoid) to your publication
 
 <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/5.png" width="240">
 
