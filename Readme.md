@@ -1,4 +1,4 @@
-![Technogram: A new social network for IT specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
+![Technogram: A new social network for IT specialists](https://raw.githubusercontent.com/jookovjook/technogram-android/master/Art.png)
 
 TechnoGram is a new social network for IT specialists. This repo provides Android part of the service.
 
@@ -89,35 +89,35 @@ Build project and run it on your Android device.
 
 • You can authorize to TechnoGram using your username (or e-mail) and password
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/1.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/2.png" width="240">
 
 ### Publications
 
 • You can see publications of other users
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/13.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/14.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/15.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/13.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/14.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/15.png" width="240">
 
 ### New Publication
 
 • You can create a new publication by pressing `NEW PUB` at the main screen.
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/3.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/4.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/3.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/4.png" width="240">
 
-• You can also attach `photos`, `@mentions`, `#hashtags` and `links` (like https://github.com/jookovjook/technogram-andoid) to your publication
+• You can also attach `photos`, `@mentions`, `#hashtags` and `links` (like https://github.com/jookovjook/technogram-android) to your publication
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/5.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/5.png" width="240">
 
 ### Comment posts
 
 • You can also comment posts of other users
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/6.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/7.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/6.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/7.png" width="240">
 
 ### Edit profile
 
 • You an edit your profile's info
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/11.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/12.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/8.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/9.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/10.png" width="240">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/11.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/12.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/8.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/9.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-android/master/screenshots/10.png" width="240">
 
 ### Live DEMO
 
