@@ -13,8 +13,7 @@ TechnoGram is a new social network for IT specialists. This repo provides Androi
     - [New publication](#new-publication)
     - [Comment posts](#comment-posts)
     - [Edit profile](#edit-profile)
-- [FAQ](#faq)
-- [Contacts](#ontacts)
+- [Credits](#credits)
 - [Donations](#donations)
 - [License](#license)
 
@@ -114,40 +113,36 @@ You an edit your profile's info
 
 <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/11.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/12.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/8.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/9.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/10.png" width="240">
 
-## FAQ
-
-### What's the origin of the TechnoGram?
-
-Alamofire is named after the [Alamo Fire flower](https://aggie-horticulture.tamu.edu/wildseed/alamofire.html), a hybrid variant of the Bluebonnet, the official state flower of Texas.
-
-### What logic belongs in a Router vs. a Request Adapter?
-
-Simple, static data such as paths, parameters and common headers belong in the `Router`. Dynamic data such as an `Authorization` header whose value can changed based on an authentication system belongs in a `RequestAdapter`.
-
-The reason the dynamic data MUST be placed into the `RequestAdapter` is to support retry operations. When a `Request` is retried, the original request is not rebuilt meaning the `Router` will not be called again. The `RequestAdapter` is called again allowing the dynamic data to be updated on the original request before retrying the `Request`.
-
 ## Credits
 
-Alamofire is owned and maintained by the [Alamofire Software Foundation](http://alamofire.org). You can follow them on Twitter at [@AlamofireSF](https://twitter.com/AlamofireSF) for project updates and releases.
-
-### Security Disclosure
-
-If you believe you have identified a security vulnerability with Alamofire, you should report it as soon as possible via email to security@alamofire.org. Please do not post it to a public issue tracker.
+Created by @jookovjook.
+    vk.com/jookovjook
+    fb.com/jookovjook
+    t.me/jookovjook
+You are welcome to participate the project!
 
 ## Donations
 
-The [ASF](https://github.com/Alamofire/Foundation#members) is looking to raise money to officially register as a federal non-profit organization. Registering will allow us members to gain some legal protections and also allow us to put donations to use, tax free. Donating to the ASF will enable us to:
+I'll be gratefull if you donate some funds to my `Etherium wallet`:
 
-- Pay our legal fees to register as a federal non-profit organization
-- Pay our yearly legal fees to keep the non-profit in good status
-- Pay for our mail servers to help us stay on top of all questions and security issues
-- Potentially fund test servers to make it easier for us to test the edge cases
-- Potentially fund developers to work on one of our projects full-time
-
-The community adoption of the ASF libraries has been amazing. We are greatly humbled by your enthusiasm around the projects, and want to continue to do everything we can to move the needle forward. With your continued support, the ASF will be able to improve its reach and also provide better legal safety for the core members. If you use any of our libraries for work, see if your employers would be interested in donating. Our initial goal is to raise $1000 to get all our legal ducks in a row and kickstart this campaign. Any amount you can donate today to help us reach our goal would be greatly appreciated.
-
-<a href='https://pledgie.com/campaigns/31474'><img alt='Click here to lend your support to: Alamofire Software Foundation and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/31474.png?skin_name=chrome' border='0' ></a>
+```
+0x9B9a7B954E4c634b200Be98aa602b7ee9006b05B
+```
 
 ## License
 
-Alamofire is released under the MIT license. [See LICENSE](https://github.com/Alamofire/Alamofire/blob/master/LICENSE) for details.
+TechnoGram is released under the Apache 2.0 license.
+
+    Copyright 2017 JookovJook
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
