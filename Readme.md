@@ -6,8 +6,8 @@ TechnoGram is a new social network for it specialists. This repo provides Androi
 - [Requirements](#requirements)
 - [Communication](#communication)
 - [Installation](#installation)
-- [General overview](#general)
-    - [Authorization](##authorization)
+- [Overview](#overview)
+    - [Authorization](#authorization)
   - **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
 - [FAQ](#faq)
 - [Credits](#credits)
@@ -55,13 +55,13 @@ Clone [current](https://github.com/jookovjook/technogram-android) respository, b
 $ git clone https://github.com/jookovjook/technogram-android
 ```
 
-## General overview
+## Overview
 
 ### Authorization
 
 You can authorize to TechnoGram using your username (or e-mail) and password
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="160"><img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="160">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="160"> <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="160">
 
 
 
