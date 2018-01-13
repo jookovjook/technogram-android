@@ -7,7 +7,7 @@ TechnoGram is a new social network for it specialists. This repo provides Androi
 - [Communication](#communication)
 - [Installation](#installation)
 - [General overview](#general)
-    - **Intro -** [Making a Request](Documentation/Usage.md#making-a-request), [Response Handling](Documentation/Usage.md#response-handling), [Response Validation](Documentation/Usage.md#response-validation), [Response Caching](Documentation/Usage.md#response-caching)
+    - [Authorization](##authorization)
   - **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
 - [FAQ](#faq)
 - [Credits](#credits)
@@ -59,12 +59,9 @@ $ git clone https://github.com/jookovjook/technogram-android
 
 ### Authorization
 
-![1.png](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png =320x180)
-![2.png](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png =320x180)
+You can authorize to TechnoGram using your username (or e-mail) and password
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="320">
-
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="320">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="160"><img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="160">
 
 
 
