@@ -13,6 +13,7 @@ TechnoGram is a new social network for IT specialists. This repo provides Androi
     - [New publication](#new-publication)
     - [Comment posts](#comment-posts)
     - [Edit profile](#edit-profile)
+    - [Live DEMO](#live-demo)
 - [Credits](#credits)
 - [Donations](#donations)
 - [License](#license)
@@ -112,6 +113,11 @@ You can also comment posts of other users
 You an edit your profile's info
 
 <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/11.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/12.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/8.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/9.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/10.png" width="240">
+
+### Live DEMO
+
+Watch this YouTube live DEMO:
+[![TechoGram [DEMO]](https://img.youtube.com/vi/ONhNDH2S7Ns/0.jpg)](https://www.youtube.com/watch?v=ONhNDH2S7Ns)
 
 ## Credits
 
