@@ -1,6 +1,6 @@
-![Technogram: A new social network for it specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
+![Technogram: A new social network for IT specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
 
-TechnoGram is a new social network for it specialists. This repo provides Android part of network.
+TechnoGram is a new social network for IT specialists. This repo provides Android part of network.
 
 - [Features](#features)
 - [Requirements](#requirements)
@@ -8,7 +8,10 @@ TechnoGram is a new social network for it specialists. This repo provides Androi
 - [Installation](#installation)
 - [Overview](#overview)
     - [Authorization](#authorization)
-  - **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
+    - [Publications](#publications)
+    - [New publication](#new)
+    - [Comment posts](#comment)
+    - [Edit profile](#edit)
 - [FAQ](#faq)
 - [Credits](#credits)
 - [Donations](#donations)
@@ -41,19 +44,29 @@ TechnoGram is a new social network for it specialists. This repo provides Androi
 
 ### LAMP
 
-Firstly clone [technogram-server](https://github.com/jookovjook/technogram-server) to your LAMP server. See more at [technogram-server](https://github.com/jookovjook/technogram-server) repository.
+Firstly clone [technogram-server](https://github.com/jookovjook/technogram-server) to your LAMP server.
 
 ```bash
 $ git clone https://github.com/jookovjook/technogram-server
 ```
 
+Use the installation guide at [technogram-server](https://github.com/jookovjook/technogram-server) repository.
+
 ### Android Studio
 
-Clone [current](https://github.com/jookovjook/technogram-android) respository, build project and run it on your Android device 
+Clone [current](https://github.com/jookovjook/technogram-android) respository 
 
 ```bash
 $ git clone https://github.com/jookovjook/technogram-android
 ```
+
+Add your server's addres to `utils/Config.java`
+
+```Java
+public static final String SERVER_URL = "http://your.server.com/";
+```
+
+Build project and run it on your Android device.
 
 ## Overview
 
@@ -63,7 +76,33 @@ You can authorize to TechnoGram using your username (or e-mail) and password
 
 <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="240">
 
+### Publications
 
+You can see publications of other users
+
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/13.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/14.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/15.png" width="240">
+
+### New Publication
+
+You can create a new publication by pressing `NEW PUB` at the main screen.
+
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/3.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/4.png" width="240">
+
+You can also attach photos, @mentions, #hashtags and links (like https://github.com/jookovjook/technogram-andoid#authorization) to your publication
+
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/5.png" width="240">
+
+### Comment posts
+
+You can also comment posts of other users
+
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/6.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/7.png" width="240">
+
+### Edit profile
+
+You an edit your profile's info
+
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/11.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/12.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/8.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/9.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/10.png" width="240">
 
 ## FAQ
 
