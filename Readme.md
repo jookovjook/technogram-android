@@ -1,22 +1,14 @@
 ![Technogram: A new social network for it specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
 
-TechnoGram is a new social network for it specialists
+TechnoGram is a new social network for it specialists. This repo provides Android part of network.
 
 - [Features](#features)
 - [Requirements](#requirements)
 - [Communication](#communication)
 - [Installation](#installation)
-- [Usage](Documentation/Usage.md)
+- [General overview](#general)
     - **Intro -** [Making a Request](Documentation/Usage.md#making-a-request), [Response Handling](Documentation/Usage.md#response-handling), [Response Validation](Documentation/Usage.md#response-validation), [Response Caching](Documentation/Usage.md#response-caching)
   - **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
-  - **Large Data -** [Downloading Data to a File](Documentation/Usage.md#downloading-data-to-a-file), [Uploading Data to a Server](Documentation/Usage.md#uploading-data-to-a-server)
-  - **Tools -** [Statistical Metrics](Documentation/Usage.md#statistical-metrics), [cURL Command Output](Documentation/Usage.md#curl-command-output)
-- [Advanced Usage](Documentation/AdvancedUsage.md)
-  - **URL Session -** [Session Manager](Documentation/AdvancedUsage.md#session-manager), [Session Delegate](Documentation/AdvancedUsage.md#session-delegate), [Request](Documentation/AdvancedUsage.md#request)
-  - **Routing -** [Routing Requests](Documentation/AdvancedUsage.md#routing-requests), [Adapting and Retrying Requests](Documentation/AdvancedUsage.md#adapting-and-retrying-requests)
-  - **Model Objects -** [Custom Response Serialization](Documentation/AdvancedUsage.md#custom-response-serialization)
-  - **Connection -** [Security](Documentation/AdvancedUsage.md#security), [Network Reachability](Documentation/AdvancedUsage.md#network-reachability)
-- [Open Radars](#open-radars)
 - [FAQ](#faq)
 - [Credits](#credits)
 - [Donations](#donations)
@@ -24,11 +16,11 @@ TechnoGram is a new social network for it specialists
 
 ## Features
 
-- [x] Username/E-mail login
+- [x] Username/e-mail authorization
 - [x] Create posts with attached images, description, @mentions, #hashtags, links
 - [x] See posts of other users
 - [x] Leave comments to posts
-- [x] Like, double-like posts
+- [x] Like, double-like on posts
 - [x] Edit own profile (username, name, surname, email, bio)
 - [x] See profiles of other users
 
@@ -51,28 +43,29 @@ TechnoGram is a new social network for it specialists
 
 Firstly clone [technogram-server](https://github.com/jookovjook/technogram-server) to your LAMP server. See more at [technogram-server](https://github.com/jookovjook/technogram-server) repository.
 
+```bash
+$ git clone https://github.com/jookovjook/technogram-server
+```
+
 ### Android Studio
 
-Clone [this](https://github.com/jookovjook/technogram-android) respository, build project and run it on your Android device 
+Clone [current](https://github.com/jookovjook/technogram-android) respository, build project and run it on your Android device 
 
-## Open Radars
+```bash
+$ git clone https://github.com/jookovjook/technogram-android
+```
 
-The following radars have some effect on the current implementation of Alamofire.
+## General overview
 
-- [`rdar://21349340`](http://www.openradar.me/radar?id=5517037090635776) - Compiler throwing warning due to toll-free bridging issue in test case
-- `rdar://26870455` - Background URL Session Configurations do not work in the simulator
-- `rdar://26849668` - Some URLProtocol APIs do not properly handle `URLRequest`
-- [`rdar://36082113`](http://openradar.appspot.com/radar?id=4942308441063424) - `URLSessionTaskMetrics` failing to link on watchOS 3.0+
+### Authorization
 
-## Resolved Radars
+![1.auth](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.auth.jpg)
+![2.auth](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.auth.jpg)
 
-The following radars have been resolved over time after being filed against the Alamofire project.
-
-- [`rdar://26761490`](http://www.openradar.me/radar?id=5010235949318144) - Swift string interpolation causing memory leak with common usage (Resolved on 9/1/17 in Xcode 9 beta 6).
 
 ## FAQ
 
-### What's the origin of the name Alamofire?
+### What's the origin of the TechnoGram?
 
 Alamofire is named after the [Alamo Fire flower](https://aggie-horticulture.tamu.edu/wildseed/alamofire.html), a hybrid variant of the Bluebonnet, the official state flower of Texas.
 
