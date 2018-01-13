@@ -1,29 +1,21 @@
-![Alamofire: Elegant Networking in Swift](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
+![Technogram: A new social network for it specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
 
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Alamofire.svg)](https://img.shields.io/cocoapods/v/Alamofire.svg)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Platform](https://img.shields.io/cocoapods/p/Alamofire.svg?style=flat)](https://alamofire.github.io/Alamofire)
-[![Twitter](https://img.shields.io/badge/twitter-@AlamofireSF-blue.svg?style=flat)](http://twitter.com/AlamofireSF)
-[![Gitter](https://badges.gitter.im/Alamofire/Alamofire.svg)](https://gitter.im/Alamofire/Alamofire?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-Alamofire is an HTTP networking library written in Swift.
+TechnoGram is a new social network for it specialists
 
 - [Features](#features)
-- [Component Libraries](#component-libraries)
 - [Requirements](#requirements)
-- [Migration Guides](#migration-guides)
 - [Communication](#communication)
 - [Installation](#installation)
 - [Usage](Documentation/Usage.md)
     - **Intro -** [Making a Request](Documentation/Usage.md#making-a-request), [Response Handling](Documentation/Usage.md#response-handling), [Response Validation](Documentation/Usage.md#response-validation), [Response Caching](Documentation/Usage.md#response-caching)
-	- **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
-	- **Large Data -** [Downloading Data to a File](Documentation/Usage.md#downloading-data-to-a-file), [Uploading Data to a Server](Documentation/Usage.md#uploading-data-to-a-server)
-	- **Tools -** [Statistical Metrics](Documentation/Usage.md#statistical-metrics), [cURL Command Output](Documentation/Usage.md#curl-command-output)
+  - **HTTP -** [HTTP Methods](Documentation/Usage.md#http-methods), [Parameter Encoding](Documentation/Usage.md#parameter-encoding), [HTTP Headers](Documentation/Usage.md#http-headers), [Authentication](Documentation/Usage.md#authentication)
+  - **Large Data -** [Downloading Data to a File](Documentation/Usage.md#downloading-data-to-a-file), [Uploading Data to a Server](Documentation/Usage.md#uploading-data-to-a-server)
+  - **Tools -** [Statistical Metrics](Documentation/Usage.md#statistical-metrics), [cURL Command Output](Documentation/Usage.md#curl-command-output)
 - [Advanced Usage](Documentation/AdvancedUsage.md)
-	- **URL Session -** [Session Manager](Documentation/AdvancedUsage.md#session-manager), [Session Delegate](Documentation/AdvancedUsage.md#session-delegate), [Request](Documentation/AdvancedUsage.md#request)
-	- **Routing -** [Routing Requests](Documentation/AdvancedUsage.md#routing-requests), [Adapting and Retrying Requests](Documentation/AdvancedUsage.md#adapting-and-retrying-requests)
-	- **Model Objects -** [Custom Response Serialization](Documentation/AdvancedUsage.md#custom-response-serialization)
-	- **Connection -** [Security](Documentation/AdvancedUsage.md#security), [Network Reachability](Documentation/AdvancedUsage.md#network-reachability)
+  - **URL Session -** [Session Manager](Documentation/AdvancedUsage.md#session-manager), [Session Delegate](Documentation/AdvancedUsage.md#session-delegate), [Request](Documentation/AdvancedUsage.md#request)
+  - **Routing -** [Routing Requests](Documentation/AdvancedUsage.md#routing-requests), [Adapting and Retrying Requests](Documentation/AdvancedUsage.md#adapting-and-retrying-requests)
+  - **Model Objects -** [Custom Response Serialization](Documentation/AdvancedUsage.md#custom-response-serialization)
+  - **Connection -** [Security](Documentation/AdvancedUsage.md#security), [Network Reachability](Documentation/AdvancedUsage.md#network-reachability)
 - [Open Radars](#open-radars)
 - [FAQ](#faq)
 - [Credits](#credits)
@@ -32,155 +24,36 @@ Alamofire is an HTTP networking library written in Swift.
 
 ## Features
 
-- [x] Chainable Request / Response Methods
-- [x] URL / JSON / plist Parameter Encoding
-- [x] Upload File / Data / Stream / MultipartFormData
-- [x] Download File using Request or Resume Data
-- [x] Authentication with URLCredential
-- [x] HTTP Response Validation
-- [x] Upload and Download Progress Closures with Progress
-- [x] cURL Command Output
-- [x] Dynamically Adapt and Retry Requests
-- [x] TLS Certificate and Public Key Pinning
-- [x] Network Reachability
-- [x] Comprehensive Unit and Integration Test Coverage
-- [x] [Complete Documentation](https://alamofire.github.io/Alamofire)
-
-## Component Libraries
-
-In order to keep Alamofire focused specifically on core networking implementations, additional component libraries have been created by the [Alamofire Software Foundation](https://github.com/Alamofire/Foundation) to bring additional functionality to the Alamofire ecosystem.
-
-- [AlamofireImage](https://github.com/Alamofire/AlamofireImage) - An image library including image response serializers, `UIImage` and `UIImageView` extensions, custom image filters, an auto-purging in-memory cache and a priority-based image downloading system.
-- [AlamofireNetworkActivityIndicator](https://github.com/Alamofire/AlamofireNetworkActivityIndicator) - Controls the visibility of the network activity indicator on iOS using Alamofire. It contains configurable delay timers to help mitigate flicker and can support `URLSession` instances not managed by Alamofire.
+- [x] Username/E-mail login
+- [x] Create posts with attached images, description, @mentions, #hashtags, links
+- [x] See posts of other users
+- [x] Leave comments to posts
+- [x] Like, double-like posts
+- [x] Edit own profile (username, name, surname, email, bio)
+- [x] See profiles of other users
 
 ## Requirements
 
-- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 8.3+
-- Swift 3.1+
-
-## Migration Guides
-
-- [Alamofire 4.0 Migration Guide](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Alamofire%204.0%20Migration%20Guide.md)
-- [Alamofire 3.0 Migration Guide](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Alamofire%203.0%20Migration%20Guide.md)
-- [Alamofire 2.0 Migration Guide](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Alamofire%202.0%20Migration%20Guide.md)
+- Android 5.0+ device
+- LAMP server
 
 ## Communication
 
-- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/alamofire). (Tag 'alamofire')
-- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/alamofire).
+- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/technogram). (Tag 'technogram')
+- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/technogram).
 - If you **found a bug**, open an issue.
 - If you **have a feature request**, open an issue.
 - If you **want to contribute**, submit a pull request.
 
 ## Installation
 
-### CocoaPods
+### LAMP
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+Firstly clone [technogram-server](https://github.com/jookovjook/technogram-server) to your LAMP server. See more at [technogram-server](https://github.com/jookovjook/technogram-server) repository.
 
-```bash
-$ gem install cocoapods
-```
+### Android Studio
 
-> CocoaPods 1.1+ is required to build Alamofire 4.0+.
-
-To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
-
-```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '10.0'
-use_frameworks!
-
-target '<Your Target Name>' do
-    pod 'Alamofire', '~> 4.5'
-end
-```
-
-Then, run the following command:
-
-```bash
-$ pod install
-```
-
-### Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-
-To integrate Alamofire into your Xcode project using Carthage, specify it in your `Cartfile`:
-
-```ogdl
-github "Alamofire/Alamofire" ~> 4.5
-```
-
-Run `carthage update` to build the framework and drag the built `Alamofire.framework` into your Xcode project.
-
-### Swift Package Manager
-
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It is in early development, but Alamofire does support its use on supported platforms. 
-
-Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
-
-#### Swift 3
-
-```swift
-dependencies: [
-    .Package(url: "https://github.com/Alamofire/Alamofire.git", majorVersion: 4)
-]
-```
-
-#### Swift 4
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/Alamofire/Alamofire.git", from: "4.0.0")
-]
-```
-
-### Manually
-
-If you prefer not to use any of the aforementioned dependency managers, you can integrate Alamofire into your project manually.
-
-#### Embedded Framework
-
-- Open up Terminal, `cd` into your top-level project directory, and run the following command "if" your project is not initialized as a git repository:
-
-  ```bash
-  $ git init
-  ```
-
-- Add Alamofire as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
-
-  ```bash
-  $ git submodule add https://github.com/Alamofire/Alamofire.git
-  ```
-
-- Open the new `Alamofire` folder, and drag the `Alamofire.xcodeproj` into the Project Navigator of your application's Xcode project.
-
-    > It should appear nested underneath your application's blue project icon. Whether it is above or below all the other Xcode groups does not matter.
-
-- Select the `Alamofire.xcodeproj` in the Project Navigator and verify the deployment target matches that of your application target.
-- Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
-- In the tab bar at the top of that window, open the "General" panel.
-- Click on the `+` button under the "Embedded Binaries" section.
-- You will see two different `Alamofire.xcodeproj` folders each with two different versions of the `Alamofire.framework` nested inside a `Products` folder.
-
-    > It does not matter which `Products` folder you choose from, but it does matter whether you choose the top or bottom `Alamofire.framework`.
-
-- Select the top `Alamofire.framework` for iOS and the bottom one for OS X.
-
-    > You can verify which one you selected by inspecting the build log for your project. The build target for `Alamofire` will be listed as either `Alamofire iOS`, `Alamofire macOS`, `Alamofire tvOS` or `Alamofire watchOS`.
-
-- And that's it!
-
-  > The `Alamofire.framework` is automagically added as a target dependency, linked framework and embedded framework in a copy files build phase which is all you need to build on the simulator and a device.
+Clone [this](https://github.com/jookovjook/technogram-android) respository, build project and run it on your Android device 
 
 ## Open Radars
 
