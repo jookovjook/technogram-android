@@ -61,7 +61,7 @@ $ git clone https://github.com/jookovjook/technogram-android
 
 You can authorize to TechnoGram using your username (or e-mail) and password
 
-<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="160"> <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="160">
+<img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/1.png" width="240">     <img src="https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/screenshots/2.png" width="240">
 
 
 
