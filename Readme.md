@@ -33,7 +33,7 @@ Current repo represent TechnoGram mobile app for Android.
 ## Features
 
 - [x] Username/e-mail authorization
-- [x] Create posts with attached images, description, @mentions, #hashtags, links
+- [x] Create posts with attached `images`, `description`, `@mentions`, `#hashtags`, `links`
 - [x] See posts of other users
 - [x] Leave comments to posts
 - [x] Like, double-like on posts
