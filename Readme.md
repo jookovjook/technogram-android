@@ -1,6 +1,6 @@
 ![Technogram: A new social network for IT specialists](https://raw.githubusercontent.com/jookovjook/technogram-andoid/master/Art.png)
 
-TechnoGram is a new social network for IT specialists. This repo provides Android part of network.
+TechnoGram is a new social network for IT specialists. This repo provides Android part of the service.
 
 - [Introduction](#introduction)
 - [Features](#features)
@@ -21,8 +21,11 @@ TechnoGram is a new social network for IT specialists. This repo provides Androi
 ## Introduction
 
 TechnoGram is a social network for IT specialists. There is a place, where it's users can:
+
 • Share ther ideas and achievements to other people
+
 • Discuss topics with
+
 • Share their goals
 
 Current repo represent TechnoGram mobile app for Android.
@@ -117,6 +120,7 @@ You an edit your profile's info
 ### Live DEMO
 
 Watch this YouTube live DEMO:
+
 [![TechoGram [DEMO]](https://img.youtube.com/vi/ONhNDH2S7Ns/0.jpg)](https://www.youtube.com/watch?v=ONhNDH2S7Ns)
 
 ## Credits
